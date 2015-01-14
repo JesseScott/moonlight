@@ -3,7 +3,48 @@
         "installed": [],
         "uninstalled": []
     },
-    "config_munge": {},
-    "installed_plugins": {},
+    "config_munge": {
+        "files": {
+            "framework": {
+                "parents": {
+                    "CoreGraphics.framework": [
+                        {
+                            "xml": "false",
+                            "count": 1
+                        }
+                    ]
+                }
+            },
+            "config.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"SplashScreen\"><param name=\"ios-package\" value=\"CDVSplashScreen\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Console\"><param name=\"ios-package\" value=\"CDVLogger\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Device\"><param name=\"ios-package\" value=\"CDVDevice\" /></feature>",
+                            "count": 1
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "installed_plugins": {
+        "org.apache.cordova.splashscreen": {
+            "PACKAGE_NAME": "ca.ecuad.moonlight"
+        },
+        "org.apache.cordova.console": {
+            "PACKAGE_NAME": "ca.ecuad.moonlight"
+        },
+        "org.apache.cordova.device": {
+            "PACKAGE_NAME": "ca.ecuad.moonlight"
+        }
+    },
     "dependent_plugins": {}
 }

@@ -31,4 +31,6 @@
 # 06 ADD PLUGINS
 
 * cd to app
-  * type *cordova platform add xxx*
+  * type *cordova plugin add org.apache.cordova.splashscreen*
+  * type *cordova plugin add org.apache.cordova.console*
+  * type *cordova plugin add org.apache.cordova.device*
