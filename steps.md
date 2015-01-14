@@ -15,3 +15,20 @@
 * open terminal
   * type *sudo npm install -g cordova*
   * type *sudo npm install -g phonegap*
+
+# 04 CREATE PHONEGAP PROJECT
+
+* cd to directory
+  * type *cd 'location-you-cloned-project'*
+* create project
+  * type *cordova create hello com.example.hello HelloWorld* or somesuch
+
+# 05 ADD PLATFORMS
+
+* cd to app
+  * type *cordova platform add xxx*
+
+# 06 ADD PLUGINS
+
+* cd to app
+  * type *cordova platform add xxx*
