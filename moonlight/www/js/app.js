@@ -6,14 +6,16 @@
     var service = new ConferenceService();
     service.initialize().done(function () {
         console.log("Service initialized");
+        renderHomeView();
+        getCurrentTime();
     });
 
     /* --------------------------------- Event Registration -------------------------------- */
     
-    $('.search-key').on('keyup', findByName);
-    $('.help-btn').on('click', function() {
-        alert("PhoneGap Day v1.0");
-    });
+    //$('.search-key').on('keyup', findByName);
+    //$('.help-btn').on('click', function() {
+    //    alert("PhoneGap Day v1.0");
+    //});
 
     document.addEventListener('deviceready', function () {
 	  if (navigator.notification) { // Override default HTML alert with native dialog
@@ -42,6 +44,24 @@
         });
     }
     
+    function renderHomeView() {
+		var html =
+		  "<h1>moonlight</h1>";
+		$('body').html(html);
+	}
+
+	function getCurrentTime() {
+		var d = new Date();
+		var t = d.getTime();
+		alert(t);
+		SunCalc.getMoonIllumination(n);
+	}
+	
+	function getMoonTime() {
+	
+	
+	} 
+
 
 
 }());
