@@ -34,3 +34,4 @@
   * type *cordova plugin add org.apache.cordova.splashscreen*
   * type *cordova plugin add org.apache.cordova.console*
   * type *cordova plugin add org.apache.cordova.device*
+  * type *cordova plugin add org.apache.cordova.dialogs*
