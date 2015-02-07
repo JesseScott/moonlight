@@ -2,36 +2,43 @@
 (function () {
 
     /* ---------------------------------- Local Variables ---------------------------------- */
-    
+
     var service = new ConferenceService();
     service.initialize().done(function () {
         console.log("Service initialized");
+
         renderHomeView();
-        getCurrentTime();
+
+        //includeJs("js/suncalc/suncalc.js");
+        //$.getScript("js/suncalc/suncalc.js");
+        //var SunCalc = require('suncalc');
+
+        //getCurrentTime();
     });
 
     /* --------------------------------- Event Registration -------------------------------- */
-    
+
     //$('.search-key').on('keyup', findByName);
     //$('.help-btn').on('click', function() {
     //    alert("PhoneGap Day v1.0");
     //});
 
     document.addEventListener('deviceready', function () {
-	  if (navigator.notification) { // Override default HTML alert with native dialog
-		  window.alert = function (message) {
-			  navigator.notification.alert(
-				  message,    // message
-				  null,       // callback
-				  "Workshop", // title
-				  'OK'        // buttonName
-			  );
-		  };
-	  }
-	}, false);
+      console.log("ready");
+  	  if (navigator.notification) { // Override default HTML alert with native dialog
+  		  window.alert = function (message) {
+  			  navigator.notification.alert(
+  				  message,    // message
+  				  null,       // callback
+  				  "Workshop", // title
+  				  'OK'        // buttonName
+  			  );
+  		  };
+  	  }
+	   }, false);
 
     /* ---------------------------------- Local Functions ---------------------------------- */
-    
+
     function findByName() {
         service.findByName($('.search-key').val()).done(function (sessions) {
             var l = sessions.length;
@@ -43,24 +50,37 @@
             }
         });
     }
-    
+
     function renderHomeView() {
 		var html =
 		  "<h1>moonlight</h1>";
-		$('body').html(html);
-	}
+		  $('body').html(html);
+	   }
 
-	function getCurrentTime() {
-		var d = new Date();
-		var t = d.getTime();
-		alert(t);
-		SunCalc.getMoonIllumination(n);
-	}
-	
-	function getMoonTime() {
-	
-	
-	} 
+
+     /* ---------------------------------- Remote Functions ---------------------------------- */
+
+     function includeJs(jsFilePath) {
+       var js = document.createElement("script");
+
+       js.type = "text/javascript";
+       js.src = jsFilePath;
+
+       document.body.appendChild(js);
+     }
+
+
+  	function getCurrentTime() {
+  		var d = new Date();
+  		var t = d.getTime();
+  		console.log("Time Is " + t);
+
+  	}
+
+  	function getMoonTime() {
+      var times = SunCalc.getMoonTimes(new Date(), 51.5, -0.1);
+      console.log(times);
+  	}
 
 
 
