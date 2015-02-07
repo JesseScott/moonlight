@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 
-    <script src="cordova.js"></script>
+    <!--<script src="cordova.js"></script>-->
     <script src="lib/jquery.js"></script>
     <script src="js/index.js"></script>
     <script src="js/suncalc/suncalc.js"></script>
@@ -15,10 +15,10 @@
 
   <h1>moonlight</h1>
 
-  <div id="lat"> </div>
-  <div id="lon"> </div>
+  <div id="lat">lat</div>
+  <div id="lon">lon</div>
 
-
+  <canvas id="canvas" width="578" height="200"></canvas>
 
   <!-- JAVASCRIPT -->
   <script type="text/javascript">
@@ -65,7 +65,7 @@
         return true;
       }
       else {
-        console.log(false);
+        console.log("false - the moon is not within view");
         return false;
       }
     }
@@ -76,9 +76,31 @@
 
       var fraction = lumens.fraction;
       console.log("Fraction is " + fraction);
+      setCanvas(fraction);
 
     }
 
+    // CANVAS
+
+    function setCanvas(fraction) {
+
+      var canvas = document.getElementById('canvas');
+      var context = canvas.getContext('2d');
+
+      var luminosity = (fraction * 255);
+      console.log(luminosity);
+
+      //context.fillStyle = 'rgba(255, 255, 255, luminosity)';
+
+      context.rect(0, 0, canvas.width, canvas.height);
+      var grd = context.createLinearGradient(0, 0, canvas.width, canvas.height);
+      // light blue
+     grd.addColorStop(0, '#FFFFFF');
+     // dark blue
+     grd.addColorStop(1, '#004CB3');
+     context.fillStyle = grd;context.fill();
+
+    }
 
   </script>
 
