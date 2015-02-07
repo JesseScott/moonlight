@@ -1,17 +1,86 @@
 <!DOCTYPE html>
 <html>
 <head>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+    <script src="cordova.js"></script>
+    <script src="lib/jquery.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/suncalc/suncalc.js"></script>
+
 </head>
 <body>
 
+  <h1>moonlight</h1>
+
+  <div id="lat"> </div>
+  <div id="lon"> </div>
 
 
-<script src="cordova.js"></script>
-<script src="lib/jquery.js"></script>
-<script src="js/services/memory/ConferenceService.js"></script>
-<script src="js/app.js"></script>
+
+  <!-- JAVASCRIPT -->
+  <script type="text/javascript">
+    //app.initialize();
+
+    getMoonTime();
+    //getMoonIllumination();
+
+    // PHONEGAP
+
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    function onDeviceReady() {
+      console.log("onDeviceReady");
+      alert("??");
+      navigator.geolocation.watchPosition(onSuccess, onError, { timeout: 3000 });
+    }
+
+    function onSuccess(position) {
+      document.getElementById("lat").innerHTML = position.coords.latitude;
+      document.getElementById("lon").innerHTML = position.coords.longitude;
+    }
+
+    function onError(error) {
+      console.log('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
+    }
+
+    // SUNCALC
+
+    function getMoonTime() {
+      var times = SunCalc.getMoonTimes(new Date(), 49.25, 123.10);
+      console.log(times);
+
+      var now = new Date();
+      console.log("Now is " + now);
+      var rise = times.rise;
+      console.log("Rise is " + rise);
+      var set = times.set;
+      console.log("Set is " + set);
+
+      if( (now < rise) && (now < set) ) { // hack cause of bad order
+        console.log(true);
+        getMoonIllumination();
+        return true;
+      }
+      else {
+        console.log(false);
+        return false;
+      }
+    }
+
+    function getMoonIllumination() {
+      var lumens = SunCalc.getMoonIllumination(new Date());
+      console.log(lumens);
+
+      var fraction = lumens.fraction;
+      console.log("Fraction is " + fraction);
+
+    }
+
+
+  </script>
 
 </body>
 </html>
