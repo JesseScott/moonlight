@@ -9,10 +9,8 @@
       <meta name="apple-mobile-web-app-capable" content="yes">
       <meta name="mobile-web-app-capable" content="yes">
 
-      <!-- SRC
-      <script src="cordova.js"></script> -->
-      <script src="lib/jquery.js"></script>
-      <script src="js/index.js"></script>
+      <!-- SRC -->
+      <script src="cordova.js"></script>
       <script src="js/suncalc/suncalc.js"></script>
 
       <!-- CSS -->
@@ -54,7 +52,7 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        getMoonTime(49.246292, -123.116226);
+        //getMoonTime(49.246292, -123.116226); // CHEAT
       }
 
       // PHONEGAP
@@ -86,8 +84,7 @@
       function onError(error) {
         console.log("-- onError --");
         console.log('error: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
-
-        msg.innerHTML = "ERROR: Couldn't Get Current Location - See Console For Details";
+        msg.innerHTML = "ERROR:" + '\n' + "Couldn't Get Current Location - See Console For Details";
       }
 
       // SUNCALC
@@ -113,15 +110,16 @@
           console.log("false - the moon is not within view");
 
           var remaining =  rise.getHours() - now.getHours();
-          msg.innerHTML = "SORRY: The Moon Is Not In View Yet... It Will Rise In " + remaining + " Hours...";
+          msg.innerHTML = "SORRY:" + '\n' + "The Moon Is Not In View Yet... It Will Rise In " + remaining + " Hours...";
           //setCanvas(0.0);
-          getMoonIllumination();
+
+          getMoonIllumination(); // CHEAT
         }
       }
 
       function getMoonIllumination() {
         console.log("-- getMoonIllumination --");
-        var lumens = SunCalc.getMoonIllumination(new Date());
+        var lumens = SunCalc.getMoonIllumination(Date.now());
         console.log(lumens);
 
         var fraction = lumens.fraction;
@@ -140,7 +138,7 @@
         context.rect(0, 0, canvas.width, canvas.height);
         var grad = context.createLinearGradient(0, 0, canvas.width, canvas.height);
         grad.addColorStop(0, '#FFFFFF');
-        grad.addColorStop(1, 'rgba(255, 255, 255, ' + fraction+ ')');
+        grad.addColorStop(1, 'rgba(255, 255, 255, ' + fraction + ')');
         context.fillStyle = grad;
         context.fill();
 
