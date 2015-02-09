@@ -58,7 +58,8 @@
         init();
 
         // Get Current GPS
-        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        var options = { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true };
+        navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
       }
 
       function onSuccess(position) {
@@ -72,7 +73,7 @@
       }
 
       function onError(error) {
-        console.log("onError");
+        console.log("-- onError --");
         console.log('error: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
 
         msg.innerHTML = "ERROR: Couldn't Get Current Location - See Console For Details";
@@ -81,6 +82,7 @@
       // SUNCALC
 
       function getMoonTime(lat, lon) {
+        console.log("-- getMoonTime --");
         var times = SunCalc.getMoonTimes(Date.now(), lat, lon);
         console.log(times);
 
@@ -99,14 +101,14 @@
           console.log("false - the moon is not within view");
 
           var remaining =  rise.getHours() - now.getHours();
-          console.log(remaining);
           msg.innerHTML = "SORRY: The Moon Is Not In View Yet... It Will Rise In " + remaining + " Hours...";
-          //setCanvas(0);
+          setCanvas(0);
 
         }
       }
 
       function getMoonIllumination() {
+        console.log("-- getMoonIllumination --");
         var lumens = SunCalc.getMoonIllumination(new Date());
         console.log(lumens);
 
@@ -119,6 +121,7 @@
       // CANVAS
 
       function setCanvas(fraction) {
+        console.log("-- setCanvas --");
 
         var luminosity = (fraction * 255);
         console.log("Luminosity is " + luminosity);
@@ -128,7 +131,7 @@
         context.rect(0, 0, canvas.width, canvas.height);
         var grd = context.createLinearGradient(0, 0, canvas.width, canvas.height);
         grd.addColorStop(0, '#FFFFFF');
-        grd.addColorStop(1, '#004CB3');
+        grd.addColorStop(1, 'rgba(255, 255, 255, fraction)');
         context.fillStyle = grd;
         context.fill();
 
