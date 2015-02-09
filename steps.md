@@ -35,3 +35,10 @@
   * type *cordova plugin add org.apache.cordova.console*
   * type *cordova plugin add org.apache.cordova.device*
   * type *cordova plugin add org.apache.cordova.dialogs*
+  * type *cordova plugin add org.apache.cordova.geolocation*
+
+# 07 ADD SUNCALC LIBRARY
+
+# 08 ADD CANVAS
+
+# 09 ADD UI/UX + SETTINGS
