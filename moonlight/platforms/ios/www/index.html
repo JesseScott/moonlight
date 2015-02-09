@@ -8,7 +8,7 @@
       <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       <meta name="apple-mobile-web-app-capable" content="yes">
       <meta name="mobile-web-app-capable" content="yes">
-      
+
       <!-- SRC -->
       <script src="cordova.js"></script>
       <script src="lib/jquery.js"></script>
@@ -16,18 +16,20 @@
       <script src="js/suncalc/suncalc.js"></script>
 
       <!-- CSS -->
-
+      <link rel="stylesheet" type="text/css" href="css/index.css" />
 
   </head>
 
   <body>
 
     <!-- DIVS -->
-    <h1>moonlight</h1>
-    <div id="msg">...</div>
+    <div class="app">
+      <div id="msg" class="blink">...</div>
+    </div>
 
     <!-- CANVAS -->
     <canvas id="canvas" width="100" height="100"></canvas>
+
 
     <!-- JAVASCRIPT -->
     <script type="text/javascript">
@@ -72,8 +74,8 @@
       function onError(error) {
         console.log("onError");
         console.log('error: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
-        alert("Couldn't Get Current Location - See Console For Details");
-        msg.innerHTML = "error";
+
+        msg.innerHTML = "ERROR: Couldn't Get Current Location - See Console For Details";
       }
 
       // SUNCALC
@@ -95,8 +97,12 @@
         }
         else {
           console.log("false - the moon is not within view");
-          msg.innerHTML = "no moon";
-          setCanvas(0);
+
+          var remaining =  rise.getHours() - now.getHours();
+          console.log(remaining);
+          msg.innerHTML = "SORRY: The Moon Is Not In View Yet... It Will Rise In " + remaining + " Hours...";
+          //setCanvas(0);
+
         }
       }
 
