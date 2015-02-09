@@ -1,122 +1,135 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+      <!-- META -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <meta name="mobile-web-app-capable" content="yes">
+      
+      <!-- SRC -->
+      <script src="cordova.js"></script>
+      <script src="lib/jquery.js"></script>
+      <script src="js/index.js"></script>
+      <script src="js/suncalc/suncalc.js"></script>
 
-    <script src="cordova.js"></script>
-    <script src="lib/jquery.js"></script>
-    <script src="js/index.js"></script>
-    <script src="js/suncalc/suncalc.js"></script>
+      <!-- CSS -->
 
-</head>
-<body>
 
-  <!-- DIVS -->
-  <h1>moonlight</h1>
-  <div id="msg">...</div>
+  </head>
 
-  <!-- CANVAS -->
-  <canvas id="canvas" width="100" height="100"></canvas>
+  <body>
 
-  <!-- JAVASCRIPT -->
-  <script type="text/javascript">
+    <!-- DIVS -->
+    <h1>moonlight</h1>
+    <div id="msg">...</div>
 
-    // GLOBALS
-    var canvas = document.getElementById('canvas');
-    var context = canvas.getContext('2d');
+    <!-- CANVAS -->
+    <canvas id="canvas" width="100" height="100"></canvas>
 
-    // INIT
-    function init() {
+    <!-- JAVASCRIPT -->
+    <script type="text/javascript">
 
-      // Resize Canvas
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-
-    // PHONEGAP
-
-    document.addEventListener("deviceready", onDeviceReady, false);
-
-    function onDeviceReady() {
-      console.log(" -- onDeviceReady -- ");
+      // GLOBALS
+      var canvas = document.getElementById('canvas');
+      var context = canvas.getContext('2d');
+      var msg = document.getElementById('msg');
 
       // INIT
-      init();
+      function init() {
 
-      // Get Current GPS
-      navigator.geolocation.getCurrentPosition(onSuccess, onError);
-    }
-
-    function onSuccess(position) {
-      console.log("-- onSuccess --");
-
-      var lat = position.coords.latitude;
-      var lon = position.coords.longitude;
-      console.log("lat is " + lat + " and lon is " + lon);
-
-      getMoonTime(lat, lon);
-    }
-
-    function onError(error) {
-      console.log("onError");
-      console.log('error: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
-      alert("Couldn't Get Current Location - See Console For Details");
-    }
-
-    // SUNCALC
-
-    function getMoonTime(lat, lon) {
-      var times = SunCalc.getMoonTimes(Date.now(), lat, lon);
-      console.log(times);
-
-      var now = new Date();
-      console.log("Now is " + now);
-      var rise = times.rise;
-      console.log("Rise is " + rise);
-      var set = times.set;
-      console.log("Set is " + set);
-
-      if( (now > rise) && (now < set) ) {
-        console.log("true - the moon rose at " + rise + " and will set at " + set);
-        getMoonIllumination();
+        // Resize Canvas
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
       }
-      else {
-        console.log("false - the moon is not within view");
+
+      // PHONEGAP
+
+      document.addEventListener("deviceready", onDeviceReady, false);
+
+      function onDeviceReady() {
+        console.log(" -- onDeviceReady -- ");
+
+        // INIT
+        init();
+
+        // Get Current GPS
+        navigator.geolocation.getCurrentPosition(onSuccess, onError);
       }
-    }
 
-    function getMoonIllumination() {
-      var lumens = SunCalc.getMoonIllumination(new Date());
-      console.log(lumens);
+      function onSuccess(position) {
+        console.log("-- onSuccess --");
 
-      var fraction = lumens.fraction;
-      console.log("Fraction is " + fraction);
-      setCanvas(fraction);
+        var lat = position.coords.latitude;
+        var lon = position.coords.longitude;
+        console.log("lat is " + lat + " and lon is " + lon);
 
-    }
+        getMoonTime(lat, lon);
+      }
 
-    // CANVAS
+      function onError(error) {
+        console.log("onError");
+        console.log('error: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
+        alert("Couldn't Get Current Location - See Console For Details");
+        msg.innerHTML = "error";
+      }
 
-    function setCanvas(fraction) {
+      // SUNCALC
 
-      var luminosity = (fraction * 255);
-      console.log("Luminosity is " + luminosity);
+      function getMoonTime(lat, lon) {
+        var times = SunCalc.getMoonTimes(Date.now(), lat, lon);
+        console.log(times);
 
-      //context.fillStyle = 'rgba(255, 255, 255, luminosity)';
+        var now = new Date();
+        console.log("Now is " + now);
+        var rise = times.rise;
+        console.log("Rise is " + rise);
+        var set = times.set;
+        console.log("Set is " + set);
 
-      context.rect(0, 0, canvas.width, canvas.height);
-      var grd = context.createLinearGradient(0, 0, canvas.width, canvas.height);
-      // light blue
-     grd.addColorStop(0, '#FFFFFF');
-     // dark blue
-     grd.addColorStop(1, '#004CB3');
-     context.fillStyle = grd;context.fill();
+        if( (now > rise) && (now < set) ) {
+          console.log("true - the moon rose at " + rise + " and will set at " + set);
+          getMoonIllumination();
+        }
+        else {
+          console.log("false - the moon is not within view");
+          msg.innerHTML = "no moon";
+          setCanvas(0);
+        }
+      }
 
-    }
+      function getMoonIllumination() {
+        var lumens = SunCalc.getMoonIllumination(new Date());
+        console.log(lumens);
 
-  </script>
+        var fraction = lumens.fraction;
+        console.log("Fraction is " + fraction);
+        setCanvas(fraction);
 
-</body>
+      }
+
+      // CANVAS
+
+      function setCanvas(fraction) {
+
+        var luminosity = (fraction * 255);
+        console.log("Luminosity is " + luminosity);
+
+        //context.fillStyle = 'rgba(255, 255, 255, luminosity)';
+
+        context.rect(0, 0, canvas.width, canvas.height);
+        var grd = context.createLinearGradient(0, 0, canvas.width, canvas.height);
+        grd.addColorStop(0, '#FFFFFF');
+        grd.addColorStop(1, '#004CB3');
+        context.fillStyle = grd;
+        context.fill();
+
+      }
+
+    </script>
+
+  </body>
+
 </html>
