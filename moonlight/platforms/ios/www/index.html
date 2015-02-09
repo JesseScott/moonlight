@@ -11,8 +11,6 @@
 
       <!-- SRC -->
       <script src="cordova.js"></script>
-      <script src="lib/jquery.js"></script>
-      <script src="js/index.js"></script>
       <script src="js/suncalc/suncalc.js"></script>
 
       <!-- CSS -->
@@ -41,6 +39,8 @@
       var context = canvas.getContext('2d');
       var msg = document.getElementById('msg');
 
+      init();
+
       // INIT
       function init() {
         console.log("-- init --");
@@ -51,6 +51,8 @@
         // Resize Canvas
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
+
+        //getMoonTime(49.246292, -123.116226); // CHEAT
       }
 
       // PHONEGAP
@@ -76,13 +78,13 @@
         console.log("lat is " + lat + " and lon is " + lon);
 
         getMoonTime(lat, lon);
+
       }
 
       function onError(error) {
         console.log("-- onError --");
         console.log('error: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
-
-        msg.innerHTML = "ERROR: Couldn't Get Current Location - See Console For Details";
+        msg.innerHTML = "ERROR:" + '\n' + "Couldn't Get Current Location - See Console For Details";
       }
 
       // SUNCALC
@@ -90,14 +92,14 @@
       function getMoonTime(lat, lon) {
         console.log("-- getMoonTime --");
         var times = SunCalc.getMoonTimes(Date.now(), lat, lon);
-        console.log(times);
+        //console.log(times);
 
         var now = new Date();
-        console.log("Now is " + now);
+        console.log("Now is " + now + '\n');
         var rise = times.rise;
-        console.log("Rise is " + rise);
+        console.log("Rise is " + rise + '\n');
         var set = times.set;
-        console.log("Set is " + set);
+        console.log("Set is " + set + '\n');
 
         //if( (now > rise)  && (now < set) ) {
         if(now > rise) {
@@ -107,22 +109,23 @@
         else {
           console.log("false - the moon is not within view");
 
-          //var remaining =  rise.getHours() - now.getHours();
-          //msg.innerHTML = "SORRY: The Moon Is Not In View Yet... It Will Rise In " + remaining + " Hours...";
-          //setCanvas(0);
+          var remaining =  rise.getHours() - now.getHours();
+          //msg.innerHTML = "SORRY:" + '\n' + "The Moon Is Not In View Yet... It Will Rise In " + remaining + " Hours...";
 
+          setCanvas(0.0);
+          msg.style.display = 'none';
+
+          //getMoonIllumination(); // CHEAT
         }
       }
 
       function getMoonIllumination() {
         console.log("-- getMoonIllumination --");
-        var lumens = SunCalc.getMoonIllumination(new Date());
+        var lumens = SunCalc.getMoonIllumination(Date.now());
         console.log(lumens);
 
         var fraction = lumens.fraction;
-        console.log("Fraction is " + fraction);
         setCanvas(fraction);
-
       }
 
       // CANVAS
@@ -130,16 +133,19 @@
       function setCanvas(fraction) {
         console.log("-- setCanvas --");
 
-        var luminosity = (fraction * 255);
-        console.log("Luminosity is " + luminosity);
-
-        //context.fillStyle = 'rgba(255, 255, 255, luminosity)';
+        //fraction = fraction.toFixed(3);
+        console.log("Fraction is " + fraction);
 
         context.rect(0, 0, canvas.width, canvas.height);
-        var grd = context.createLinearGradient(0, 0, canvas.width, canvas.height);
-        grd.addColorStop(0, '#FFFFFF');
-        grd.addColorStop(1, 'rgba(255, 255, 255, fraction)');
-        context.fillStyle = grd;
+        var grad = context.createLinearGradient(0, 0, canvas.width, canvas.height);
+        grad.addColorStop(0, '#000000');
+        if(fraction == 0.0) {
+          grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        }
+        else {
+          grad.addColorStop(1, 'rgba(255, 255, 255, ' + fraction + ')');
+        }
+        context.fillStyle = grad;
         context.fill();
 
       }

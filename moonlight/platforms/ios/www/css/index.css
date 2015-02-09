@@ -112,6 +112,6 @@ h1 {
 }
 
 .blink {
-    animation:fade 3000ms infinite;
-    -webkit-animation:fade 3000ms infinite;
+    animation:fade 5000ms infinite;
+    -webkit-animation:fade 5000ms infinite;
 }

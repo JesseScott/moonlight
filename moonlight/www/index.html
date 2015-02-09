@@ -92,14 +92,14 @@
       function getMoonTime(lat, lon) {
         console.log("-- getMoonTime --");
         var times = SunCalc.getMoonTimes(Date.now(), lat, lon);
-        console.log(times);
+        //console.log(times);
 
         var now = new Date();
-        console.log("Now is " + now);
+        console.log("Now is " + now + '\n');
         var rise = times.rise;
-        console.log("Rise is " + rise);
+        console.log("Rise is " + rise + '\n');
         var set = times.set;
-        console.log("Set is " + set);
+        console.log("Set is " + set + '\n');
 
         //if( (now > rise)  && (now < set) ) {
         if(now > rise) {
@@ -110,10 +110,12 @@
           console.log("false - the moon is not within view");
 
           var remaining =  rise.getHours() - now.getHours();
-          msg.innerHTML = "SORRY:" + '\n' + "The Moon Is Not In View Yet... It Will Rise In " + remaining + " Hours...";
-          //setCanvas(0.0);
+          //msg.innerHTML = "SORRY:" + '\n' + "The Moon Is Not In View Yet... It Will Rise In " + remaining + " Hours...";
 
-          getMoonIllumination(); // CHEAT
+          setCanvas(0.0);
+          msg.style.display = 'none';
+
+          //getMoonIllumination(); // CHEAT
         }
       }
 
@@ -123,7 +125,6 @@
         console.log(lumens);
 
         var fraction = lumens.fraction;
-        console.log("Fraction is " + fraction);
         setCanvas(fraction);
       }
 
@@ -137,8 +138,13 @@
 
         context.rect(0, 0, canvas.width, canvas.height);
         var grad = context.createLinearGradient(0, 0, canvas.width, canvas.height);
-        grad.addColorStop(0, '#FFFFFF');
-        grad.addColorStop(1, 'rgba(255, 255, 255, ' + fraction + ')');
+        grad.addColorStop(0, '#000000');
+        if(fraction == 0.0) {
+          grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        }
+        else {
+          grad.addColorStop(1, 'rgba(255, 255, 255, ' + fraction + ')');
+        }
         context.fillStyle = grad;
         context.fill();
 
