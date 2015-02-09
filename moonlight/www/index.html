@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 
-    <!--<script src="cordova.js"></script>-->
+    <script src="cordova.js"></script>
     <script src="lib/jquery.js"></script>
     <script src="js/index.js"></script>
     <script src="js/suncalc/suncalc.js"></script>
@@ -33,16 +33,18 @@
 
     function onDeviceReady() {
       console.log("onDeviceReady");
-      alert("??");
-      navigator.geolocation.watchPosition(onSuccess, onError, { timeout: 3000 });
+      //navigator.geolocation.watchPosition(onSuccess, onError, { timeout: 3000 });
+      navigator.geolocation.getCurrentPosition((onSuccess, onError);
     }
 
     function onSuccess(position) {
+      console.log("onSuccess");
       document.getElementById("lat").innerHTML = position.coords.latitude;
       document.getElementById("lon").innerHTML = position.coords.longitude;
     }
 
     function onError(error) {
+      console.log("onError");
       console.log('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
     }
 
