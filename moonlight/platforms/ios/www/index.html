@@ -1,41 +1,148 @@
 <!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="msapplication-tap-highlight" content="no" />
-        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <title>Hello World</title>
-    </head>
-    <body>
-        <div class="app">
-            <h1>Apache Cordova</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
-            </div>
-        </div>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
-    </body>
+  <head>
+
+      <!-- META -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <meta name="mobile-web-app-capable" content="yes">
+
+      <!-- SRC -->
+      <script src="cordova.js"></script>
+      <script src="lib/jquery.js"></script>
+      <script src="js/index.js"></script>
+      <script src="js/suncalc/suncalc.js"></script>
+
+      <!-- CSS -->
+      <link rel="stylesheet" type="text/css" href="css/index.css" />
+
+  </head>
+
+  <body>
+
+    <!-- DIVS -->
+    <div class="app">
+      <div id="msg" class="blink">...</div>
+    </div>
+
+    <!-- CANVAS -->
+    <canvas id="canvas" width="100" height="100"></canvas>
+
+
+    <!-- JAVASCRIPT -->
+    <script type="text/javascript">
+
+      // GLOBALS
+      var canvas = document.getElementById('canvas');
+      var context = canvas.getContext('2d');
+      var msg = document.getElementById('msg');
+
+      // INIT
+      function init() {
+        console.log(" -- init -- ");
+
+        // MSG
+        msg.innerHTML = "-- moonlight --";
+
+        // Resize Canvas
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      // PHONEGAP
+
+      document.addEventListener("deviceready", onDeviceReady, false);
+
+      function onDeviceReady() {
+        console.log(" -- onDeviceReady -- ");
+
+        // INIT
+        init();
+
+        // Get Current GPS
+        var options = { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true };
+        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+      }
+
+      function onSuccess(position) {
+        console.log("-- onSuccess --");
+
+        var lat = position.coords.latitude;
+        var lon = position.coords.longitude;
+        console.log("lat is " + lat + " and lon is " + lon);
+
+        getMoonTime(lat, lon);
+      }
+
+      function onError(error) {
+        console.log("-- onError --");
+        console.log('error: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
+
+        msg.innerHTML = "ERROR: Couldn't Get Current Location - See Console For Details";
+      }
+
+      // SUNCALC
+
+      function getMoonTime(lat, lon) {
+        console.log("-- getMoonTime --");
+        var times = SunCalc.getMoonTimes(Date.now(), lat, lon);
+        console.log(times);
+
+        var now = new Date();
+        console.log("Now is " + now);
+        var rise = times.rise;
+        console.log("Rise is " + rise);
+        var set = times.set;
+        console.log("Set is " + set);
+
+        if( (now > rise) && (now < set) ) {
+          console.log("true - the moon rose at " + rise + " and will set at " + set);
+          getMoonIllumination();
+        }
+        else {
+          console.log("false - the moon is not within view");
+
+          //var remaining =  rise.getHours() - now.getHours();
+          //msg.innerHTML = "SORRY: The Moon Is Not In View Yet... It Will Rise In " + remaining + " Hours...";
+          //setCanvas(0);
+
+        }
+      }
+
+      function getMoonIllumination() {
+        console.log("-- getMoonIllumination --");
+        var lumens = SunCalc.getMoonIllumination(new Date());
+        console.log(lumens);
+
+        var fraction = lumens.fraction;
+        console.log("Fraction is " + fraction);
+        setCanvas(fraction);
+
+      }
+
+      // CANVAS
+
+      function setCanvas(fraction) {
+        console.log("-- setCanvas --");
+
+        var luminosity = (fraction * 255);
+        console.log("Luminosity is " + luminosity);
+
+        //context.fillStyle = 'rgba(255, 255, 255, luminosity)';
+
+        context.rect(0, 0, canvas.width, canvas.height);
+        var grd = context.createLinearGradient(0, 0, canvas.width, canvas.height);
+        grd.addColorStop(0, '#FFFFFF');
+        grd.addColorStop(1, 'rgba(255, 255, 255, fraction)');
+        context.fillStyle = grd;
+        context.fill();
+
+      }
+
+    </script>
+
+  </body>
+
 </html>
