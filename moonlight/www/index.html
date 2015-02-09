@@ -49,7 +49,7 @@
     // SUNCALC
 
     function getMoonTime() {
-      var times = SunCalc.getMoonTimes(new Date(), 49.25, 123.10);
+      var times = SunCalc.getMoonTimes(Date.now(), 49.25, -123.10);
       console.log(times);
 
       var now = new Date();
