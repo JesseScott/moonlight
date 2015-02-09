@@ -1,46 +1,108 @@
 <!DOCTYPE html>
-<!--
-    Copyright (c) 2012-2014 Adobe Systems Incorporated. All rights reserved.
-
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="msapplication-tap-highlight" content="no" />
-        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <title>Hello World</title>
-    </head>
-    <body>
-        <div class="app">
-            <h1>PhoneGap</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
-            </div>
-        </div>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
-        <script type="text/javascript">
-            app.initialize();
-        </script>
-    </body>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+    <script src="cordova.js"></script>
+    <script src="lib/jquery.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/suncalc/suncalc.js"></script>
+
+</head>
+<body>
+
+  <h1>moonlight</h1>
+
+  <div id="lat">lat</div>
+  <div id="lon">lon</div>
+
+  <canvas id="canvas" width="578" height="200"></canvas>
+
+  <!-- JAVASCRIPT -->
+  <script type="text/javascript">
+    //app.initialize();
+
+    getMoonTime();
+    //getMoonIllumination();
+
+    // PHONEGAP
+
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    function onDeviceReady() {
+      console.log("onDeviceReady");
+      alert("??");
+      navigator.geolocation.watchPosition(onSuccess, onError, { timeout: 3000 });
+    }
+
+    function onSuccess(position) {
+      document.getElementById("lat").innerHTML = position.coords.latitude;
+      document.getElementById("lon").innerHTML = position.coords.longitude;
+    }
+
+    function onError(error) {
+      console.log('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
+    }
+
+    // SUNCALC
+
+    function getMoonTime() {
+      var times = SunCalc.getMoonTimes(Date.now(), 49.25, -123.10);
+      console.log(times);
+
+      var now = new Date();
+      console.log("Now is " + now);
+      var rise = times.rise;
+      console.log("Rise is " + rise);
+      var set = times.set;
+      console.log("Set is " + set);
+
+      if( (now < rise) && (now < set) ) { // hack cause of bad order
+        console.log(true);
+        getMoonIllumination();
+        return true;
+      }
+      else {
+        console.log("false - the moon is not within view");
+        return false;
+      }
+    }
+
+    function getMoonIllumination() {
+      var lumens = SunCalc.getMoonIllumination(new Date());
+      console.log(lumens);
+
+      var fraction = lumens.fraction;
+      console.log("Fraction is " + fraction);
+      setCanvas(fraction);
+
+    }
+
+    // CANVAS
+
+    function setCanvas(fraction) {
+
+      var canvas = document.getElementById('canvas');
+      var context = canvas.getContext('2d');
+
+      var luminosity = (fraction * 255);
+      console.log(luminosity);
+
+      //context.fillStyle = 'rgba(255, 255, 255, luminosity)';
+
+      context.rect(0, 0, canvas.width, canvas.height);
+      var grd = context.createLinearGradient(0, 0, canvas.width, canvas.height);
+      // light blue
+     grd.addColorStop(0, '#FFFFFF');
+     // dark blue
+     grd.addColorStop(1, '#004CB3');
+     context.fillStyle = grd;context.fill();
+
+    }
+
+  </script>
+
+</body>
 </html>
