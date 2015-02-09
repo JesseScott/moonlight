@@ -112,10 +112,10 @@
         else {
           console.log("false - the moon is not within view");
 
-          //var remaining =  rise.getHours() - now.getHours();
-          //msg.innerHTML = "SORRY: The Moon Is Not In View Yet... It Will Rise In " + remaining + " Hours...";
-          //setCanvas(0);
-
+          var remaining =  rise.getHours() - now.getHours();
+          msg.innerHTML = "SORRY: The Moon Is Not In View Yet... It Will Rise In " + remaining + " Hours...";
+          //setCanvas(0.0);
+          getMoonIllumination();
         }
       }
 
@@ -127,7 +127,6 @@
         var fraction = lumens.fraction;
         console.log("Fraction is " + fraction);
         setCanvas(fraction);
-
       }
 
       // CANVAS
@@ -135,16 +134,14 @@
       function setCanvas(fraction) {
         console.log("-- setCanvas --");
 
-        var luminosity = (fraction * 255);
-        console.log("Luminosity is " + luminosity);
-
-        //context.fillStyle = 'rgba(255, 255, 255, luminosity)';
+        //fraction = fraction.toFixed(3);
+        console.log("Fraction is " + fraction);
 
         context.rect(0, 0, canvas.width, canvas.height);
-        var grd = context.createLinearGradient(0, 0, canvas.width, canvas.height);
-        grd.addColorStop(0, '#FFFFFF');
-        grd.addColorStop(1, 'rgba(255, 255, 255, fraction)');
-        context.fillStyle = grd;
+        var grad = context.createLinearGradient(0, 0, canvas.width, canvas.height);
+        grad.addColorStop(0, '#FFFFFF');
+        grad.addColorStop(1, 'rgba(255, 255, 255, ' + fraction+ ')');
+        context.fillStyle = grad;
         context.fill();
 
       }
