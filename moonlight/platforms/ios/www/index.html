@@ -24,7 +24,9 @@
 
     <!-- DIVS -->
     <div class="app">
-      <div id="msg" class="blink">...</div>
+      <H1>
+        <div id="msg" class="blink">...</div>
+      </H1>
     </div>
 
     <!-- CANVAS -->
@@ -41,10 +43,10 @@
 
       // INIT
       function init() {
-        console.log(" -- init -- ");
+        console.log("-- init --");
 
         // MSG
-        msg.innerHTML = "-- moonlight --";
+        msg.innerHTML = "moonlight";
 
         // Resize Canvas
         canvas.width = window.innerWidth;
@@ -56,7 +58,7 @@
       document.addEventListener("deviceready", onDeviceReady, false);
 
       function onDeviceReady() {
-        console.log(" -- onDeviceReady -- ");
+        console.log("-- onDeviceReady --");
 
         // INIT
         init();
@@ -97,7 +99,8 @@
         var set = times.set;
         console.log("Set is " + set);
 
-        if( (now > rise) && (now < set) ) {
+        //if( (now > rise)  && (now < set) ) {
+        if(now > rise) {
           console.log("true - the moon rose at " + rise + " and will set at " + set);
           getMoonIllumination();
         }
