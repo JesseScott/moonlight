@@ -111,11 +111,10 @@
           console.log("false - the moon is not within view");
 
           var remaining =  rise.getHours() - now.getHours();
-          //msg.innerHTML = "SORRY:" + '\n' + "The Moon Is Not In View Yet... It Will Rise In " + remaining + " Hours...";
+          msg.innerHTML = "SORRY:" + '\n' + "The Moon Is Not In View Yet... It Will Rise In " + remaining + " Hours...";
 
-          //getMoonIllumination(); // CHEAT
-          setCanvas(0.5);
-          msg.innerHTML = "0.5"
+          // CHEAT
+          //setCanvas(0.5);
         }
       }
 
@@ -139,12 +138,6 @@
         context.rect(0, 0, canvas.width, canvas.height);
         var grad = context.createLinearGradient(0, 0, canvas.width, canvas.height);
 
-        /*
-        grad.addColorStop(0.0, 'rgba(0, 0, 0, ' + fraction + ')');
-        grad.addColorStop(0.5, 'rgba(255, 255, 255, ' + fraction + ')');
-        grad.addColorStop(1.0, 'rgba(0, 0, 0, ' + fraction + ')');
-        */
-
         grad.addColorStop(0.000, 'rgba(0, 0, 0, 1.000)'); // BLACK
         grad.addColorStop(0.050, 'rgba(127, 127, 127, 0.500)'); // GREY
 
@@ -158,7 +151,7 @@
         context.fillStyle = grad;
         context.fill();
 
-        //msg.innerHTML = "moonlight";
+        msg.innerHTML = "moonlight";
 
       }
 
