@@ -10,6 +10,7 @@
   <preference name="target-device" value="universal"/>
   <preference name="fullscreen" value="true"/>
   <preference name="DisallowOverscroll" value="true"/>
+  <preference name="BackupWebStorage" value="local" />
   <preference name="webviewbounce" value="true"/>
   <preference name="prerendered-icon" value="true"/>
   <preference name="stay-in-webview" value="false"/>
