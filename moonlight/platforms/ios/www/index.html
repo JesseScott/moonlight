@@ -67,7 +67,12 @@
 
         // Get Current GPS
         var options = { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true };
-        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        }
+        else {
+
+        }
       }
 
       function onSuccess(position) {
@@ -84,7 +89,7 @@
       function onError(error) {
         console.log("-- onError --");
         console.log('error: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
-        msg.innerHTML = "ERROR:" + '\n' + "Couldn't Get Current Location - See Console For Details";
+        msg.innerHTML = "ERROR: \ncouldn't get current location - check permissions and wifi";
       }
 
       // SUNCALC
