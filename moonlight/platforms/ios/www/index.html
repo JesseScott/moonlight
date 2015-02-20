@@ -11,8 +11,6 @@
 
       <!-- SRC -->
       <script src="cordova.js"></script>
-      <script src="lib/jquery.js"></script>
-      <script src="js/index.js"></script>
       <script src="js/suncalc/suncalc.js"></script>
 
       <!-- CSS -->
@@ -25,7 +23,7 @@
     <!-- DIVS -->
     <div class="app">
       <H1>
-        <div id="msg" class="blink">...</div>
+        <div id="msg" class="blink"></div>
       </H1>
     </div>
 
@@ -45,12 +43,11 @@
       function init() {
         console.log("-- init --");
 
-        // MSG
-        msg.innerHTML = "moonlight";
-
         // Resize Canvas
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
+
+        //getMoonTime(49.246292, -123.116226); // CHEAT
       }
 
       // PHONEGAP
@@ -65,7 +62,13 @@
 
         // Get Current GPS
         var options = { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true };
-        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        }
+        else {
+          console.log("Can't find GPS system...");
+          msg.innerHTML = "ERROR: \ncouldn't find geolocation ability on this device - check permissions and wifi";
+        }
       }
 
       function onSuccess(position) {
@@ -76,13 +79,13 @@
         console.log("lat is " + lat + " and lon is " + lon);
 
         getMoonTime(lat, lon);
+
       }
 
       function onError(error) {
         console.log("-- onError --");
         console.log('error: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
-
-        msg.innerHTML = "ERROR: Couldn't Get Current Location - See Console For Details";
+        msg.innerHTML = "ERROR: \ncouldn't get current location - check permissions and wifi";
       }
 
       // SUNCALC
@@ -93,11 +96,11 @@
         console.log(times);
 
         var now = new Date();
-        console.log("Now is " + now);
+        console.log("Now is " + now + '\n');
         var rise = times.rise;
-        console.log("Rise is " + rise);
+        console.log("Rise is " + rise + '\n');
         var set = times.set;
-        console.log("Set is " + set);
+        console.log("Set is " + set + '\n');
 
         //if( (now > rise)  && (now < set) ) {
         if(now > rise) {
@@ -107,22 +110,21 @@
         else {
           console.log("false - the moon is not within view");
 
-          //var remaining =  rise.getHours() - now.getHours();
-          //msg.innerHTML = "SORRY: The Moon Is Not In View Yet... It Will Rise In " + remaining + " Hours...";
-          //setCanvas(0);
+          var remaining =  rise.getHours() - now.getHours();
+          msg.innerHTML = "SORRY:" + '\n' + "The Moon Is Not In View Yet... It Will Rise In " + remaining + " Hours...";
 
+          // CHEAT
+          //setCanvas(0.5);
         }
       }
 
       function getMoonIllumination() {
         console.log("-- getMoonIllumination --");
-        var lumens = SunCalc.getMoonIllumination(new Date());
+        var lumens = SunCalc.getMoonIllumination(Date.now());
         console.log(lumens);
 
         var fraction = lumens.fraction;
-        console.log("Fraction is " + fraction);
         setCanvas(fraction);
-
       }
 
       // CANVAS
@@ -130,17 +132,26 @@
       function setCanvas(fraction) {
         console.log("-- setCanvas --");
 
-        var luminosity = (fraction * 255);
-        console.log("Luminosity is " + luminosity);
-
-        //context.fillStyle = 'rgba(255, 255, 255, luminosity)';
+        //fraction = fraction.toFixed(3);
+        console.log("Fraction is " + fraction);
 
         context.rect(0, 0, canvas.width, canvas.height);
-        var grd = context.createLinearGradient(0, 0, canvas.width, canvas.height);
-        grd.addColorStop(0, '#FFFFFF');
-        grd.addColorStop(1, 'rgba(255, 255, 255, fraction)');
-        context.fillStyle = grd;
+        var grad = context.createLinearGradient(0, 0, canvas.width, canvas.height);
+
+        grad.addColorStop(0.000, 'rgba(0, 0, 0, 1.000)'); // BLACK
+        grad.addColorStop(0.050, 'rgba(127, 127, 127, 0.500)'); // GREY
+
+        grad.addColorStop(0.400, 'rgba(255, 255, 255, ' + fraction + ')'); // MOON
+        grad.addColorStop(0.600, 'rgba(255, 255, 255, ' + fraction + ')'); // MOON
+
+        grad.addColorStop(0.950, 'rgba(127, 127, 127, 0.500)'); // GREY
+        grad.addColorStop(1.000, 'rgba(0, 0, 0, 1.000)'); // BLACK
+
+
+        context.fillStyle = grad;
         context.fill();
+
+        msg.innerHTML = "moonlight";
 
       }
 
