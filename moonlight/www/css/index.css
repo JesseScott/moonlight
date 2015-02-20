@@ -57,28 +57,28 @@ body {
 /* Hamburger */
 header {
     position: fixed;
+    margin-top: 24px;
     width: 100%;
     z-index: 1;
 }
 
 #hamburger {
-    border: 1px solid #3333FF;
+    border: 1px solid #FFFFFF;
     border-radius: 3px 3px 3px 3px;
     cursor: pointer;
     display: block;
-    height: 48px;
-    padding: 6px 8px 6px;
+    height: 24px;
+    padding: 3px 4px 3px;
     position: relative;
-    width: 50px;
-    background: #3333FF;
+    width: 25px;
 }
 
 #hamburger div {
     background-color: #fff;
     border: 1px solid #eee;
     border-radius: 2px 2px 2px 2px;
-    height: 4px;
-    margin-top: 6px;
+    height: 2px;
+    margin-top: 3px;
     width: 90%;
 }
 
@@ -103,15 +103,16 @@ nav ul {
     margin-top: 48px;
     width: 100%;
     padding: 0;
-    background: #3333CC;
+    border: 1px solid #FFFFFF;
+    border-radius: 3px 3px 3px 3px;
 }
 
 nav li {
     position: relative;
     font-size: 1em;
     font-weight: bold;
-    border-bottom: 1px solid #222222;
-    border-top: 1px solid #444444;
+    border-bottom: 1px solid #FFFFFF;
+    border-top: 1px solid #FFFFFF;
     padding: 15px;
 }
 

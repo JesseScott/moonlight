@@ -88,14 +88,15 @@
         //getMoonTime(49.246292, -123.116226);
       }
 
-      init();
-
       // PHONEGAP
-
-      document.addEventListener("deviceready", onDeviceReady, false);
 
       function onDeviceReady() {
         console.log("-- onDeviceReady --");
+
+        // Status Bar Margin
+        if (parseFloat(window.device.version) >= 7.0) {
+            //document.body.style.marginTop = "40px";
+        }
 
         // INIT
         init();
@@ -114,6 +115,8 @@
           msg.innerHTML = "ERROR: \ncouldn't find geolocation ability on this device - check permissions and wifi";
         }
       }
+
+      document.addEventListener("deviceready", onDeviceReady, false);
 
       function onSuccess(position) {
         console.log("-- onSuccess --");
@@ -153,12 +156,8 @@
         }
         else {
           console.log("false - the moon is not within view");
-
           var remaining =  rise.getHours() - now.getHours();
-          msg.innerHTML = "SORRY:" + '\n' + "The Moon Is Not In View Yet... It Will Rise In " + remaining + " Hours...";
-
-          // CHEAT
-          //setCanvas(0.5);
+          msg.innerHTML = "SORRY:" + '\n' + "The Moon Is Not In View Yet..." + '\n' + "It Will Rise In " + remaining + " Hours...";
         }
       }
 
@@ -218,24 +217,24 @@
       // MENU FUNCTIONS
 
       function menuAbout() {
-        var string = "ABOUT:" + '\n' + "Created by jesses.co.tt" + '\n' + "Made with Phone Gap" + '\n' + "Original idea by Kelly Andres";
+        var string = "Created by jesses.co.tt" + '\n' + "Made with Phone Gap" + '\n' + "Original idea by Kelly Andres";
         //alert(string);
         navigator.notification.alert(
             string,
             alertDismissed,
-            'About',
-            'Done'
+            'ABOUT',
+            'OK'
         );
       }
 
       function menuData() {
-        var string = "DATA:" + '\n' + "Lat:" + lat + " Lon:" + lon + '\n' + "Rise:" + rise + " Set:" + set + '\n' + "Lumens:" + lumens;
+        var string = "Lat:" + lat + " Lon:" + lon + '\n' + "Rise:" + rise + " Set:" + set + '\n' + "Lumens:" + lumens;
         //alert(string);
         navigator.notification.alert(
             string,
             alertDismissed,
-            'Data',
-            'Done'
+            'DATA',
+            'OK'
         );
       }
 

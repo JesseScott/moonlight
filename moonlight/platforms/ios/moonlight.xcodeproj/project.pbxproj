@@ -47,6 +47,7 @@
 		D1499F34210947CE83E46933 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5FE0A01D8CF47978B1ECD90 /* AudioToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F181BF8B64EE40CB93210BAB /* CDVLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8198AD02694D7E855F7DC4 /* CDVLocation.m */; };
 		3E1CC5FCAD5D47159A68D421 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57CA05ED433A42B59FE8FBE4 /* CoreLocation.framework */; };
+		2FF5231507B74E8E82B0B104 /* CDVStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 208B64B3793B46F0816BAFBC /* CDVStatusBar.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -125,6 +126,8 @@
 		DA8198AD02694D7E855F7DC4 /* CDVLocation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVLocation.m"; path = "org.apache.cordova.geolocation/CDVLocation.m"; sourceTree = "<group>"; fileEncoding = 4; };
 		1A71D7F873834BB6A08EFC40 /* CDVLocation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVLocation.h"; path = "org.apache.cordova.geolocation/CDVLocation.h"; sourceTree = "<group>"; fileEncoding = 4; };
 		57CA05ED433A42B59FE8FBE4 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "CoreLocation.framework"; path = "System/Library/Frameworks/CoreLocation.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
+		208B64B3793B46F0816BAFBC /* CDVStatusBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVStatusBar.m"; path = "org.apache.cordova.statusbar/CDVStatusBar.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		1CD6B0CB70B04F0FAC85D696 /* CDVStatusBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVStatusBar.h"; path = "org.apache.cordova.statusbar/CDVStatusBar.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -238,6 +241,8 @@
 				5DF08C548BD04BED93CA5393 /* CDVNotification.h */,
 				DA8198AD02694D7E855F7DC4 /* CDVLocation.m */,
 				1A71D7F873834BB6A08EFC40 /* CDVLocation.h */,
+				208B64B3793B46F0816BAFBC /* CDVStatusBar.m */,
+				1CD6B0CB70B04F0FAC85D696 /* CDVStatusBar.h */,
 			);
 			name = Plugins;
 			path = "moonlight/Plugins";
@@ -428,6 +433,7 @@
 				B7ABDD72C6064A00B842B0EB /* CDVSplashScreen.m in Sources */,
 				4D58ECA3C865421588F495A8 /* CDVNotification.m in Sources */,
 				F181BF8B64EE40CB93210BAB /* CDVLocation.m in Sources */,
+				2FF5231507B74E8E82B0B104 /* CDVStatusBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

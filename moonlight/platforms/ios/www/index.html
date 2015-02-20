@@ -11,7 +11,10 @@
 
       <!-- SRC -->
       <script src="cordova.js"></script>
+      <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+      <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
       <script src="js/suncalc/suncalc.js"></script>
+      <script src="js/hamburger.js"></script>
 
       <!-- CSS -->
       <link rel="stylesheet" type="text/css" href="css/index.css" />
@@ -20,16 +23,43 @@
 
   <body>
 
-    <!-- DIVS -->
-    <div class="app">
-      <H1>
-        <div id="msg" class="blink"></div>
-      </H1>
+    <!-- Container -->
+    <div id="container">
+
+        <!-- Hamburger-->
+        <header>
+            <div id="hamburger">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </header>
+
+        <!-- Menu -->
+        <nav>
+            <ul>
+                <li><a href="#" onclick="return menuAbout();">about</a></li>
+                <li><a href="#" onclick="return menuData();">data</a></li>
+            </ul>
+        </nav>
+
+        <!-- Layer -->
+        <div id="contentLayer"></div>
+
+        <!-- Content -->
+        <div id="content">
+            <div class="app">
+                <H1>
+                  <div id="brand" class="blink"></div>
+                </H1>
+                <H2>
+                  <div id="msg" class="blink"></div>
+                </H2>
+            </div>
+            <canvas id="canvas" width="100" height="100"></canvas>
+        </div>
+
     </div>
-
-    <!-- CANVAS -->
-    <canvas id="canvas" width="100" height="100"></canvas>
-
 
     <!-- JAVASCRIPT -->
     <script type="text/javascript">
@@ -38,6 +68,12 @@
       var canvas = document.getElementById('canvas');
       var context = canvas.getContext('2d');
       var msg = document.getElementById('msg');
+      var brand = document.getElementById('brand');
+      msg.style.display = 'block';
+      brand.style.display = 'none';
+      var rise, set;
+      var lat, lon;
+      var lumens;
 
       // INIT
       function init() {
@@ -47,21 +83,30 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        //getMoonTime(49.246292, -123.116226); // CHEAT
+        // CHEAT
+        //setCanvas(0.80);
+        //getMoonTime(49.246292, -123.116226);
       }
 
       // PHONEGAP
 
-      document.addEventListener("deviceready", onDeviceReady, false);
-
       function onDeviceReady() {
         console.log("-- onDeviceReady --");
+
+        // Status Bar Margin
+        if (parseFloat(window.device.version) >= 7.0) {
+            //document.body.style.marginTop = "40px";
+        }
 
         // INIT
         init();
 
         // Get Current GPS
-        var options = { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true };
+        var options = {
+          maximumAge: 3000,
+          timeout: 5000,
+          enableHighAccuracy: true
+        };
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(onSuccess, onError);
         }
@@ -71,11 +116,13 @@
         }
       }
 
+      document.addEventListener("deviceready", onDeviceReady, false);
+
       function onSuccess(position) {
         console.log("-- onSuccess --");
 
-        var lat = position.coords.latitude;
-        var lon = position.coords.longitude;
+        lat = position.coords.latitude;
+        lon = position.coords.longitude;
         console.log("lat is " + lat + " and lon is " + lon);
 
         getMoonTime(lat, lon);
@@ -97,9 +144,9 @@
 
         var now = new Date();
         console.log("Now is " + now + '\n');
-        var rise = times.rise;
+        rise = times.rise;
         console.log("Rise is " + rise + '\n');
-        var set = times.set;
+        set = times.set;
         console.log("Set is " + set + '\n');
 
         //if( (now > rise)  && (now < set) ) {
@@ -109,22 +156,18 @@
         }
         else {
           console.log("false - the moon is not within view");
-
           var remaining =  rise.getHours() - now.getHours();
-          msg.innerHTML = "SORRY:" + '\n' + "The Moon Is Not In View Yet... It Will Rise In " + remaining + " Hours...";
-
-          // CHEAT
-          //setCanvas(0.5);
+          msg.innerHTML = "SORRY:" + '\n' + "The Moon Is Not In View Yet..." + '\n' + "It Will Rise In " + remaining + " Hours...";
         }
       }
 
       function getMoonIllumination() {
         console.log("-- getMoonIllumination --");
-        var lumens = SunCalc.getMoonIllumination(Date.now());
-        console.log(lumens);
+        var illumination = SunCalc.getMoonIllumination(Date.now());
+        console.log(illumination);
 
-        var fraction = lumens.fraction;
-        setCanvas(fraction);
+        lumens = illumination.fraction;
+        setCanvas(lumens);
       }
 
       // CANVAS
@@ -138,22 +181,68 @@
         context.rect(0, 0, canvas.width, canvas.height);
         var grad = context.createLinearGradient(0, 0, canvas.width, canvas.height);
 
-        grad.addColorStop(0.000, 'rgba(0, 0, 0, 1.000)'); // BLACK
-        grad.addColorStop(0.050, 'rgba(127, 127, 127, 0.500)'); // GREY
+        grad.addColorStop(0.000, 'rgba(0, 0, 0, ' + fraction + ')');
+        grad.addColorStop(0.050, 'rgba(25, 25, 25, ' + fraction + ')');
+        grad.addColorStop(0.100, 'rgba(50, 50, 50, ' + fraction + ')');
+        grad.addColorStop(0.150, 'rgba(75, 75, 75, ' + fraction + ')');
+        grad.addColorStop(0.200, 'rgba(100, 100, 100, ' + fraction + ')');
+        grad.addColorStop(0.250, 'rgba(125, 125, 125, ' + fraction + ')');
+        grad.addColorStop(0.300, 'rgba(150, 150, 150, ' + fraction + ')');
+        grad.addColorStop(0.350, 'rgba(175, 175, 175, ' + fraction + ')');
+        grad.addColorStop(0.400, 'rgba(200, 200, 200, ' + fraction + ')');
+        grad.addColorStop(0.450, 'rgba(225, 225, 225, ' + fraction + ')');
+        grad.addColorStop(0.500, 'rgba(250, 250, 250, ' + fraction + ')');
+        grad.addColorStop(0.550, 'rgba(225, 225, 225, ' + fraction + ')');
+        grad.addColorStop(0.600, 'rgba(200, 200, 200, ' + fraction + ')');
+        grad.addColorStop(0.650, 'rgba(175, 175, 175, ' + fraction + ')');
+        grad.addColorStop(0.700, 'rgba(150, 150, 150, ' + fraction + ')');
+        grad.addColorStop(0.750, 'rgba(125, 125, 125, ' + fraction + ')');
+        grad.addColorStop(0.800, 'rgba(100, 100, 100, ' + fraction + ')');
+        grad.addColorStop(0.850, 'rgba(75, 75, 75, ' + fraction + ')');
+        grad.addColorStop(0.900, 'rgba(50, 50, 50, ' + fraction + ')');
+        grad.addColorStop(0.950, 'rgba(25, 25, 25, ' + fraction + ')');
+        grad.addColorStop(1.000, 'rgba(0, 0, 0, ' + fraction + ')');
 
-        grad.addColorStop(0.400, 'rgba(255, 255, 255, ' + fraction + ')'); // MOON
-        grad.addColorStop(0.600, 'rgba(255, 255, 255, ' + fraction + ')'); // MOON
-
-        grad.addColorStop(0.950, 'rgba(127, 127, 127, 0.500)'); // GREY
-        grad.addColorStop(1.000, 'rgba(0, 0, 0, 1.000)'); // BLACK
-
+        context.shadowBlur = 500;
+        context.shadowColor = "white";
 
         context.fillStyle = grad;
         context.fill();
 
-        msg.innerHTML = "moonlight";
-
+        msg.style.display = 'none';
+        brand.style.display = 'block';
+        brand.innerHTML = "MOONLIGHT";
       }
+
+      // MENU FUNCTIONS
+
+      function menuAbout() {
+        var string = "Created by jesses.co.tt" + '\n' + "Made with Phone Gap" + '\n' + "Original idea by Kelly Andres";
+        //alert(string);
+        navigator.notification.alert(
+            string,
+            alertDismissed,
+            'ABOUT',
+            'OK'
+        );
+      }
+
+      function menuData() {
+        var string = "Lat:" + lat + " Lon:" + lon + '\n' + "Rise:" + rise + " Set:" + set + '\n' + "Lumens:" + lumens;
+        //alert(string);
+        navigator.notification.alert(
+            string,
+            alertDismissed,
+            'DATA',
+            'OK'
+        );
+      }
+
+      function alertDismissed() {
+          // do something
+      }
+
+
 
     </script>
 

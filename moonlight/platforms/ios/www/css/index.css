@@ -17,29 +17,12 @@
  * under the License.
  */
 
-* {
-    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
-}
-
 body {
     -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
 
     background-color:#000000;
-    /*
-    background-color:#E4E4E4;
-    background-image:linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-webkit-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-ms-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        color-stop(0, #A7A7A7),
-        color-stop(0.51, #E4E4E4)
-    );
-    */
     background-attachment:fixed;
     font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
     font-size:12px;
@@ -49,6 +32,8 @@ body {
     text-transform:uppercase;
     width:100%;
 }
+
+
 
 /* Portrait layout (default) */
 .app {
@@ -69,13 +54,69 @@ body {
     }
 }
 
-.msg {
-  position:absolute;
-  margin:0px;
-  text-align:center;
+/* Hamburger */
+header {
+    position: fixed;
+    margin-top: 24px;
+    width: 100%;
+    z-index: 1;
 }
 
-h1 {
+#hamburger {
+    border: 1px solid #FFFFFF;
+    border-radius: 3px 3px 3px 3px;
+    cursor: pointer;
+    display: block;
+    height: 24px;
+    padding: 3px 4px 3px;
+    position: relative;
+    width: 25px;
+}
+
+#hamburger div {
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 2px 2px 2px 2px;
+    height: 2px;
+    margin-top: 3px;
+    width: 90%;
+}
+
+nav {
+    opacity: 0;
+    left: 0px;
+    top: 0px;
+    position: fixed;
+    z-index: 0;
+    width: 30%;
+    height: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    margin-top: 48px;
+    width: 100%;
+    padding: 0;
+    border: 1px solid #FFFFFF;
+    border-radius: 3px 3px 3px 3px;
+}
+
+nav li {
+    position: relative;
+    font-size: 1em;
+    font-weight: bold;
+    border-bottom: 1px solid #FFFFFF;
+    border-top: 1px solid #FFFFFF;
+    padding: 15px;
+}
+
+nav li a {
     color:#E4E4E4;
     font-size:18px;
     font-weight:normal;
@@ -85,35 +126,64 @@ h1 {
     text-align:center;
 }
 
-.event {
-    border-radius:4px;
-    -webkit-border-radius:4px;
-    color:#FFFFFF;
-    font-size:12px;
-    margin:0px 30px;
-    padding:2px 0px;
+#contentLayer {
+    display: none;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 70%;
+    z-index: 5;
 }
 
-.event.listening {
-    background-color:#333333;
-    display:block;
+/* Debug Labels */
+.msg {
+  position:absolute;
+  margin:0px;
+  text-align:center;
 }
 
-.event.received {
-    background-color:#4B946A;
-    display:none;
+.brand {
+  position:absolute;
+  margin:0px;
+  text-align:center;
 }
 
+
+/* Text */
+h1 {
+    color:#E4E4E4;
+    font-size:36px;
+    font-weight:normal;
+    margin:0px;
+    overflow:visible;
+    padding:0px;
+    text-align:center;
+}
+
+h2 {
+    color:#E4E4E4;
+    font-size:18px;
+    font-weight:normal;
+    margin:0px;
+    overflow:visible;
+    padding:0px;
+    text-align:center;
+}
+
+/* Animation */
 @keyframes fade {
-    from { opacity: 0.8; }
-    50% { opacity: 0.4; }
-    to { opacity: 0.8; }
+    from { opacity: 0.6; }
+    50% { opacity: 0.1; }
+    to { opacity: 0.6; }
 }
 
 @-webkit-keyframes fade {
-    from { opacity: 0.8; }
-    50% { opacity: 0.4; }
-    to { opacity: 0.8; }
+    from { opacity: 0.6; }
+    50% { opacity: 0.1; }
+    to { opacity: 0.6; }
 }
 
 .blink {
