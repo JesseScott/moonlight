@@ -35,40 +35,68 @@ body {
 
 
 
-/* Portrait layout (default) */
-.app {
+/* INFO */
+
+.title {
     position:absolute;
     margin:0px;
-    width:50%;
-    left:25%;
-    top:50%;
+    width:60%;
+    left:10%;
+    top:20%;
+
+    animation:fade2 10000ms infinite;
+    -webkit-animation:fade2 10000ms infinite;
 }
 
-/* Landscape layout (with min-width) */
-@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
-    .app {
-        background-position:left center;
-        padding:75px 0px 75px 170px;  /* padding-top + padding-bottom + text area = image height */
-        margin:-90px 0px 0px -198px;  /* offset vertical: half of image height */
-                                      /* offset horizontal: half of image width and text area width */
-    }
+.subtitle {
+    position:absolute;
+    margin:0px;
+    width:80%;
+    left:10%;
+    top:30%;
+    
+    animation:fade2 10000ms infinite;
+    -webkit-animation:fade2 10000ms infinite;
 }
 
-/* Debug Labels */
+/* DEBUG */
+
 .msg {
   position:absolute;
   margin:0px;
   text-align:center;
 }
 
-.brand {
-  position:absolute;
-  margin:0px;
-  text-align:center;
+
+/* LINKS */
+a {
+  text-decoration: none;
+  color: #E4E4E4;
 }
 
+/* PARAGRAPHS */
+p {
+  text-decoration: none;
+  text-align:left;
+  color: #505050;
+  font-size:16px;
+  font-weight:normal;
+  margin:0px;
+  overflow:visible;
+  padding:0px;
+}
 
-/* Text */
+/* TABLE */
+
+.dataTable {
+  font: 18px helvetica, sans-serif;
+  padding-left: 0px;
+  padding-right: 15px;
+  color: #A8B1B8;
+}
+
+/* TEXT */
+
 h1 {
     color:#E4E4E4;
     font-size:36px;
@@ -76,7 +104,7 @@ h1 {
     margin:0px;
     overflow:visible;
     padding:0px;
-    text-align:center;
+    text-align:left;
 }
 
 h2 {
@@ -89,20 +117,33 @@ h2 {
     text-align:center;
 }
 
-/* Animation */
-@keyframes fade {
+/* ANIMATION */
+
+@keyframes fade1 {
     from { opacity: 0.6; }
     50% { opacity: 0.1; }
     to { opacity: 0.6; }
 }
 
-@-webkit-keyframes fade {
+@-webkit-keyframes fade1 {
     from { opacity: 0.6; }
     50% { opacity: 0.1; }
     to { opacity: 0.6; }
+}
+
+@keyframes fade2 {
+    from { opacity: 0.9; }
+    50% { opacity: 0.5; }
+    to { opacity: 0.9; }
+}
+
+@-webkit-keyframes fade2 {
+    from { opacity: 0.9; }
+    50% { opacity: 0.5; }
+    to { opacity: 0.9; }
 }
 
 .blink {
-    animation:fade 5000ms infinite;
-    -webkit-animation:fade 5000ms infinite;
+    animation:fade1 10000ms infinite;
+    -webkit-animation:fade1 10000ms infinite;
 }

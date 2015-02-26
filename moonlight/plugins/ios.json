@@ -39,6 +39,10 @@
                         {
                             "xml": "<preference name=\"StatusBarStyle\" value=\"lightcontent\" />",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"InAppBrowser\"><param name=\"ios-package\" value=\"CDVInAppBrowser\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -48,7 +52,7 @@
                     "CoreGraphics.framework": [
                         {
                             "xml": "false",
-                            "count": 1
+                            "count": 2
                         }
                     ],
                     "AudioToolbox.framework": [
@@ -94,6 +98,9 @@
             "PACKAGE_NAME": "tt.co.jesses.moonlight"
         },
         "org.apache.cordova.statusbar": {
+            "PACKAGE_NAME": "tt.co.jesses.moonlight"
+        },
+        "org.apache.cordova.inappbrowser": {
             "PACKAGE_NAME": "tt.co.jesses.moonlight"
         }
     },
