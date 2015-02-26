@@ -11,10 +11,10 @@
 
       <!-- SRC -->
       <script src="cordova.js"></script>
-      <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-      <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
       <script src="js/suncalc/suncalc.js"></script>
       <script src="js/hamburger.js"></script>
+      <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+      <script src="http://code.jquery.com/mobile/latest/jquery.mobile.min.js"></script>
 
       <!-- CSS -->
       <link rel="stylesheet" type="text/css" href="css/index.css" />
@@ -26,28 +26,9 @@
     <!-- Container -->
     <div id="container">
 
-        <!-- Hamburger-->
-        <header>
-            <div id="hamburger">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-        </header>
 
-        <!-- Menu -->
-        <nav>
-            <ul>
-                <li><a href="#" onclick="return menuAbout();">about</a></li>
-                <li><a href="#" onclick="return menuData();">data</a></li>
-            </ul>
-        </nav>
-
-        <!-- Layer -->
-        <div id="contentLayer"></div>
-
-        <!-- Content -->
-        <div id="content">
+        <!-- MOONLIGHT -->
+        <div id="light">
             <div class="app">
                 <H1>
                   <div id="brand" class="blink"></div>
@@ -59,21 +40,47 @@
             <canvas id="canvas" width="100" height="100"></canvas>
         </div>
 
+        <!-- DATA -->
+        <div id="data">
+          <div class="app">
+            <H1>
+              <div>DATA</div>
+            </H1>
+          </div>
+        </div>
+
+        <!-- ABOUT -->
+        <div id="about">
+          <div class="app">
+              <H1>
+                <div>ABOUT</div>
+              </H1>
+          </div>
+        </div>
+
     </div>
 
     <!-- JAVASCRIPT -->
     <script type="text/javascript">
 
       // GLOBALS
+
+      var light = document.getElementById('light');
+      var data = document.getElementById('data');
+      var about = document.getElementById('about');
+
       var canvas = document.getElementById('canvas');
       var context = canvas.getContext('2d');
+
       var msg = document.getElementById('msg');
       var brand = document.getElementById('brand');
       msg.style.display = 'block';
       brand.style.display = 'none';
+
       var rise, set;
       var lat, lon;
       var lumens;
+      var index = 0;
 
       // INIT
       function init() {
@@ -83,6 +90,11 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
+        // Hide Screens
+        light.style.display = 'block';
+        data.style.display = 'none';
+        about.style.display = 'none';
+
         // CHEAT
         //setCanvas(0.80);
         //getMoonTime(49.246292, -123.116226);
@@ -91,42 +103,41 @@
       // PHONEGAP
 
       function onDeviceReady() {
-        console.log("-- onDeviceReady --");
+          console.log("-- onDeviceReady --");
 
-        // Status Bar Margin
-        if (parseFloat(window.device.version) >= 7.0) {
-            //document.body.style.marginTop = "40px";
-        }
+          // Status Bar Margin
+          if (parseFloat(window.device.version) >= 7.0) {
+              //document.body.style.marginTop = "40px";
+          }
 
-        // INIT
-        init();
+          // INIT
+          init();
 
-        // Get Current GPS
-        var options = {
-          maximumAge: 3000,
-          timeout: 5000,
-          enableHighAccuracy: true
-        };
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(onSuccess, onError);
-        }
-        else {
-          console.log("Can't find GPS system...");
-          msg.innerHTML = "ERROR: \ncouldn't find geolocation ability on this device - check permissions and wifi";
-        }
+          // Get Current GPS
+          var options = {
+            maximumAge: 3000,
+            timeout: 5000,
+            enableHighAccuracy: true
+          };
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(onSuccess, onError);
+          }
+          else {
+            console.log("Can't find GPS system...");
+            msg.innerHTML = "ERROR: \ncouldn't find geolocation ability on this device - check permissions and wifi";
+          }
       }
 
       document.addEventListener("deviceready", onDeviceReady, false);
 
       function onSuccess(position) {
-        console.log("-- onSuccess --");
+          console.log("-- onSuccess --");
 
-        lat = position.coords.latitude;
-        lon = position.coords.longitude;
-        console.log("lat is " + lat + " and lon is " + lon);
+          lat = position.coords.latitude;
+          lon = position.coords.longitude;
+          console.log("lat is " + lat + " and lon is " + lon);
 
-        getMoonTime(lat, lon);
-
+          getMoonTime(lat, lon);
       }
 
       function onError(error) {
@@ -214,34 +225,35 @@
         brand.innerHTML = "MOONLIGHT";
       }
 
-      // MENU FUNCTIONS
+      // JQUERY
 
-      function menuAbout() {
-        var string = "Created by jesses.co.tt" + '\n' + "Made with Phone Gap" + '\n' + "Original idea by Kelly Andres";
-        //alert(string);
-        navigator.notification.alert(
-            string,
-            alertDismissed,
-            'ABOUT',
-            'OK'
-        );
+      // Tap
+      $("body").bind('tap', function(event) {
+        event.stopImmediatePropagation();
+        switchView();
+      });
+
+      function switchView() {
+        console.log("-- switchView --");
+
+        index++;
+        if(index %3 == 0) {
+          light.style.display = 'block';
+          data.style.display = 'none';
+          about.style.display = 'none';
+        }
+        else if(index %3 == 1) {
+          light.style.display = 'none';
+          data.style.display = 'block';
+          about.style.display = 'none';
+        }
+        else if(index %3 == 2) {
+          light.style.display = 'none';
+          data.style.display = 'none';
+          about.style.display = 'block';
+        }
+
       }
-
-      function menuData() {
-        var string = "Lat:" + lat + " Lon:" + lon + '\n' + "Rise:" + rise + " Set:" + set + '\n' + "Lumens:" + lumens;
-        //alert(string);
-        navigator.notification.alert(
-            string,
-            alertDismissed,
-            'DATA',
-            'OK'
-        );
-      }
-
-      function alertDismissed() {
-          // do something
-      }
-
 
 
     </script>
