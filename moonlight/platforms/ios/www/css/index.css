@@ -61,10 +61,14 @@ body {
 
 /* LOGO */
 
-.logo {
-  position:absolute;
-  margin:0px;
-  text-align:center;
+.light {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+
+  animation:fade1 10000ms infinite;
+  -webkit-animation:fade1 10000ms infinite;
 }
 
 

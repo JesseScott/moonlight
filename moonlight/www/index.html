@@ -12,8 +12,8 @@
       <!-- SRC -->
       <script src="cordova.js"></script>
       <script src="js/suncalc/suncalc.js"></script>
-      <script src="js/hamburger.js"></script>
-      <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+      <!-- <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script> -->
+      <script src="lib/jquery.js"></script>
       <script src="http://code.jquery.com/mobile/latest/jquery.mobile.min.js"></script>
 
       <!-- CSS -->
@@ -24,11 +24,13 @@
   <body>
 
       <!-- MOONLIGHT -->
-      <div id="light">
+      <div id="container">
 
           <!-- LIGHT -->
           <canvas id="canvas" width="100" height="100"></canvas>
-
+          <div id="light" class="light">
+              <H1>MOONLIGHT</H1>
+          </div>
 
           <!-- DATA -->
           <div id="data" style="display:none">
@@ -90,11 +92,11 @@
               </div>
               <div class="subtitle">
                   <br>
-                  <p>Created by <a href="http://jesses.co.tt/"> Jesse Scott </a></p>
-                  <p>From an original idea by <a href="http://www.kellyandres.com/"> Kelly Andres </a></p>
+                  <p>Created by <a href="http://jesses.co.tt/" target="_blank"> Jesse Scott </a></p>
+                  <p>From an original idea by <a href="http://www.kellyandres.com/" target="_blank"> Kelly Andres </a></p>
                   <br>
-                  <p>Made with <a href="http://phonegap.com/"> PhoneGap </a></p>
-                  <p>And utilizing <a href="https://github.com/mourner/suncalc"> SunCalc </a></p>
+                  <p>Made with <a href="http://phonegap.com/" target="_blank"> PhoneGap </a></p>
+                  <p>And utilizing <a href="https://github.com/mourner/suncalc" target="_blank"> SunCalc </a></p>
               </div>
           </div>
 
@@ -106,6 +108,7 @@
 
       // GLOBALS
 
+      var light = document.getElementById('light');
       var data = document.getElementById('data');
       var about = document.getElementById('about');
 
@@ -126,6 +129,7 @@
         canvas.height = window.innerHeight;
 
         // Hide Screens
+        light.style.display = 'block';
         data.style.display = 'none';
         about.style.display = 'none';
 
@@ -167,9 +171,11 @@
           console.log("lat is " + lat + " and lon is " + lon);
 
           // Set
-          var table = document.getElementById('dataTable');
-          table.rows[0].cells[1].innerHTML = lat.toFixed(5);
-          table.rows[1].cells[1].innerHTML = lon.toFixed(5);
+          if((lat !=== undefined) && (lon !=== undefined)) {
+            var table = document.getElementById('dataTable');
+            table.rows[0].cells[1].innerHTML = lat.toFixed(5);
+            table.rows[1].cells[1].innerHTML = lon.toFixed(5);
+          }
 
           // Pass
           getMoonTime(lat, lon);
@@ -207,8 +213,6 @@
           getMoonIllumination();
         }
         else {
-          //CHEAT
-          //getMoonIllumination();
           var remaining =  rise.getHours() - now.getHours();
           console.log("SORRY:" + '\n' + "The Moon Is Not In View Yet..." + '\n' + "It Will Rise In " + remaining + " Hours...");
         }
@@ -279,18 +283,21 @@
       });
 
       function switchView() {
-        //console.log("-- switchView --");
+        console.log("-- switchView --");
 
         index++;
         if(index % 3 == 0) {
+          light.style.display = 'block';
           data.style.display = 'none';
           about.style.display = 'none';
         }
         else if(index % 3 == 1) {
+          light.style.display = 'none';
           data.style.display = 'block';
           about.style.display = 'none';
         }
         else if(index % 3 == 2) {
+          light.style.display = 'none';
           data.style.display = 'none';
           about.style.display = 'block';
         }
