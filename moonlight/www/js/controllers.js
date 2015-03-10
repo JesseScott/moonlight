@@ -16,8 +16,7 @@ moonlightControllers.controller('DataController', ['$scope', '$http','$routePara
 }]);
 
 moonlightControllers.controller('AboutController', ['$scope', '$http','$routeParams', function($scope, $http, $routeParams) {
-  $http.get('js/data.json').success(function(data) {
-    $scope.artists = data;
-    $scope.whichItem = $routeParams.itemId;
+  $http.get('js/about.json').success(function(data) {
+    $scope.about = data;
   });
 }]);

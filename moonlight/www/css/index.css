@@ -73,12 +73,14 @@ body {
 
 
 /* LINKS */
+
 a {
   text-decoration: none;
   color: #E4E4E4;
 }
 
 /* PARAGRAPHS */
+
 p {
   text-decoration: none;
   text-align:left;
@@ -98,6 +100,10 @@ p {
   padding-right: 15px;
   color: #A8B1B8;
 }
+
+/* NG */
+
+
 
 /* TEXT */
 
