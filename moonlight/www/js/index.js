@@ -32,6 +32,11 @@ var app = {
     // DeviceReady Event Handler
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+        alert('ready');
+
+        angular.element(document).ready(function() {
+            angular.bootstrap(document);
+        });
 
     },
 

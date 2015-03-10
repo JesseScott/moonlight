@@ -11,17 +11,12 @@
 
       <!-- SRC -->
       <script src="cordova.js"></script>
-
-      <script src="lib/angular.js"></script>
-      <script src="lib/angular-route.min.js"></script>
+      <script src="js/index.js"></script>
+      <script src="js/suncalc/suncalc.js"></script>
       <script src="js/app.js"></script>
       <script src="js/controllers.js"></script>
-
-      <script src="js/suncalc/suncalc.js"></script>
-      
-      <!-- <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script> -->
-      <script src="lib/jquery.js"></script>
-      <script src="http://code.jquery.com/mobile/latest/jquery.mobile.min.js"></script>
+      <script src="lib/angular.js"></script>
+      <script src="lib/angular-route.min.js"></script>
 
       <!-- CSS -->
       <link rel="stylesheet" type="text/css" href="css/index.css" />
@@ -32,6 +27,25 @@
 
     <!-- VIEW -->
     <div class="main" ng-view><div>
+    <p id="foo">...</p>
+
+    <script type="text/javascript">
+        //app.initialize();
+
+        document.addEventListener("deviceready", onDeviceReady, false);
+        function onDeviceReady() {
+          console.log("-- onDeviceReady --");
+
+          var foo = document.getElementById('foo').innerHTML="READY";
+          
+
+          angular.element(document).ready(function() {
+            angular.bootstrap(document);
+          });
+
+        }
+
+    </script>
 
   </body>
 
