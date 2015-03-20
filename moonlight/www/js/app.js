@@ -14,11 +14,11 @@
 				  }).
 				  when('/data', {
 				    templateUrl: 'partials/data.html',
-				    controller: 'DataController'
+				    controller: 'DataCtrl'
 				  }).
 				  when('/about', {
 				    templateUrl: 'partials/about.html',
-				    controller: 'AboutController'
+				    controller: 'AboutCtrl'
 				  }).
 				  otherwise({
 				    redirectTo: '/light'
