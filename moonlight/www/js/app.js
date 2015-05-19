@@ -1,8 +1,7 @@
 'use strict';
 
 
-	var moonlight = angular.module('moonlight', ['ngRoute','moonlight.controllers']);
-	//var moonlight = angular.module('moonlight', ['ngRoute']);
+	var moonlight = angular.module('moonlight', ['ngRoute', 'ngTouch', 'moonlight.controllers']);
 
 	moonlight.config(['$routeProvider', function($routeProvider) {
 	  $routeProvider.
