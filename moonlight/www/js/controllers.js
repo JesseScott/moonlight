@@ -1,22 +1,13 @@
 
-var moonlightControllers = angular.module('moonlightControllers', []);
+angular.module('moonlight.controllers', []);
 
-moonlightControllers.controller('LightController', ['$scope', '$http', function($scope, $http) {
-  $http.get('js/data.json').success(function(data) {
-    $scope.artists = data;
-    $scope.artistOrder = 'name';
-  });
-}]);
+angular.module('moonlight.controllers')
+.controller('LightController', ['$scope', '$http', function($scope, $http) {
 
-moonlightControllers.controller('DataController', ['$scope', '$http','$routeParams', function($scope, $http, $routeParams) {
-  $http.get('js/data.json').success(function(data) {
-    $scope.artists = data;
-    $scope.whichItem = $routeParams.itemId;
-  });
-}]);
+}])
+.controller('DataController', ['$scope', '$http','$routeParams', function($scope, $http, $routeParams) {
 
-moonlightControllers.controller('AboutController', ['$scope', '$http','$routeParams', function($scope, $http, $routeParams) {
-  $http.get('js/about.json').success(function(data) {
-    $scope.about = data;
-  });
+}])
+.controller('AboutController', ['$scope', '$http','$routeParams', function($scope, $http, $routeParams) {
+
 }]);
