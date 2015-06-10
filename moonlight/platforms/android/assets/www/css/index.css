@@ -16,25 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-* {
-    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
-}
 
 body {
     -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
-    background-color:#E4E4E4;
-    background-image:linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-webkit-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-ms-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        color-stop(0, #A7A7A7),
-        color-stop(0.51, #E4E4E4)
-    );
+
+    background-color:#000000;
     background-attachment:fixed;
     font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
     font-size:12px;
@@ -45,32 +33,93 @@ body {
     width:100%;
 }
 
-/* Portrait layout (default) */
-.app {
-    background:url(../img/logo.png) no-repeat center top; /* 170px x 200px */
-    position:absolute;             /* position in the center of the screen */
-    left:50%;
-    top:50%;
-    height:50px;                   /* text area height */
-    width:225px;                   /* text area width */
-    text-align:center;
-    padding:180px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
-    margin:-115px 0px 0px -112px;  /* offset vertical: half of image height and text area height */
-                                   /* offset horizontal: half of text area width */
+
+
+/* INFO */
+
+.title {
+    position:absolute;
+    margin:0px;
+    width:60%;
+    left:10%;
+    top:20%;
+
+    animation:fade2 10000ms infinite;
+    -webkit-animation:fade2 10000ms infinite;
 }
 
-/* Landscape layout (with min-width) */
-@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
-    .app {
-        background-position:left center;
-        padding:75px 0px 75px 170px;  /* padding-top + padding-bottom + text area = image height */
-        margin:-90px 0px 0px -198px;  /* offset vertical: half of image height */
-                                      /* offset horizontal: half of image width and text area width */
-    }
+.subtitle {
+    position:absolute;
+    margin:0px;
+    width:80%;
+    left:10%;
+    top:30%;
+
+    animation:fade2 10000ms infinite;
+    -webkit-animation:fade2 10000ms infinite;
 }
+
+/* LOGO */
+
+.light {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+
+  animation:fade1 10000ms infinite;
+  -webkit-animation:fade1 10000ms infinite;
+}
+
+
+/* LINKS */
+
+a {
+  text-decoration: none;
+  color: #E4E4E4;
+}
+
+/* PARAGRAPHS */
+
+p {
+  text-decoration: none;
+  text-align:left;
+  color: #505050;
+  font-size:16px;
+  font-weight:normal;
+  margin:0px;
+  overflow:visible;
+  padding:0px;
+}
+
+/* TABLE */
+
+.dataTable {
+  font: 18px helvetica, sans-serif;
+  padding-left: 0px;
+  padding-right: 15px;
+  color: #A8B1B8;
+}
+
+/* NG */
+
+
+
+/* TEXT */
 
 h1 {
-    font-size:24px;
+    color:#E4E4E4;
+    font-size:36px;
+    font-weight:normal;
+    margin:0px;
+    overflow:visible;
+    padding:0px;
+    text-align:left;
+}
+
+h2 {
+    color:#E4E4E4;
+    font-size:18px;
     font-weight:normal;
     margin:0px;
     overflow:visible;
@@ -78,38 +127,33 @@ h1 {
     text-align:center;
 }
 
-.event {
-    border-radius:4px;
-    -webkit-border-radius:4px;
-    color:#FFFFFF;
-    font-size:12px;
-    margin:0px 30px;
-    padding:2px 0px;
+/* ANIMATION */
+
+@keyframes fade1 {
+    from { opacity: 0.6; }
+    50% { opacity: 0.1; }
+    to { opacity: 0.6; }
 }
 
-.event.listening {
-    background-color:#333333;
-    display:block;
+@-webkit-keyframes fade1 {
+    from { opacity: 0.6; }
+    50% { opacity: 0.1; }
+    to { opacity: 0.6; }
 }
 
-.event.received {
-    background-color:#4B946A;
-    display:none;
+@keyframes fade2 {
+    from { opacity: 0.9; }
+    50% { opacity: 0.5; }
+    to { opacity: 0.9; }
 }
 
-@keyframes fade {
-    from { opacity: 1.0; }
-    50% { opacity: 0.4; }
-    to { opacity: 1.0; }
+@-webkit-keyframes fade2 {
+    from { opacity: 0.9; }
+    50% { opacity: 0.5; }
+    to { opacity: 0.9; }
 }
- 
-@-webkit-keyframes fade {
-    from { opacity: 1.0; }
-    50% { opacity: 0.4; }
-    to { opacity: 1.0; }
-}
- 
+
 .blink {
-    animation:fade 3000ms infinite;
-    -webkit-animation:fade 3000ms infinite;
+    animation:fade1 10000ms infinite;
+    -webkit-animation:fade1 10000ms infinite;
 }
