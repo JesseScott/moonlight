@@ -34,7 +34,13 @@
 						<p>
 							Moon Phase:
 							<ul>
-								<li><p class="data">{{moon.phase}}</p></li>
+								<li><p class="data">{{moon.phase.toFixed(10)}}</p></li>
+							</ul>
+						</p>
+						<p>
+							Moon Illumination:
+							<ul>
+								<li><p class="data">{{moon.fraction.toFixed(10)}}</p></li>
 							</ul>
 						</p>
 					</div>
