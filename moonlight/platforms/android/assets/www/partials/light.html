@@ -1,11 +1,13 @@
 <section>
 	<div ng-controller="LightController">
-		<div  ng-swipe-left="changeView('/data')">
-			<canvas id="canvas" width="100" height="100"></canvas>
+		<div ng-swipe-left="changeView('/data')" ng-click="changeView('/data')">
 
-			<div id="light" class="light">
-			  <H1>MOONLIGHT</H1>
-			</div>
+				<canvas id="canvas" width="100" height="100"></canvas>
+
+				<div id="light" class="light">
+				  <H1>MOONLIGHT</H1>
+				</div>
+
 		</div>
 	</div>
 </section>
