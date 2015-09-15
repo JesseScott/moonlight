@@ -9,6 +9,8 @@ angular.module('moonlight.controllers')
     $location.url(view);
   }
 
+  // get gps
+
 })
 .controller('DataController', function($scope, $http, $location, $routeParams) {
 

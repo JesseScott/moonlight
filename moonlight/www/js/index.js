@@ -34,6 +34,7 @@ var app = {
         app.receivedEvent('deviceready');
         alert('ready');
 
+        // Bootstrap Angular (so it doesn't call GPS before PG)
         // angular.element(document).ready(function() {
         //     angular.bootstrap(document);
         // });
@@ -43,7 +44,6 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         var parentElement = document.getElementById(id);
-
         console.log('Received Event: ' + id);
     }
 
