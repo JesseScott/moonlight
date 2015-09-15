@@ -52,7 +52,6 @@ angular.module('moonlight.controllers')
     $rootScope.moon.phase     = illumination.phase;
     $rootScope.moon.fraction  = illumination.fraction;
 
-
     setCanvas(illumination.fraction);
 
     //if( (now > rise)  && (now < set) ) {
@@ -71,11 +70,8 @@ angular.module('moonlight.controllers')
   function setCanvas(fraction) {
     console.log("-- setCanvas --");
 
-    console.log("Fraction is " + fraction);
-
     context.rect(0, 0, canvas.width, canvas.height);
     var grad = context.createLinearGradient(0, 0, canvas.width, canvas.height);
-
     grad.addColorStop(0.000, 'rgba(0, 0, 0, ' + fraction + ')');
     grad.addColorStop(0.050, 'rgba(25, 25, 25, ' + fraction + ')');
     grad.addColorStop(0.100, 'rgba(50, 50, 50, ' + fraction + ')');
@@ -100,10 +96,8 @@ angular.module('moonlight.controllers')
 
     context.shadowBlur = 500;
     context.shadowColor = "white";
-
     context.fillStyle = grad;
     context.fill();
-
   }
 
 })
