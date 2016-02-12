@@ -1,0 +1,50 @@
+<section>
+	<div ng-controller="DataController">
+		<div ng-swipe-left="changeView('/about')" ng-swipe-right="changeView('/light')"">
+				<div id="data">
+					<div class="title">
+						<H1>DATA</H1>
+					</div>
+					<div class="subtitle">
+						<br>
+						<p>
+							Latitude:
+							<ul>
+								<li><p class="data">{{position.coords.latitude}}</p></li>
+							</ul>
+						</p>
+						<p>
+							Longitude:
+							<ul>
+								<li><p class="data">{{position.coords.longitude}}</p></li>
+							</ul>
+						</p>
+						<p>
+							Moon Rise:
+							<ul>
+								<li><p class="data">{{moon.rise}}</p></li>
+							</ul>
+						</p>
+						<p>
+							Moon Set:
+							<ul>
+								<li><p class="data">{{moon.set}}</p></li>
+							</ul>
+						</p>
+						<p>
+							Moon Phase:
+							<ul>
+								<li><p class="data">{{moon.phase.toFixed(10)}}</p></li>
+							</ul>
+						</p>
+						<p>
+							Moon Illumination:
+							<ul>
+								<li><p class="data">{{moon.fraction.toFixed(10)}}</p></li>
+							</ul>
+						</p>
+					</div>
+				</div>
+		</div>
+	</div>
+</section>
