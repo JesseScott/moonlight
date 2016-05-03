@@ -3,6 +3,7 @@ module.exports = [
     {
         "file": "plugins/org.apache.cordova.device/www/device.js",
         "id": "org.apache.cordova.device.device",
+        "pluginId": "org.apache.cordova.device",
         "clobbers": [
             "device"
         ]
@@ -10,6 +11,7 @@ module.exports = [
     {
         "file": "plugins/org.apache.cordova.splashscreen/www/splashscreen.js",
         "id": "org.apache.cordova.splashscreen.SplashScreen",
+        "pluginId": "org.apache.cordova.splashscreen",
         "clobbers": [
             "navigator.splashscreen"
         ]
@@ -17,6 +19,7 @@ module.exports = [
     {
         "file": "plugins/org.apache.cordova.dialogs/www/notification.js",
         "id": "org.apache.cordova.dialogs.notification",
+        "pluginId": "org.apache.cordova.dialogs",
         "merges": [
             "navigator.notification"
         ]
@@ -24,6 +27,7 @@ module.exports = [
     {
         "file": "plugins/org.apache.cordova.dialogs/www/android/notification.js",
         "id": "org.apache.cordova.dialogs.notification_android",
+        "pluginId": "org.apache.cordova.dialogs",
         "merges": [
             "navigator.notification"
         ]
@@ -31,6 +35,7 @@ module.exports = [
     {
         "file": "plugins/org.apache.cordova.statusbar/www/statusbar.js",
         "id": "org.apache.cordova.statusbar.statusbar",
+        "pluginId": "org.apache.cordova.statusbar",
         "clobbers": [
             "window.StatusBar"
         ]
@@ -38,6 +43,7 @@ module.exports = [
     {
         "file": "plugins/org.apache.cordova.inappbrowser/www/inappbrowser.js",
         "id": "org.apache.cordova.inappbrowser.inappbrowser",
+        "pluginId": "org.apache.cordova.inappbrowser",
         "clobbers": [
             "window.open"
         ]
