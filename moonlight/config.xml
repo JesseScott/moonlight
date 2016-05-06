@@ -1,4 +1,4 @@
-<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="tt.co.jesses.moonlight" version="0.5.0">
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="tt.co.jesses.moonlight" versionCode = "1" version="0.5.0">
   <name>moonlight</name>
   <description>colouring your screen with the current moon illumination</description>
   <author href="http://jesses.co.tt" email="js@jesses.co.tt">Jesse Scott</author>
