@@ -8,8 +8,12 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import tt.co.jesses.moonlight.ui.light.LightViewModel
 import tt.co.jesses.moonlight.ui.theme.MoonlightTheme
 
 class MainActivity : ComponentActivity() {
@@ -29,6 +33,12 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(name: String) {
     Text(text = "Hello $name!")
+}
+
+@Composable
+fun Screen(viewModel: LightViewModel = viewModel()) {
+    val state = viewModel.uiState.collectAsState()
+    Greeting(name = state.value.light.toString())
 }
 
 @Preview(showBackground = true)
