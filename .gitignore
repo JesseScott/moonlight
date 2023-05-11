@@ -24,3 +24,12 @@ proguard/
 
 # Log Files
 *.log
+
+# IDEA
+/.idea/*
+
+# OSX
+.DS_Store
+
+# Properties
+local.properties
