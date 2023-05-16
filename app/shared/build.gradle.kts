@@ -26,6 +26,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+                implementation("org.shredzone.commons:commons-suncalc:3.7")
             }
         }
         val commonTest by getting {
