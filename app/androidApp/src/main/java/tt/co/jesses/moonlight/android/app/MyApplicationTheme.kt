@@ -1,4 +1,4 @@
-package tt.co.jesses.moonlight.android
+package tt.co.jesses.moonlight.android.app
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
