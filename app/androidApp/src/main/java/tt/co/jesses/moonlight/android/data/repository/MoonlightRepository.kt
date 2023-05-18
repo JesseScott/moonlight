@@ -1,6 +1,6 @@
-package tt.co.jesses.moonlight.data.repository
+package tt.co.jesses.moonlight.android.data.repository
 
-import tt.co.jesses.moonlight.data.model.MoonIlluminationData
+import tt.co.jesses.moonlight.android.data.model.MoonIlluminationData
 
 /**
  * Top level class responsible for gating access to Moon APIs

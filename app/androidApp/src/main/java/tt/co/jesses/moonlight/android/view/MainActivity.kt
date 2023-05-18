@@ -19,7 +19,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    GreetingView(Greeting().greet())
+                    //GreetingView(Greeting().greet())
+                    MoonlightView()
                 }
             }
         }
@@ -29,6 +30,11 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingView(text: String) {
     Text(text = text)
+}
+
+@Composable
+fun MoonlightView() {
+    Text(text = "Moonlight")
 }
 
 @Preview

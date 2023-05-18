@@ -1,7 +1,7 @@
-package tt.co.jesses.moonlight.data.repository
+package tt.co.jesses.moonlight.android.data.repository
 
 import org.shredzone.commons.suncalc.MoonIllumination
-import tt.co.jesses.moonlight.data.model.MoonIlluminationData
+import tt.co.jesses.moonlight.android.data.model.MoonIlluminationData
 
 /**
  * Class reponsible for accessing [org.shredzone.commons.suncalc] library
