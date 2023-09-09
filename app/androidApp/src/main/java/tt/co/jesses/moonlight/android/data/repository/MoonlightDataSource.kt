@@ -5,7 +5,7 @@ import tt.co.jesses.moonlight.android.data.model.MoonIlluminationData
 import javax.inject.Inject
 
 /**
- * Class reponsible for accessing [org.shredzone.commons.suncalc] library
+ * Class responsible for accessing [org.shredzone.commons.suncalc] library
  */
 class MoonlightDataSource @Inject constructor() {
 

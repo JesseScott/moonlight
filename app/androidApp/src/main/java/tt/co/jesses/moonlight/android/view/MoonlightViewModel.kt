@@ -13,15 +13,14 @@ class MoonlightViewModel @Inject constructor(
     private val repository: MoonlightRepository
 ) : ViewModel() {
 
+    private val _uiState = MutableStateFlow(MoonlightUiState())
+    val uiState: StateFlow<MoonlightUiState> = _uiState.asStateFlow()
+
     init {
         getMoonIllumination()
     }
 
-    private val _uiState = MutableStateFlow(MoonlightUiState())
-    val uiState: StateFlow<MoonlightUiState> = _uiState.asStateFlow()
-
     private fun getMoonIllumination() {
-        _uiState.value = MoonlightUiState(isLoading = true)
         val illuminationData = repository.getMoonIllumination()
         _uiState.value = MoonlightUiState(illuminationData = illuminationData)
     }
