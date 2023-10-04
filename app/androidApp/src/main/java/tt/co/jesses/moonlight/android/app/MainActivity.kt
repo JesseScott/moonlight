@@ -9,8 +9,13 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import tt.co.jesses.moonlight.android.view.MoonlightView
+import tt.co.jesses.moonlight.android.view.DataScreen
+import tt.co.jesses.moonlight.android.view.MoonlightScreen
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -24,7 +29,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MoonlightView()
+                    val navController = rememberNavController()
+                    NavHost(navController = navController, startDestination = "moon") {
+                        composable("moon") { MoonlightScreen(viewModel()) { navController.navigate(it) } }
+                        composable("data") { DataScreen(navController = navController) }
+                    }
+                    //MoonlightView()
                 }
             }
         }
@@ -35,6 +45,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     MyApplicationTheme {
-        MoonlightView()
+        //MoonlightScreen {}
     }
 }

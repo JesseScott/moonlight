@@ -1,6 +1,7 @@
 package tt.co.jesses.moonlight.android.view
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -16,18 +17,30 @@ import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun MoonlightView(viewModel: MoonlightViewModel = viewModel()) {
+fun MoonlightScreen(
+    viewModel: MoonlightViewModel,
+    onNavigate: (String) -> Unit,
+) {
     val uiState = viewModel.uiState.collectAsState()
     val fraction = uiState.value.illuminationData.fraction
     val padding = 16.dp
     val normalizedPhase = ((uiState.value.illuminationData.phase + 180f) / 360f).coerceIn(0.0, 1.0)
 
     Column(
-        modifier = Modifier.padding(start = padding, top = padding),
+        modifier = Modifier
+            .padding(start = padding, top = padding)
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onLongPress = {
+                        onNavigate("data")
+                    }
+                )
+            },
         horizontalAlignment = Alignment.Start
     ) {
         Text(text = "Moonlight")
@@ -41,9 +54,10 @@ fun MoonlightView(viewModel: MoonlightViewModel = viewModel()) {
         Text(text = "Distance: ${uiState.value.illuminationData.distance}")
         Text(text = "Parallactic Angle: ${uiState.value.illuminationData.parallacticAngle}")
     }
-    Canvas(modifier = Modifier
-        .fillMaxHeight()
-        .fillMaxWidth()
+    Canvas(
+        modifier = Modifier
+            .fillMaxHeight()
+            .fillMaxWidth(),
     ) {
         drawRect(
             brush = Brush.sweepGradient(
@@ -63,5 +77,4 @@ fun MoonlightView(viewModel: MoonlightViewModel = viewModel()) {
             blendMode = BlendMode.SrcOver,
         )
     }
-
 }
