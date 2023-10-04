@@ -24,5 +24,26 @@ fun MoonlightView(viewModel: MoonlightViewModel = viewModel()) {
         Text(text = "Fraction: ${uiState.value.illuminationData.fraction}")
         Text(text = "Phase: ${uiState.value.illuminationData.phase}")
         Text(text = "Angle: ${uiState.value.illuminationData.angle}")
+    Canvas(modifier = Modifier
+        .fillMaxHeight()
+        .fillMaxWidth()
+    ) {
+        drawRect(
+            brush = Brush.sweepGradient(
+                0f to Color.White,
+                0.25f to Color.LightGray,
+                0.5f to Color.DarkGray,
+                0.75f to Color.LightGray,
+                1f to Color.White
+            ),
+            topLeft = Offset.Zero,
+            size = size,
+            alpha = fraction.toFloat(),
+            colorFilter = ColorFilter.lighting(
+                multiply = Color.White,
+                add = Color.Yellow,
+            ),
+            blendMode = BlendMode.SrcOver,
+        )
     }
 }
