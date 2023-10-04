@@ -35,7 +35,7 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                // todo suncalc
+                implementation("org.shredzone.commons:commons-suncalc:3.7")
             }
         }
         val androidUnitTest by getting
