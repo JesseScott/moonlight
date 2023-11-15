@@ -12,12 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 
 @Composable
 fun DataScreen(
     viewModel: MoonlightViewModel = viewModel(),
-    navController: NavController,
+    onNavigate: (String) -> Unit,
 ) {
     val uiState = viewModel.uiState.collectAsState()
     val fraction = uiState.value.illuminationData.fraction
@@ -29,7 +28,7 @@ fun DataScreen(
             .pointerInput(Unit) {
                 detectTapGestures(
                     onLongPress = {
-                        navController.navigate("data")
+                        onNavigate(Screens.Moon.route)
                     }
                 )
             },

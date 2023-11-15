@@ -23,7 +23,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun MoonlightScreen(
-    viewModel: MoonlightViewModel,
+    viewModel: MoonlightViewModel = viewModel(),
     onNavigate: (String) -> Unit,
 ) {
     val uiState = viewModel.uiState.collectAsState()
@@ -31,33 +31,17 @@ fun MoonlightScreen(
     val padding = 16.dp
     val normalizedPhase = ((uiState.value.illuminationData.phase + 180f) / 360f).coerceIn(0.0, 1.0)
 
-    Column(
-        modifier = Modifier
-            .padding(start = padding, top = padding)
-            .pointerInput(Unit) {
-                detectTapGestures(
-                    onLongPress = {
-                        onNavigate("data")
-                    }
-                )
-            },
-        horizontalAlignment = Alignment.Start
-    ) {
-        Text(text = "Moonlight")
-        Spacer(Modifier.padding(padding))
-        Text(text = "Fraction: $fraction")
-        Text(text = "Phase: ${uiState.value.illuminationData.phase}")
-        Text(text = "nPhase: $normalizedPhase")
-        Text(text = "Angle: ${uiState.value.illuminationData.angle}")
-        Text(text = "Azimuth: ${uiState.value.illuminationData.azimuth}")
-        Text(text = "Altitude: ${uiState.value.illuminationData.altitude}")
-        Text(text = "Distance: ${uiState.value.illuminationData.distance}")
-        Text(text = "Parallactic Angle: ${uiState.value.illuminationData.parallacticAngle}")
-    }
     Canvas(
         modifier = Modifier
             .fillMaxHeight()
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onLongPress = {
+                        onNavigate(Screens.Data.route)
+                    }
+                )
+            },
     ) {
         drawRect(
             brush = Brush.sweepGradient(

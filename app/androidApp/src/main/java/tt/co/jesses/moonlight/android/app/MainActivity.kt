@@ -16,6 +16,8 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import tt.co.jesses.moonlight.android.view.DataScreen
 import tt.co.jesses.moonlight.android.view.MoonlightScreen
+import tt.co.jesses.moonlight.android.view.MoonlightViewModel
+import tt.co.jesses.moonlight.android.view.Screens
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -30,11 +32,22 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     val navController = rememberNavController()
-                    NavHost(navController = navController, startDestination = "moon") {
-                        composable("moon") { MoonlightScreen(viewModel()) { navController.navigate(it) } }
-                        composable("data") { DataScreen(navController = navController) }
+                    val viewModel: MoonlightViewModel = viewModel()
+                    NavHost(navController = navController, startDestination = Screens.Moon.route) {
+                        composable(Screens.Moon.route) {
+                            MoonlightScreen(
+                                viewModel = viewModel,
+                                onNavigate = { navController.navigate(route = it) },
+                            )
+                        }
+                        composable(Screens.Data.route) {
+                            DataScreen(
+                                viewModel = viewModel,
+                                onNavigate = { navController.navigate(route = it) },
+                            )
+                        }
                     }
-                    //MoonlightView()
+                    //MoonlightScreen(viewModel()) { navController.navigate(it) }
                 }
             }
         }
