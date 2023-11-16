@@ -1,6 +1,7 @@
 package tt.co.jesses.moonlight.android.app
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import tt.co.jesses.moonlight.android.view.AboutScreen
 import tt.co.jesses.moonlight.android.view.DataScreen
 import tt.co.jesses.moonlight.android.view.MoonlightScreen
 import tt.co.jesses.moonlight.android.view.MoonlightViewModel
@@ -37,17 +39,31 @@ class MainActivity : ComponentActivity() {
                         composable(Screens.Moon.route) {
                             MoonlightScreen(
                                 viewModel = viewModel,
-                                onNavigate = { navController.navigate(route = it) },
+                                onNavigate = {
+                                    navController.navigate(route = it)
+                                    println("Moon route: $it")
+                                },
                             )
                         }
                         composable(Screens.Data.route) {
                             DataScreen(
                                 viewModel = viewModel,
-                                onNavigate = { navController.navigate(route = it) },
+                                onNavigate = {
+                                    navController.navigate(route = it)
+                                    println("Data route: $it")
+                                },
+                            )
+                        }
+                        composable(Screens.About.route) {
+                            AboutScreen(
+                                viewModel = viewModel,
+                                onNavigate = {
+                                    navController.navigate(route = it)
+                                    println("About route: $it")
+                                },
                             )
                         }
                     }
-                    //MoonlightScreen(viewModel()) { navController.navigate(it) }
                 }
             }
         }

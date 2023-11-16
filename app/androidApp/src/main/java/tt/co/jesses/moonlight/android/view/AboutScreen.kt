@@ -14,12 +14,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun DataScreen(
+fun AboutScreen(
     viewModel: MoonlightViewModel = viewModel(),
     onNavigate: (String) -> Unit,
 ) {
     val uiState = viewModel.uiState.collectAsState()
-    val fraction = uiState.value.illuminationData.fraction
     val padding = 16.dp
 
     Column(
@@ -28,21 +27,16 @@ fun DataScreen(
             .pointerInput(Unit) {
                 detectTapGestures(
                     onLongPress = {
-                        onNavigate(Screens.About.route)
+                        onNavigate(Screens.Moon.route)
                     }
                 )
             },
         horizontalAlignment = Alignment.Start
     ) {
-        Text(text = "Moonlight")
+        Text(text = "${uiState.value.creditData.creditTitle}")
         Spacer(Modifier.padding(padding))
-        Text(text = "Fraction: $fraction")
-        Text(text = "Phase: ${uiState.value.illuminationData.phase}")
-        Text(text = "Angle: ${uiState.value.illuminationData.angle}")
-        Text(text = "Azimuth: ${uiState.value.illuminationData.azimuth}")
-        Text(text = "Altitude: ${uiState.value.illuminationData.altitude}")
-        Text(text = "Distance: ${uiState.value.illuminationData.distance}")
-        Text(text = "Parallactic Angle: ${uiState.value.illuminationData.parallacticAngle}")
+        Text(text = "Made by: ${uiState.value.creditData.madeBy}")
+        Text(text = "Made with: ${uiState.value.creditData.madeWith}")
     }
 
 }
