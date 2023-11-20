@@ -24,7 +24,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun MoonlightScreen(
     viewModel: MoonlightViewModel = viewModel(),
-    onNavigate: (String) -> Unit,
 ) {
     val uiState = viewModel.uiState.collectAsState()
     val fraction = uiState.value.illuminationData.fraction
@@ -35,13 +34,6 @@ fun MoonlightScreen(
         modifier = Modifier
             .fillMaxHeight()
             .fillMaxWidth()
-            .pointerInput(Unit) {
-                detectTapGestures(
-                    onLongPress = {
-                        onNavigate(Screens.Data.route)
-                    }
-                )
-            },
     ) {
         drawRect(
             brush = Brush.sweepGradient(
