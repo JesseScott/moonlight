@@ -19,6 +19,7 @@ import tt.co.jesses.moonlight.android.view.AboutScreen
 import tt.co.jesses.moonlight.android.view.DataScreen
 import tt.co.jesses.moonlight.android.view.MoonlightScreen
 import tt.co.jesses.moonlight.android.view.MoonlightViewModel
+import tt.co.jesses.moonlight.android.view.Screens
 
 @OptIn(ExperimentalFoundationApi::class)
 @AndroidEntryPoint
@@ -36,7 +37,7 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     val viewModel: MoonlightViewModel = viewModel()
                     HorizontalPager(
-                        pageCount = 3, //Screens::class.nestedClasses.size,
+                        pageCount = Screens.values().size,
                         state = rememberPagerState(),
                         modifier = Modifier.fillMaxSize()
                     ) { page ->
