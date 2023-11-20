@@ -2,7 +2,22 @@
 <resources>
     <string name="app">moonlight</string>
 
+    <!-- Screens -->
     <string name="title_moon">moon</string>
     <string name="title_data">data</string>
     <string name="title_about">about</string>
+
+    <!-- Data -->
+    <string name="data_fraction">Fraction</string>
+    <string name="data_phase">Phase</string>
+    <string name="data_angle">Angle</string>
+    <string name="data_azimuth">Azimuth</string>
+    <string name="data_altitude">Altitude</string>
+    <string name="data_distance">Distance</string>
+    <string name="data_parallactic_angle">Parallactic Angle</string>
+
+    <!-- Credits -->
+    <string name="credits_title">About Moonlight</string>
+    <string name="credits_made_by">Moonlight was developed by Jesse Scott.\nIt was originally inspired an idea by Kelly Andres.</string>
+    <string name="credits_made_with">Moonlight was made with the help of the open source project SunCalc and the Kotlin Multiplatform and Jetpack Compose frameworks.</string>
 </resources>

@@ -4,12 +4,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
@@ -17,17 +20,24 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun AboutScreen(
     viewModel: MoonlightViewModel = viewModel(),
 ) {
-    val uiState = viewModel.uiState.collectAsState()
-    val padding = 16.dp
+    val creditData = viewModel.uiState.collectAsState().value.creditData
+    val padding = 32.dp
     Column(
-        modifier = Modifier.padding(start = padding, top = padding).fillMaxHeight(),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .padding(start = padding, top = padding)
+            .fillMaxHeight()
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "${uiState.value.creditData.creditTitle}")
+        Text(
+            textAlign = TextAlign.Start,
+            text = stringResource(creditData.creditTitle)
+        )
         Spacer(Modifier.padding(padding))
-        Text(text = "Made by: ${uiState.value.creditData.madeBy}")
-        Text(text = "Made with: ${uiState.value.creditData.madeWith}")
+        Text(textAlign = TextAlign.Start, text = stringResource(creditData.madeBy))
+        Spacer(Modifier.padding(padding))
+        Text(textAlign = TextAlign.Start, text = stringResource(creditData.madeWith))
     }
 
 }

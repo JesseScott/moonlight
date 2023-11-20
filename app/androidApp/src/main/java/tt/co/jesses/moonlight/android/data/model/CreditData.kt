@@ -1,7 +1,10 @@
 package tt.co.jesses.moonlight.android.data.model
 
+import androidx.annotation.StringRes
+import tt.co.jesses.moonlight.android.R
+
 data class CreditData(
-    val creditTitle: String = "About Moonlight",
-    val madeBy: String = "Jesse S",
-    val madeWith: String = "Kotlin Multiplatform, Jetpack Compose, and the SunCalc library",
+    @StringRes val creditTitle: Int = R.string.credits_title,
+    @StringRes val madeBy: Int = R.string.credits_made_by,
+    @StringRes val madeWith: Int = R.string.credits_made_with,
 )
