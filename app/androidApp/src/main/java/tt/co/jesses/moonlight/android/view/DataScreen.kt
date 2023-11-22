@@ -15,6 +15,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import tt.co.jesses.moonlight.android.R
+import tt.co.jesses.moonlight.android.view.sub.TableLike
 
 @Composable
 fun DataScreen(
@@ -28,85 +30,66 @@ fun DataScreen(
             .padding(start = padding, top = padding)
             .fillMaxHeight(),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Top
     ) {
-        Text(textAlign = TextAlign.Start, text = "Moonlight")
+        Text(textAlign = TextAlign.Start, text = stringResource(id = R.string.title_data))
 
         Spacer(Modifier.padding(padding))
         Row {
-            Column {
-                Text(textAlign = TextAlign.Start, text = stringResource(illuminationData.fractionRes))
-            }
-            Spacer(Modifier.padding(padding))
-            Column {
-                Text(textAlign = TextAlign.End, text = "${illuminationData.fraction}")
-            }
+            TableLike(
+                data = Pair(
+                    stringResource(illuminationData.fractionRes),
+                    "${illuminationData.fraction}"
+                )
+            )
         }
-
-        Spacer(Modifier.padding(padding))
         Row {
-            Column {
-                Text(textAlign = TextAlign.Start, text = stringResource(illuminationData.phaseRes))
-            }
-            Spacer(Modifier.padding(padding))
-            Column {
-                Text(textAlign = TextAlign.End, text = "${illuminationData.phase}")
-            }
+            TableLike(
+                data = Pair(
+                    stringResource(illuminationData.phaseRes),
+                    "${illuminationData.phase}"
+                )
+            )
         }
-
-        Spacer(Modifier.padding(padding))
         Row {
-            Column {
-                Text(textAlign = TextAlign.Start, text = stringResource(illuminationData.angleRes))
-            }
-            Spacer(Modifier.padding(padding))
-            Column {
-                Text(textAlign = TextAlign.End, text = "${illuminationData.angle}")
-            }
+            TableLike(
+                data = Pair(
+                    stringResource(illuminationData.angleRes),
+                    "${illuminationData.angle}"
+                )
+            )
         }
-
-        Spacer(Modifier.padding(padding))
         Row {
-            Column {
-                Text(textAlign = TextAlign.Start, text = stringResource(illuminationData.azimuthRes))
-            }
-            Spacer(Modifier.padding(padding))
-            Column {
-                Text(textAlign = TextAlign.End, text = "${illuminationData.azimuth}")
-            }
+            TableLike(
+                data = Pair(
+                    stringResource(illuminationData.azimuthRes),
+                    "${illuminationData.azimuth}"
+                )
+            )
         }
-
-        Spacer(Modifier.padding(padding))
         Row {
-            Column {
-                Text(textAlign = TextAlign.Start, text = stringResource(illuminationData.altitudeRes))
-            }
-            Spacer(Modifier.padding(padding))
-            Column {
-                Text(textAlign = TextAlign.End, text = "${illuminationData.altitude}")
-            }
+            TableLike(
+                data = Pair(
+                    stringResource(illuminationData.altitudeRes),
+                    "${illuminationData.altitude}"
+                )
+            )
         }
-
-        Spacer(Modifier.padding(padding))
         Row {
-            Column {
-                Text(textAlign = TextAlign.Start, text = stringResource(illuminationData.distanceRes))
-            }
-            Spacer(Modifier.padding(padding))
-            Column {
-                Text(textAlign = TextAlign.End, text = "${illuminationData.distance}")
-            }
+            TableLike(
+                data = Pair(
+                    stringResource(illuminationData.distanceRes),
+                    "${illuminationData.distance}"
+                )
+            )
         }
-
-        Spacer(Modifier.padding(padding))
         Row {
-            Column {
-                Text(textAlign = TextAlign.Start, text = stringResource(illuminationData.parallacticAngleRes))
-            }
-            Spacer(Modifier.padding(padding))
-            Column {
-                Text(textAlign = TextAlign.End, text = "${illuminationData.parallacticAngle}")
-            }
+            TableLike(
+                data = Pair(
+                    stringResource(illuminationData.parallacticAngleRes),
+                    "${illuminationData.parallacticAngle}"
+                )
+            )
         }
     }
 
