@@ -11,9 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import tt.co.jesses.moonlight.android.R
 import tt.co.jesses.moonlight.android.view.sub.TableLike
@@ -24,6 +27,11 @@ fun DataScreen(
 ) {
     val illuminationData = viewModel.uiState.collectAsState().value.illuminationData
     val padding = 16.dp
+    val textStyle = TextStyle(
+        textAlign = TextAlign.Start,
+        color = Color.Gray
+    )
+    val fontSize = 18.sp
 
     Column(
         modifier = Modifier
@@ -32,7 +40,11 @@ fun DataScreen(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top
     ) {
-        Text(textAlign = TextAlign.Start, text = stringResource(id = R.string.title_data))
+        Text(
+            text = stringResource(id = R.string.title_data),
+            fontSize = fontSize,
+            style = textStyle,
+        )
 
         Spacer(Modifier.padding(padding))
         Row {

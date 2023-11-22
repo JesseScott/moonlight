@@ -8,11 +8,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
-fun TableLike(data: Pair<String, String>) {
+fun TableLike(
+    data: Pair<String, String>,
+    color: Color = Color.Gray,
+    fontSize: TextUnit = 16.sp,
+) {
     Column {
         Row(
             Modifier
@@ -23,12 +30,16 @@ fun TableLike(data: Pair<String, String>) {
             Text(
                 text = data.first,
                 modifier = Modifier.weight(1f),
-                textAlign = TextAlign.Start
+                textAlign = TextAlign.Start,
+                fontSize = fontSize,
+                color = color,
             )
             Text(
                 text = data.second,
                 modifier = Modifier.weight(1f),
-                textAlign = TextAlign.Start
+                textAlign = TextAlign.Start,
+                fontSize = fontSize,
+                color = color,
             )
         }
     }
