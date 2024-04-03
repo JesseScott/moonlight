@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.colorspace.ColorSpace
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import tt.co.jesses.moonlight.android.domain.normalize
 
 @Preview
 @Composable
@@ -23,46 +24,47 @@ fun MoonlightScreen(
     viewModel: MoonlightViewModel = viewModel(),
 ) {
     val illuminationData = viewModel.uiState.collectAsState().value.illuminationData
-    val normalizedPhase = ((illuminationData.phase + 180f) / 360f).coerceIn(0.0, 1.0).toFloat()
-    val normalizedAngle = ((illuminationData.angle + 180f) / 360f).coerceIn(0.0, 1.0).toFloat()
-    val normalizedAzimuth = ((illuminationData.azimuth + 180f) / 360f).coerceIn(0.0, 1.0).toFloat()
+    val normalizedPhase = ((illuminationData.phase + 180f) / 360f).normalize()
+    val normalizedAngle = ((illuminationData.angle + 180f) / 360f).normalize()
+    val normalizedAzimuth = ((illuminationData.azimuth + 180f) / 360f).normalize()
     Log.d("MoonlightScreen", "normalizedPhase: $normalizedPhase")
     Log.d("MoonlightScreen", "normalizedAngle: $normalizedAngle")
     Log.d("MoonlightScreen", "illuminationData: $illuminationData")
 
-    val fraction = illuminationData.fraction.toFloat()
-    val phase = illuminationData.phase.toFloat()
-    val angle = illuminationData.angle.toFloat()
-    val azimuth = illuminationData.azimuth.toFloat().coerceAtMost(255f)
-    val altitude = illuminationData.altitude.toFloat()
-    val parallacticAngle = illuminationData.parallacticAngle.toFloat()
+    val fraction = illuminationData.fraction
+    val phase = illuminationData.phase
+    val angle = illuminationData.angle
+    val azimuth = illuminationData.azimuth.coerceAtMost(255f)
+    val altitude = illuminationData.altitude
+    val parallacticAngle = illuminationData.parallacticAngle
+    val alpha = illuminationData.fraction.normalize()
 
     val rgbaAzimuth = Color(
         red = normalizedAzimuth,
         green = normalizedAzimuth,
         blue = normalizedAzimuth,
-        alpha = 1.0f,
+        alpha = alpha,
         colorSpace = ColorSpaces.Srgb,
     )
     val rgbPhase = Color(
         red = normalizedPhase,
         green = normalizedPhase,
         blue = normalizedPhase,
-        alpha = 1.0f,
+        alpha = alpha,
         colorSpace = ColorSpaces.Srgb,
     )
-    val h = Color.hsl(
+    val hue = Color.hsl(
         hue = angle,
         saturation = 1.0f,
         lightness = 0.5f,
-        alpha = 1.0f,
+        alpha = alpha,
         colorSpace = ColorSpaces.Srgb,
     )
     val modifier = Modifier.fillMaxHeight().fillMaxWidth()
     val brush = Brush.sweepGradient(
         0f to Color.White,
         0.25f to Color.LightGray,
-        0.5f to h,
+        0.5f to hue,
         0.75f to Color.LightGray,
         1f to Color.White,
         center = Offset(0f, 0f),
@@ -72,7 +74,7 @@ fun MoonlightScreen(
         add = Color.Blue,
     )
     val colorFilter2 = ColorFilter.tint(
-        color = h,
+        color = hue,
     )
     val blendMode = BlendMode.SrcOver
 
@@ -81,9 +83,10 @@ fun MoonlightScreen(
             brush = brush,
             topLeft = Offset.Zero,
             size = size,
-            alpha = 0.75f, //illuminationData.fraction.toFloat(),
+            alpha = alpha,
             colorFilter = colorFilter,
             blendMode = blendMode,
         )
     }
 }
+

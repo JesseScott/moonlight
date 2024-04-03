@@ -17,13 +17,13 @@ class MoonlightDataSource @Inject constructor() {
         val illumination = MoonIllumination.compute().execute()
         val position = MoonPosition.compute().execute()
         return MoonData(
-            fraction = illumination.fraction,
-            phase = illumination.phase,
-            angle = illumination.angle,
-            azimuth = position.azimuth,
-            altitude = position.altitude,
-            distance = position.distance,
-            parallacticAngle = position.parallacticAngle,
+            fraction = illumination.fraction.toFloat(),
+            phase = illumination.phase.toFloat(),
+            angle = illumination.angle.toFloat(),
+            azimuth = position.azimuth.toFloat(),
+            altitude = position.altitude.toFloat(),
+            distance = position.distance.toFloat(),
+            parallacticAngle = position.parallacticAngle.toFloat(),
         )
     }
 }
