@@ -1,6 +1,6 @@
 package tt.co.jesses.moonlight.android.data.repository
 
-import tt.co.jesses.moonlight.android.data.model.MoonIlluminationData
+import tt.co.jesses.moonlight.android.data.model.MoonData
 import javax.inject.Inject
 
 /**
@@ -10,10 +10,7 @@ class MoonlightRepository @Inject constructor(
     private val dataSource: MoonlightDataSource,
 ) {
 
-    /**
-     *
-     */
-    fun getMoonIllumination(): MoonIlluminationData {
+    fun getMoonIllumination(): MoonData {
         return dataSource.getMoonIllumination()
     }
 }
