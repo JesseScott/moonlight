@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.colorspace.ColorSpaces
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import tt.co.jesses.moonlight.android.domain.normalize
+import tt.co.jesses.moonlight.android.domain.radians
 
 @Preview
 @Composable
@@ -33,7 +34,7 @@ fun MoonlightScreen(
 
     val fraction = illuminationData.fraction
     val phase = illuminationData.phase
-    val angle = illuminationData.angle
+    val angle = illuminationData.angle.radians()
     val azimuth = illuminationData.azimuth.coerceAtMost(255f)
     val altitude = illuminationData.altitude
     val parallacticAngle = illuminationData.parallacticAngle
@@ -69,8 +70,9 @@ fun MoonlightScreen(
         1f to Color.White,
         center = Offset(0f, 0f),
     )
+    val silverColor = Color(0xFFC0C0C0)
     val colorFilter = ColorFilter.lighting(
-        multiply = Color.Yellow,
+        multiply = silverColor,
         add = Color.Blue,
     )
     val colorFilter2 = ColorFilter.tint(
