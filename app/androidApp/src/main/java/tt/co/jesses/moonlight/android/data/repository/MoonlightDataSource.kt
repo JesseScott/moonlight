@@ -1,5 +1,7 @@
 package tt.co.jesses.moonlight.android.data.repository
 
+import android.util.Log
+import androidx.compose.runtime.collectAsState
 import org.shredzone.commons.suncalc.MoonIllumination
 import org.shredzone.commons.suncalc.MoonPosition
 import tt.co.jesses.moonlight.android.data.model.MoonData
@@ -16,6 +18,8 @@ class MoonlightDataSource @Inject constructor() {
     fun getMoonIllumination(): MoonData {
         val illumination = MoonIllumination.compute().execute()
         val position = MoonPosition.compute().execute()
+        Log.d(TAG, "MoonIllumination from SunCalc: $illumination")
+        Log.d(TAG, "MoonPosition from SunCalc: $position")
         return MoonData(
             fraction = illumination.fraction.toFloat(),
             phase = illumination.phase.toFloat(),
@@ -25,5 +29,9 @@ class MoonlightDataSource @Inject constructor() {
             distance = position.distance.toFloat(),
             parallacticAngle = position.parallacticAngle.toFloat(),
         )
+    }
+
+    companion object {
+        private val TAG = MoonlightDataSource::class.java.simpleName
     }
 }

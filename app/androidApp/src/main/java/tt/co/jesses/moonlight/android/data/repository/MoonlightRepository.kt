@@ -10,7 +10,5 @@ class MoonlightRepository @Inject constructor(
     private val dataSource: MoonlightDataSource,
 ) {
 
-    fun getMoonIllumination(): MoonData {
-        return dataSource.getMoonIllumination()
-    }
+    fun getMoonIllumination(): MoonData = dataSource.getMoonIllumination()
 }

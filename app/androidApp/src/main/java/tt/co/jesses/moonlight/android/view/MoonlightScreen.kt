@@ -12,12 +12,9 @@ import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.colorspace.ColorSpace
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import tt.co.jesses.moonlight.android.domain.normalize
-import tt.co.jesses.moonlight.android.domain.radians
 
 @Preview
 @Composable
@@ -25,32 +22,27 @@ fun MoonlightScreen(
     viewModel: MoonlightViewModel = viewModel(),
 ) {
     val illuminationData = viewModel.uiState.collectAsState().value.illuminationData
-    Log.d("MoonlightScreen", "illuminationData: $illuminationData")
-
+    Log.d("MoonlightScreen", "MoonlightScreen: $illuminationData")
     val fraction = illuminationData.fraction
     val phase = illuminationData.phase
-    val angle = illuminationData.angle.radians()
-    val azimuth = illuminationData.azimuth.coerceAtMost(255f)
+    val angle = illuminationData.angle
+    val azimuth = illuminationData.azimuth
     val altitude = illuminationData.altitude
     val parallacticAngle = illuminationData.parallacticAngle
-    val alpha = 0.8f //illuminationData.fraction.normalize()
+    val alpha = illuminationData.fraction
 
-    val normalizedPhase = ((phase + 180f) / 360f).normalize()
-    val normalizedAngle = ((angle + 180f) / 360f).normalize()
-    val normalizedAzimuth = ((azimuth + 180f) / 360f).normalize()
-    val normalizedAltitude = ((altitude + 180f) / 360f).normalize()
 
     val hue = Color.hsl(
-        hue = normalizedAngle,
-        saturation = normalizedPhase,
-        lightness = normalizedAzimuth,
+        hue = altitude,
+        saturation = phase,
+        lightness = azimuth,
         alpha = alpha,
         colorSpace = ColorSpaces.Srgb,
     )
     val grayscale = Color.hsl(
         hue = 0f,
         saturation = 0f,
-        lightness = normalizedAltitude,
+        lightness = altitude,
         alpha = alpha,
         colorSpace = ColorSpaces.Srgb,
     )
@@ -64,7 +56,7 @@ fun MoonlightScreen(
         0f to grayscale,
         //0.05f to Color.DarkGray,
         //0.1f to Color.LightGray,
-        0.5f to silverBlueColor,
+        0.5f to hue,
         //0.9f to Color.LightGray,
         //0.95f to Color.DarkGray,
         1f to grayscale,
@@ -88,7 +80,7 @@ fun MoonlightScreen(
             topLeft = Offset.Zero,
             size = size,
             alpha = alpha,
-            colorFilter = colorFilter2,
+            //colorFilter = colorFilter,
             blendMode = blendMode,
         )
     }
