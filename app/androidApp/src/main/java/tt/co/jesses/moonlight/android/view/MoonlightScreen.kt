@@ -25,11 +25,6 @@ fun MoonlightScreen(
     viewModel: MoonlightViewModel = viewModel(),
 ) {
     val illuminationData = viewModel.uiState.collectAsState().value.illuminationData
-    val normalizedPhase = ((illuminationData.phase + 180f) / 360f).normalize()
-    val normalizedAngle = ((illuminationData.angle + 180f) / 360f).normalize()
-    val normalizedAzimuth = ((illuminationData.azimuth + 180f) / 360f).normalize()
-    Log.d("MoonlightScreen", "normalizedPhase: $normalizedPhase")
-    Log.d("MoonlightScreen", "normalizedAngle: $normalizedAngle")
     Log.d("MoonlightScreen", "illuminationData: $illuminationData")
 
     val fraction = illuminationData.fraction
@@ -38,55 +33,62 @@ fun MoonlightScreen(
     val azimuth = illuminationData.azimuth.coerceAtMost(255f)
     val altitude = illuminationData.altitude
     val parallacticAngle = illuminationData.parallacticAngle
-    val alpha = illuminationData.fraction.normalize()
+    val alpha = 0.8f //illuminationData.fraction.normalize()
 
-    val rgbaAzimuth = Color(
-        red = normalizedAzimuth,
-        green = normalizedAzimuth,
-        blue = normalizedAzimuth,
-        alpha = alpha,
-        colorSpace = ColorSpaces.Srgb,
-    )
-    val rgbPhase = Color(
-        red = normalizedPhase,
-        green = normalizedPhase,
-        blue = normalizedPhase,
-        alpha = alpha,
-        colorSpace = ColorSpaces.Srgb,
-    )
+    val normalizedPhase = ((phase + 180f) / 360f).normalize()
+    val normalizedAngle = ((angle + 180f) / 360f).normalize()
+    val normalizedAzimuth = ((azimuth + 180f) / 360f).normalize()
+    val normalizedAltitude = ((altitude + 180f) / 360f).normalize()
+
     val hue = Color.hsl(
-        hue = angle,
-        saturation = 1.0f,
-        lightness = 0.5f,
+        hue = normalizedAngle,
+        saturation = normalizedPhase,
+        lightness = normalizedAzimuth,
         alpha = alpha,
         colorSpace = ColorSpaces.Srgb,
     )
-    val modifier = Modifier.fillMaxHeight().fillMaxWidth()
-    val brush = Brush.sweepGradient(
-        0f to Color.White,
-        0.25f to Color.LightGray,
-        0.5f to hue,
-        0.75f to Color.LightGray,
-        1f to Color.White,
-        center = Offset(0f, 0f),
+    val grayscale = Color.hsl(
+        hue = 0f,
+        saturation = 0f,
+        lightness = normalizedAltitude,
+        alpha = alpha,
+        colorSpace = ColorSpaces.Srgb,
     )
     val silverColor = Color(0xFFC0C0C0)
+    val silverBlueColor = Color(0xFF2596BE)
+    val lsb = Color(0xFFCCE5FF)
+    val blue = Color.Blue
+
+    val offset = Offset.Unspecified // Offset(0f, 0f)
+    val brush = Brush.sweepGradient(
+        0f to grayscale,
+        //0.05f to Color.DarkGray,
+        //0.1f to Color.LightGray,
+        0.5f to silverBlueColor,
+        //0.9f to Color.LightGray,
+        //0.95f to Color.DarkGray,
+        1f to grayscale,
+        center = offset,
+    )
+
     val colorFilter = ColorFilter.lighting(
-        multiply = silverColor,
-        add = Color.Blue,
+        multiply = hue,
+        add = lsb,
     )
     val colorFilter2 = ColorFilter.tint(
-        color = hue,
+        color = lsb,
+        blendMode = BlendMode.Src,
     )
-    val blendMode = BlendMode.SrcOver
 
+    val blendMode = BlendMode.SrcOver
+    val modifier = Modifier.fillMaxHeight().fillMaxWidth()
     Canvas(modifier = modifier) {
         drawRect(
             brush = brush,
             topLeft = Offset.Zero,
             size = size,
             alpha = alpha,
-            colorFilter = colorFilter,
+            colorFilter = colorFilter2,
             blendMode = blendMode,
         )
     }
