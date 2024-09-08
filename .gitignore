@@ -4,3 +4,6 @@
 
 # Properties
 local.properties
+
+# publishing
+publishing/*
