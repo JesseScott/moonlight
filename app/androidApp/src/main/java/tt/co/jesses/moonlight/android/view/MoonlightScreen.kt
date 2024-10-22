@@ -35,7 +35,7 @@ fun MoonlightScreen(
     val hue = Color.hsl(
         hue = altitude,
         saturation = phase,
-        lightness = azimuth,
+        lightness = altitude,
         alpha = alpha,
         colorSpace = ColorSpaces.Srgb,
     )
@@ -56,7 +56,7 @@ fun MoonlightScreen(
         0f to grayscale,
         //0.05f to Color.DarkGray,
         //0.1f to Color.LightGray,
-        0.5f to hue,
+        0.5f to lsb,
         //0.9f to Color.LightGray,
         //0.95f to Color.DarkGray,
         1f to grayscale,
@@ -65,10 +65,10 @@ fun MoonlightScreen(
 
     val colorFilter = ColorFilter.lighting(
         multiply = hue,
-        add = lsb,
+        add = grayscale,
     )
     val colorFilter2 = ColorFilter.tint(
-        color = lsb,
+        color = silverColor,
         blendMode = BlendMode.Src,
     )
 
@@ -80,7 +80,7 @@ fun MoonlightScreen(
             topLeft = Offset.Zero,
             size = size,
             alpha = alpha,
-            //colorFilter = colorFilter,
+            colorFilter = colorFilter,
             blendMode = blendMode,
         )
     }

@@ -23,7 +23,7 @@ class MoonlightRepository @Inject constructor(
             fraction = moonData.fraction, // 0 to 1, no need to transform
             phase = moonData.phase.normalize(NEGATIVE_ONE_EIGHTY, ONE_EIGHTY), // -180 to 180
             angle = moonData.angle.normalize(NEGATIVE_ONE_EIGHTY, ONE_EIGHTY), // ??
-            azimuth = moonData.azimuth.normalize(ZERO, ONE_EIGHTY), // 0 to 90
+            azimuth = moonData.azimuth.normalize(ZERO, NINETY), // 0 to 90
             altitude = moonData.altitude.normalize(NEGATIVE_THREE_SIXTY, THREE_SIXTY), // -360 to 360
             distance = moonData.distance, // absolute distance, no need to transform
             parallacticAngle = moonData.parallacticAngle.normalize(NEGATIVE_ONE_EIGHTY, ONE_EIGHTY), // ??
