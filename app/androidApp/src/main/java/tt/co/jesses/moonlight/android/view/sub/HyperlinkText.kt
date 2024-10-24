@@ -21,7 +21,7 @@ fun HyperlinkText(
     @StringRes fullTextResId: Int,
     hyperLinks: Map<String, String>,
     textStyle: TextStyle = TextStyle.Default,
-    linkTextColor: Color = Color.Blue,
+    linkTextColor: Color = Color.Red,
     linkTextFontWeight: FontWeight = FontWeight.Normal,
     linkTextDecoration: TextDecoration = TextDecoration.None,
     fontSize: TextUnit = TextUnit.Unspecified

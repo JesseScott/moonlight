@@ -2,19 +2,17 @@ package tt.co.jesses.moonlight.android.view
 
 import android.util.Log
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
+import tt.co.jesses.moonlight.android.view.util.GradientUtil
+import tt.co.jesses.moonlight.android.view.util.angledGradientBackground
+import tt.co.jesses.moonlight.android.view.util.bounded
 
 @Preview
 @Composable
@@ -29,60 +27,21 @@ fun MoonlightScreen(
     val azimuth = illuminationData.azimuth
     val altitude = illuminationData.altitude
     val parallacticAngle = illuminationData.parallacticAngle
-    val alpha = illuminationData.fraction
 
-
-    val hue = Color.hsl(
-        hue = altitude,
-        saturation = phase,
+    val colorList = GradientUtil.generateHSLColor(
+        hue = phase,
+        saturation = azimuth,
         lightness = altitude,
-        alpha = alpha,
-        colorSpace = ColorSpaces.Srgb,
-    )
-    val grayscale = Color.hsl(
-        hue = 0f,
-        saturation = 0f,
-        lightness = altitude,
-        alpha = alpha,
-        colorSpace = ColorSpaces.Srgb,
-    )
-    val silverColor = Color(0xFFC0C0C0)
-    val silverBlueColor = Color(0xFF2596BE)
-    val lsb = Color(0xFFCCE5FF)
-    val blue = Color.Blue
-
-    val offset = Offset.Unspecified // Offset(0f, 0f)
-    val brush = Brush.sweepGradient(
-        0f to grayscale,
-        //0.05f to Color.DarkGray,
-        //0.1f to Color.LightGray,
-        0.5f to lsb,
-        //0.9f to Color.LightGray,
-        //0.95f to Color.DarkGray,
-        1f to grayscale,
-        center = offset,
+        alpha = fraction,
     )
 
-    val colorFilter = ColorFilter.lighting(
-        multiply = hue,
-        add = grayscale,
-    )
-    val colorFilter2 = ColorFilter.tint(
-        color = silverColor,
-        blendMode = BlendMode.Src,
-    )
-
-    val blendMode = BlendMode.SrcOver
-    val modifier = Modifier.fillMaxHeight().fillMaxWidth()
-    Canvas(modifier = modifier) {
-        drawRect(
-            brush = brush,
-            topLeft = Offset.Zero,
-            size = size,
-            alpha = alpha,
-            colorFilter = colorFilter,
-            blendMode = blendMode,
+    val gradientModifier = Modifier
+        .angledGradientBackground(
+            colors = colorList,
+            degrees = 270f,
         )
-    }
+        .bounded()
+
+    Canvas(modifier = gradientModifier) {}
 }
 

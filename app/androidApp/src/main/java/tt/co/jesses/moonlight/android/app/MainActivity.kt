@@ -18,8 +18,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import tt.co.jesses.moonlight.android.view.AboutScreen
 import tt.co.jesses.moonlight.android.view.DataScreen
 import tt.co.jesses.moonlight.android.view.MoonlightScreen
-import tt.co.jesses.moonlight.android.view.MoonlightViewModel
-import tt.co.jesses.moonlight.android.view.Screens
+import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
+import tt.co.jesses.moonlight.android.view.state.Screens
 
 @OptIn(ExperimentalFoundationApi::class)
 @AndroidEntryPoint
