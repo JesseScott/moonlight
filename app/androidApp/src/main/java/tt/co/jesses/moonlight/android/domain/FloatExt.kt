@@ -1,10 +1,9 @@
 package tt.co.jesses.moonlight.android.domain
 
-
-fun Float.normalize(): Float {
-    return this.coerceIn(0.0f, 1.0f)
-}
-
-fun Float.radians(): Float {
-    return Math.abs(this) // naive implementation
+/**
+ * Normalize a float value to a range
+ * Used for values that have different floors/ceilings
+ */
+fun Float.normalize(min: Float, max: Float): Float {
+    return (this - min) / (max - min)
 }

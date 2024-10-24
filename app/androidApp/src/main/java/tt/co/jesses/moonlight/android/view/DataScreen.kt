@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -20,7 +19,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import tt.co.jesses.moonlight.android.R
+import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.android.view.sub.TableLike
+import tt.co.jesses.moonlight.android.view.util.GradientUtil
+import tt.co.jesses.moonlight.android.view.util.angledGradientBackground
+import tt.co.jesses.moonlight.android.view.util.bounded
 
 @Preview
 @Composable
@@ -31,14 +34,29 @@ fun DataScreen(
     val padding = 16.dp
     val textStyle = TextStyle(
         textAlign = TextAlign.Start,
-        color = Color.Gray
+        color = Color.DarkGray
     )
-    val fontSize = 18.sp
+    val fontSize = 24.sp
+
+    val colorList = GradientUtil.generateHSLColor(
+        hue = illuminationData.phase,
+        saturation = illuminationData.azimuth,
+        lightness = illuminationData.altitude,
+        alpha = illuminationData.fraction,
+    )
+
+    val gradientModifier = Modifier
+        .angledGradientBackground(
+            colors = colorList,
+            degrees = 270f,
+        )
+        .bounded(
+            start = padding,
+            top = padding,
+        )
 
     Column(
-        modifier = Modifier
-            .padding(start = padding, top = padding)
-            .fillMaxHeight(),
+        modifier = gradientModifier,
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top
     ) {

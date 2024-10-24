@@ -1,4 +1,4 @@
-package tt.co.jesses.moonlight.android.view
+package tt.co.jesses.moonlight.android.view.state
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
