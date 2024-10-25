@@ -103,3 +103,7 @@ fun Modifier.bounded(start: Dp = 0.dp, top: Dp = 0.dp) = this.then(
         .fillMaxWidth()
         .fillMaxHeight()
 )
+
+fun Modifier.basePadding() = this.then(
+    padding(Constants.basePadding)
+)

@@ -18,9 +18,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
+import tt.co.jesses.moonlight.android.view.sub.HyperLinkTextEngine
 import tt.co.jesses.moonlight.android.view.sub.HyperlinkText
+import tt.co.jesses.moonlight.android.view.util.Constants.basePadding
+import tt.co.jesses.moonlight.android.view.util.Constants.bodyFontSize
+import tt.co.jesses.moonlight.android.view.util.Constants.headerFontSize
+import tt.co.jesses.moonlight.android.view.util.Constants.linkTextColor
 import tt.co.jesses.moonlight.android.view.util.GradientUtil
 import tt.co.jesses.moonlight.android.view.util.angledGradientBackground
+import tt.co.jesses.moonlight.android.view.util.basePadding
 import tt.co.jesses.moonlight.android.view.util.bounded
 
 @Preview
@@ -31,14 +37,16 @@ fun AboutScreen(
     val creditData = viewModel.uiState.collectAsState().value.creditData
     val illuminationData = viewModel.uiState.collectAsState().value.illuminationData
 
-    val padding = 16.dp
     val textStyle = TextStyle(
         textAlign = TextAlign.Start,
         color = Color.DarkGray
     )
-    val linkTextColor = Color.Red
-    val headerFontSize = 24.sp
-    val bodyFontSize = 18.sp
+
+    val hyperLinkTextEngine = HyperLinkTextEngine(
+        textStyle = textStyle,
+        linkTextColor = linkTextColor,
+        fontSize = bodyFontSize,
+    )
 
     val colorList = GradientUtil.generateHSLColor(
         hue = illuminationData.phase,
@@ -53,8 +61,8 @@ fun AboutScreen(
             degrees = 270f,
         )
         .bounded(
-            start = padding,
-            top = padding,
+            start = basePadding,
+            top = basePadding,
         )
 
     Column(
@@ -67,27 +75,22 @@ fun AboutScreen(
             fontSize = headerFontSize,
             style = textStyle,
         )
-        Spacer(Modifier.padding(padding))
+        Spacer(Modifier.basePadding())
         HyperlinkText(
             fullTextResId = creditData.madeByFull,
             hyperLinks = mutableMapOf(
                 stringResource(id = creditData.madeByKey) to stringResource(id = creditData.madeByValue),
                 stringResource(id = creditData.inspiredByKey) to stringResource(id = creditData.inspiredByValue)
             ),
-            textStyle = textStyle,
-            linkTextColor = linkTextColor,
-            fontSize = bodyFontSize
+            hyperLinkTextEngine = hyperLinkTextEngine,
         )
-        Spacer(Modifier.padding(padding))
+        Spacer(Modifier.basePadding())
         HyperlinkText(
             fullTextResId = creditData.madeWithFull,
             hyperLinks = mutableMapOf(
                 stringResource(id = creditData.madeWithKey) to stringResource(id = creditData.madeWithValue)
             ),
-            textStyle = textStyle,
-            linkTextColor = linkTextColor,
-            fontSize = bodyFontSize
+            hyperLinkTextEngine = hyperLinkTextEngine,
         )
     }
-
 }

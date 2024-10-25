@@ -15,16 +15,20 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.TextUnit
 import androidx.core.text.toSpannable
 
+data class HyperLinkTextEngine(
+    val textStyle : TextStyle = TextStyle.Default,
+    val linkTextColor : Color = Color.Red,
+    val linkTextFontWeight : FontWeight = FontWeight.Normal,
+    val linkTextDecoration : TextDecoration = TextDecoration.None,
+    val fontSize : TextUnit = TextUnit.Unspecified,
+)
+
 @Composable
 fun HyperlinkText(
     modifier: Modifier = Modifier,
     @StringRes fullTextResId: Int,
     hyperLinks: Map<String, String>,
-    textStyle: TextStyle = TextStyle.Default,
-    linkTextColor: Color = Color.Red,
-    linkTextFontWeight: FontWeight = FontWeight.Normal,
-    linkTextDecoration: TextDecoration = TextDecoration.None,
-    fontSize: TextUnit = TextUnit.Unspecified
+    hyperLinkTextEngine: HyperLinkTextEngine,
 ) {
     val fullText = LocalContext.current.getText(fullTextResId).toSpannable()
     val annotatedString = buildAnnotatedString {
@@ -34,10 +38,10 @@ fun HyperlinkText(
             val endIndex = startIndex + key.length
             addStyle(
                 style = SpanStyle(
-                    color = linkTextColor,
-                    fontSize = fontSize,
-                    fontWeight = linkTextFontWeight,
-                    textDecoration = linkTextDecoration
+                    color = hyperLinkTextEngine.linkTextColor,
+                    fontSize = hyperLinkTextEngine.fontSize,
+                    fontWeight = hyperLinkTextEngine.linkTextFontWeight,
+                    textDecoration = hyperLinkTextEngine.linkTextDecoration
                 ),
                 start = startIndex,
                 end = endIndex
@@ -51,7 +55,7 @@ fun HyperlinkText(
         }
         addStyle(
             style = SpanStyle(
-                fontSize = fontSize
+                fontSize = hyperLinkTextEngine.fontSize
             ),
             start = 0,
             end = fullText.length
@@ -63,7 +67,7 @@ fun HyperlinkText(
     ClickableText(
         modifier = modifier,
         text = annotatedString,
-        style = textStyle,
+        style = hyperLinkTextEngine.textStyle,
         onClick = {
             annotatedString
                 .getStringAnnotations("URL", it, it)
