@@ -75,6 +75,7 @@ fun AboutScreen(
             fontSize = headerFontSize,
             style = textStyle,
         )
+
         Spacer(Modifier.basePadding())
         HyperlinkText(
             fullTextResId = creditData.madeByFull,
@@ -84,11 +85,13 @@ fun AboutScreen(
             ),
             hyperLinkTextEngine = hyperLinkTextEngine,
         )
+
         Spacer(Modifier.basePadding())
         HyperlinkText(
-            fullTextResId = creditData.madeWithFull,
+            fullTextResId = creditData.sourceFull,
             hyperLinks = mutableMapOf(
-                stringResource(id = creditData.madeWithKey) to stringResource(id = creditData.madeWithValue)
+                stringResource(id = creditData.sourceKey) to stringResource(id = creditData.sourceValue),
+                stringResource(id = creditData.siteKey) to stringResource(id = creditData.siteValue)
             ),
             hyperLinkTextEngine = hyperLinkTextEngine,
         )

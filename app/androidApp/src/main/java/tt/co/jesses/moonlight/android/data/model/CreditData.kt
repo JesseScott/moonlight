@@ -13,7 +13,9 @@ data class CreditData(
     @StringRes val madeByValue: Int = R.string.credits_made_by_value,
     @StringRes val inspiredByKey: Int = R.string.credits_inspired_by_key,
     @StringRes val inspiredByValue: Int = R.string.credits_inspired_by_value,
-    @StringRes val madeWithFull: Int = R.string.credits_made_with_full,
-    @StringRes val madeWithKey: Int = R.string.credits_made_with_key,
-    @StringRes val madeWithValue: Int = R.string.credits_made_with_value,
+    @StringRes val sourceFull: Int = R.string.credits_source_full,
+    @StringRes val sourceKey: Int = R.string.credits_source_key,
+    @StringRes val sourceValue: Int = R.string.credits_source_value,
+    @StringRes val siteKey: Int = R.string.credits_site_key,
+    @StringRes val siteValue: Int = R.string.credits_site_value,
 )
