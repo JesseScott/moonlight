@@ -12,8 +12,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.core.text.toSpannable
+import tt.co.jesses.moonlight.android.R
 
 data class HyperLinkTextEngine(
     val textStyle : TextStyle = TextStyle.Default,
@@ -30,8 +32,12 @@ fun HyperlinkText(
     hyperLinks: Map<String, String>,
     hyperLinkTextEngine: HyperLinkTextEngine,
 ) {
+    val appName = LocalContext.current.getText(R.string.app)
     val fullText = LocalContext.current.getText(fullTextResId).toSpannable()
     val annotatedString = buildAnnotatedString {
+        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+            append("$appName ")
+        }
         append(fullText)
         for ((key, value) in hyperLinks) {
             val startIndex = fullText.indexOf(key)
