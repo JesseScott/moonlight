@@ -36,6 +36,7 @@ fun AboutScreen(
 ) {
     val creditData = viewModel.uiState.collectAsState().value.creditData
     val illuminationData = viewModel.uiState.collectAsState().value.illuminationData
+    val colorList = GradientUtil.generateHSLColor(illuminationData)
 
     val textStyle = TextStyle(
         textAlign = TextAlign.Start,
@@ -46,13 +47,6 @@ fun AboutScreen(
         textStyle = textStyle,
         linkTextColor = linkTextColor,
         fontSize = bodyFontSize,
-    )
-
-    val colorList = GradientUtil.generateHSLColor(
-        hue = illuminationData.phase,
-        saturation = illuminationData.azimuth,
-        lightness = illuminationData.altitude,
-        alpha = illuminationData.fraction,
     )
 
     val gradientModifier = Modifier

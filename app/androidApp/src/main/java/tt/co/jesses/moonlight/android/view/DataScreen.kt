@@ -31,19 +31,14 @@ fun DataScreen(
     viewModel: MoonlightViewModel = viewModel(),
 ) {
     val illuminationData = viewModel.uiState.collectAsState().value.illuminationData
+    val colorList = GradientUtil.generateHSLColor(illuminationData)
+
     val padding = 16.dp
     val textStyle = TextStyle(
         textAlign = TextAlign.Start,
         color = Color.DarkGray
     )
     val fontSize = 24.sp
-
-    val colorList = GradientUtil.generateHSLColor(
-        hue = illuminationData.phase,
-        saturation = illuminationData.azimuth,
-        lightness = illuminationData.altitude,
-        alpha = illuminationData.fraction,
-    )
 
     val gradientModifier = Modifier
         .angledGradientBackground(

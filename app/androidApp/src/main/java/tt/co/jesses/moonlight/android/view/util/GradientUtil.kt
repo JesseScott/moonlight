@@ -2,6 +2,7 @@ package tt.co.jesses.moonlight.android.view.util
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
+import tt.co.jesses.moonlight.android.data.model.MoonData
 
 object GradientUtil {
 
@@ -9,16 +10,13 @@ object GradientUtil {
     private val lsb = Color(0xFFCCE5FF)
 
     fun generateHSLColor(
-        hue: Float,
-        saturation: Float,
-        lightness: Float,
-        alpha: Float,
+        moonData: MoonData,
     ): List<Color> {
         val hsl = Color.hsl(
-            hue = hue,
-            saturation = saturation,
-            lightness = lightness,
-            alpha = alpha,
+            hue = moonData.phase,
+            saturation = moonData.altitude,
+            lightness = moonData.angle,
+            alpha = moonData.fraction,
             colorSpace = ColorSpaces.Srgb,
         )
         return listOf(hsl, silverColor, lsb)
