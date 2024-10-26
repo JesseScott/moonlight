@@ -21,19 +21,7 @@ fun MoonlightScreen(
 ) {
     val illuminationData = viewModel.uiState.collectAsState().value.illuminationData
     Log.d("MoonlightScreen", "MoonlightScreen: $illuminationData")
-    val fraction = illuminationData.fraction
-    val phase = illuminationData.phase
-    val angle = illuminationData.angle
-    val azimuth = illuminationData.azimuth
-    val altitude = illuminationData.altitude
-    val parallacticAngle = illuminationData.parallacticAngle
-
-    val colorList = GradientUtil.generateHSLColor(
-        hue = phase,
-        saturation = azimuth,
-        lightness = altitude,
-        alpha = fraction,
-    )
+    val colorList = GradientUtil.generateHSLColor(illuminationData)
 
     val gradientModifier = Modifier
         .angledGradientBackground(
