@@ -40,7 +40,7 @@ fun HyperlinkText(
         }
         append(fullText)
         for ((key, value) in hyperLinks) {
-            val startIndex = fullText.indexOf(key)
+            val startIndex = fullText.indexOf(key) + appName.length + 1
             val endIndex = startIndex + key.length
             addStyle(
                 style = SpanStyle(
