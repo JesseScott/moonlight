@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun TableLike(
     data: Pair<String, String>,
-    color: Color = Color.Gray,
-    fontSize: TextUnit = 16.sp,
+    color: Color = Color.DarkGray,
+    fontSize: TextUnit = 18.sp,
 ) {
     Column {
         Row(

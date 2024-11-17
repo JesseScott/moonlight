@@ -3,6 +3,8 @@ plugins {
     kotlin("android")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -21,7 +23,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.7"
     }
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
@@ -35,6 +37,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+//    kotlin {
+//        jvmToolchain(17)
+//    }
     kotlinOptions {
         jvmTarget = "17"
     }
@@ -56,6 +61,11 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-compiler:2.44")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
+    // Firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-crashlytics")
 
     // SunCalc
     implementation("org.shredzone.commons:commons-suncalc:3.7")

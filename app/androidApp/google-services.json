@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "805614707562",
+    "project_id": "moonlight-c59d6",
+    "storage_bucket": "moonlight-c59d6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:805614707562:android:51ee105c657200884d7b13",
+        "android_client_info": {
+          "package_name": "tt.co.jesses.moonlight.android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCihbjeOwdM4cvWKvthdqN9HHv1ljDxrfQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

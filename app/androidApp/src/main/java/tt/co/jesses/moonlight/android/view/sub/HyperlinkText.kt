@@ -12,32 +12,42 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.core.text.toSpannable
+import tt.co.jesses.moonlight.android.R
+
+data class HyperLinkTextEngine(
+    val textStyle : TextStyle = TextStyle.Default,
+    val linkTextColor : Color = Color.Red,
+    val linkTextFontWeight : FontWeight = FontWeight.Normal,
+    val linkTextDecoration : TextDecoration = TextDecoration.None,
+    val fontSize : TextUnit = TextUnit.Unspecified,
+)
 
 @Composable
 fun HyperlinkText(
     modifier: Modifier = Modifier,
     @StringRes fullTextResId: Int,
     hyperLinks: Map<String, String>,
-    textStyle: TextStyle = TextStyle.Default,
-    linkTextColor: Color = Color.Blue,
-    linkTextFontWeight: FontWeight = FontWeight.Normal,
-    linkTextDecoration: TextDecoration = TextDecoration.None,
-    fontSize: TextUnit = TextUnit.Unspecified
+    hyperLinkTextEngine: HyperLinkTextEngine,
 ) {
+    val appName = LocalContext.current.getText(R.string.app)
     val fullText = LocalContext.current.getText(fullTextResId).toSpannable()
     val annotatedString = buildAnnotatedString {
+        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+            append("$appName ")
+        }
         append(fullText)
         for ((key, value) in hyperLinks) {
-            val startIndex = fullText.indexOf(key)
+            val startIndex = fullText.indexOf(key) + appName.length + 1
             val endIndex = startIndex + key.length
             addStyle(
                 style = SpanStyle(
-                    color = linkTextColor,
-                    fontSize = fontSize,
-                    fontWeight = linkTextFontWeight,
-                    textDecoration = linkTextDecoration
+                    color = hyperLinkTextEngine.linkTextColor,
+                    fontSize = hyperLinkTextEngine.fontSize,
+                    fontWeight = hyperLinkTextEngine.linkTextFontWeight,
+                    textDecoration = hyperLinkTextEngine.linkTextDecoration
                 ),
                 start = startIndex,
                 end = endIndex
@@ -51,7 +61,7 @@ fun HyperlinkText(
         }
         addStyle(
             style = SpanStyle(
-                fontSize = fontSize
+                fontSize = hyperLinkTextEngine.fontSize
             ),
             start = 0,
             end = fullText.length
@@ -63,7 +73,7 @@ fun HyperlinkText(
     ClickableText(
         modifier = modifier,
         text = annotatedString,
-        style = textStyle,
+        style = hyperLinkTextEngine.textStyle,
         onClick = {
             annotatedString
                 .getStringAnnotations("URL", it, it)

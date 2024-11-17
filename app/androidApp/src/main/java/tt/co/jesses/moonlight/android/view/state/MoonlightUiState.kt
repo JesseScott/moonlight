@@ -1,4 +1,4 @@
-package tt.co.jesses.moonlight.android.view
+package tt.co.jesses.moonlight.android.view.state
 
 import tt.co.jesses.moonlight.android.data.model.CreditData
 import tt.co.jesses.moonlight.android.data.model.MoonData
