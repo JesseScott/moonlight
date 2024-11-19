@@ -30,9 +30,17 @@
     <string name="credits_inspired_by_key">Kelly Andres</string>
     <string name="credits_inspired_by_value">https://kellyandres.xyz</string>
 
-    <string name="credits_source_full">is an open source application, and the source code can be found on GitHub. More information - as well as other projects - can be found on my website</string>
+    <string name="credits_source_full">
+        is an open source application, and the source code can be found on GitHub.
+        \nBelow you can find a list of all the Open Source libraries used in this project.
+        \nSpecial thanks to the developers and maintainers of the SunCalc library, without which this project would not be possible.
+    </string>
     <string name="credits_source_key">GitHub</string>
     <string name="credits_source_value">https://github.com/JesseScott/moonlight</string>
-    <string name="credits_site_key">website</string>
-    <string name="credits_site_value">http://jesses.co.tt/_projects/Moonlight.html</string>
+    <string name="credits_suncalc_key">SunCalc</string>
+    <string name="credits_suncalc_value">https://github.com/shred/commons-suncalc</string>
+
+    <string name="credits_info_version">Version %s</string>
+    <string name="credits_info_help">Help</string>
+    <string name="credits_info_coffee">Buy me a coffee</string>
 </resources>

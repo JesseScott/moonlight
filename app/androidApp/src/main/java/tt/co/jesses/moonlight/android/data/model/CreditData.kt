@@ -16,6 +16,6 @@ data class CreditData(
     @StringRes val sourceFull: Int = R.string.credits_source_full,
     @StringRes val sourceKey: Int = R.string.credits_source_key,
     @StringRes val sourceValue: Int = R.string.credits_source_value,
-    @StringRes val siteKey: Int = R.string.credits_site_key,
-    @StringRes val siteValue: Int = R.string.credits_site_value,
+    @StringRes val suncalcKey: Int = R.string.credits_suncalc_key,
+    @StringRes val suncalcValue: Int = R.string.credits_suncalc_value,
 )
