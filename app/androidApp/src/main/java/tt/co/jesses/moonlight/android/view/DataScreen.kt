@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,7 +39,8 @@ fun DataScreen(
         textAlign = TextAlign.Start,
         color = Color.DarkGray
     )
-    val fontSize = 24.sp
+    val headerFontSize = 24.sp
+    val bodyFontSize = 18.sp
 
     val gradientModifier = Modifier
         .angledGradientBackground(
@@ -57,7 +59,7 @@ fun DataScreen(
     ) {
         Text(
             text = stringResource(id = R.string.title_data),
-            fontSize = fontSize,
+            fontSize = headerFontSize,
             style = textStyle,
         )
 
@@ -110,12 +112,15 @@ fun DataScreen(
                 )
             )
         }
+        Spacer(Modifier.padding(padding))
         Row {
-            TableLike(
-                data = Pair(
-                    stringResource(illuminationData.parallacticAngleRes),
-                    "${illuminationData.parallacticAngle}"
-                )
+            Text(
+                text = stringResource(R.string.data_description),
+                fontSize = bodyFontSize,
+                modifier = Modifier.padding(end = padding),
+                style = textStyle.copy(
+                    lineBreak = LineBreak.Paragraph
+                ),
             )
         }
     }
