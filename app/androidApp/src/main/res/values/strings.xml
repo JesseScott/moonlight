@@ -40,6 +40,11 @@
     <string name="credits_suncalc_key">SunCalc</string>
     <string name="credits_suncalc_value">https://github.com/shred/commons-suncalc</string>
 
+    <string name="credits_credits_header">credits</string>
+    <string name="credits_ack_header">acknowledgements</string>
+    <string name="credits_oss">Open Source licenses</string>
+    <string name="credits_info_header">info</string>
+
     <string name="credits_info_version">Version %s</string>
     <string name="credits_info_help">Help</string>
     <string name="credits_info_coffee">Buy me a coffee</string>
