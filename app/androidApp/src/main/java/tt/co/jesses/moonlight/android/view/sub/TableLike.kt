@@ -9,6 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -22,14 +23,13 @@ fun TableLike(
 ) {
     Column {
         Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
+            Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
                 text = data.first,
                 modifier = Modifier.weight(1f),
+                fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Start,
                 fontSize = fontSize,
                 color = color,
