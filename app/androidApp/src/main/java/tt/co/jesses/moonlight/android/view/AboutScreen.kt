@@ -1,5 +1,6 @@
 package tt.co.jesses.moonlight.android.view
 
+import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import kotlinx.coroutines.launch
 import tt.co.jesses.moonlight.android.R
 import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
@@ -52,8 +54,9 @@ fun AboutScreen(
 
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
+    val context = LocalContext.current
 
-    val versionInfo = VersionUtil.getVersionName(context = LocalContext.current)
+    val versionInfo = VersionUtil.getVersionName(context = context)
 
     val textStyle = TextStyle(
         textAlign = TextAlign.Start,
@@ -99,7 +102,7 @@ fun AboutScreen(
 
                 /// CREDITS
                 Text(
-                    text = "credits",
+                    text = stringResource(R.string.credits_credits_header),
                     fontSize = bodyFontSize,
                     style = textStyle.copy(
                         textDecoration = TextDecoration.Underline,
@@ -119,7 +122,7 @@ fun AboutScreen(
 
                 /// ACKNOWLEDGEMENTS
                 Text(
-                    text = "acknowledgements",
+                    text = stringResource(R.string.credits_ack_header),
                     fontSize = bodyFontSize,
                     style = textStyle.copy(
                         textDecoration = TextDecoration.Underline,
@@ -137,15 +140,20 @@ fun AboutScreen(
                 )
                 Spacer(Modifier.smallPadding())
                 Text(
-                    text = "open source licenses",
+                    text = stringResource(R.string.credits_oss),
                     fontSize = bodyFontSize,
-                    style = textStyle
+                    style = textStyle.copy(
+                        fontWeight = FontWeight.Bold,
+                    ),
+                    modifier = Modifier.clickable {
+                        context.startActivity(Intent(context, OssLicensesMenuActivity::class.java))
+                    }
                 )
                 Spacer(Modifier.basePadding())
 
                 /// INFO
                 Text(
-                    text = "info",
+                    text = stringResource(R.string.credits_info_header),
                     fontSize = bodyFontSize,
                     style = textStyle.copy(
                         textDecoration = TextDecoration.Underline,

@@ -9,6 +9,15 @@ plugins {
     id("com.google.firebase.crashlytics").version("3.0.2").apply(false)
 }
 
+buildscript {
+    repositories {
+        google()
+    }
+    dependencies {
+        classpath("com.google.android.gms:oss-licenses-plugin:0.10.6")
+    }
+}
+
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }

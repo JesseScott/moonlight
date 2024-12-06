@@ -1,10 +1,11 @@
 plugins {
-    id("com.android.application")
     kotlin("android")
-    id("kotlin-kapt")
+    id("com.android.application")
+    id("com.google.android.gms.oss-licenses-plugin")
     id("com.google.dagger.hilt.android")
-    id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+    id("com.google.gms.google-services")
+    id("kotlin-kapt")
 }
 
 android {
@@ -31,6 +32,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -56,6 +58,7 @@ dependencies {
     implementation("androidx.compose.material:material:1.4.3")
     implementation("androidx.activity:activity-compose:1.7.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+    implementation("com.google.android.gms:play-services-oss-licenses:17.1.0")
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.44")
