@@ -3,16 +3,17 @@ package tt.co.jesses.moonlight.android.view
 import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.colorspace.ColorSpaces
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.delay
 import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.android.view.util.GradientUtil
 import tt.co.jesses.moonlight.android.view.util.angledGradientBackground
 import tt.co.jesses.moonlight.android.view.util.bounded
+import kotlin.time.Duration.Companion.seconds
 
 @Preview
 @Composable
@@ -31,5 +32,12 @@ fun MoonlightScreen(
         .bounded()
 
     Canvas(modifier = gradientModifier) {}
+
+    LaunchedEffect(Unit) {
+        while(true) {
+            delay(30.seconds)
+            viewModel.getMoonIllumination()
+        }
+    }
 }
 
