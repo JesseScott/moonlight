@@ -1,6 +1,5 @@
 package tt.co.jesses.moonlight.android.data.repository
 
-import android.util.Log
 import tt.co.jesses.moonlight.android.data.model.MoonData
 import tt.co.jesses.moonlight.android.domain.normalize
 import javax.inject.Inject
@@ -13,9 +12,7 @@ class MoonlightRepository @Inject constructor(
 ) {
 
     fun getMoonIllumination(): MoonData {
-        return normalizeData(dataSource.getMoonIllumination()).also {
-            Log.d(TAG, "Normalized MoonData: $it")
-        }
+        return normalizeData(dataSource.getMoonIllumination())
     }
 
     private fun normalizeData(moonData: MoonData): MoonData {
@@ -31,8 +28,6 @@ class MoonlightRepository @Inject constructor(
     }
 
     companion object {
-        private val TAG = MoonlightRepository::class.java.simpleName
-
         private const val NEGATIVE_THREE_SIXTY = -360f
         private const val NEGATIVE_ONE_EIGHTY = -180f
         private const val ZERO = 0f

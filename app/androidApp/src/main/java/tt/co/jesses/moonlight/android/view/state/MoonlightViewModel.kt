@@ -1,10 +1,12 @@
 package tt.co.jesses.moonlight.android.view.state
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import tt.co.jesses.moonlight.android.data.repository.MoonlightRepository
 import javax.inject.Inject
 
@@ -20,8 +22,10 @@ class MoonlightViewModel @Inject constructor(
         getMoonIllumination()
     }
 
-    private fun getMoonIllumination() {
-        val illuminationData = repository.getMoonIllumination()
-        _uiState.value = MoonlightUiState(illuminationData = illuminationData)
+    fun getMoonIllumination() {
+        viewModelScope.launch {
+            val illuminationData = repository.getMoonIllumination()
+            _uiState.value = MoonlightUiState(illuminationData = illuminationData)
+        }
     }
 }
