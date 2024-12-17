@@ -1,7 +1,6 @@
 package tt.co.jesses.moonlight.android.view
 
 import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,6 +27,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import kotlinx.coroutines.launch
 import tt.co.jesses.moonlight.android.R
+import tt.co.jesses.moonlight.android.domain.EventNames
+import tt.co.jesses.moonlight.android.domain.Logger
 import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.android.view.sub.HyperLinkTextEngine
 import tt.co.jesses.moonlight.android.view.sub.HyperlinkText
@@ -47,14 +48,15 @@ import tt.co.jesses.moonlight.android.view.util.smallPadding
 fun AboutScreen(
     viewModel: MoonlightViewModel = viewModel(),
 ) {
-    val TAG = "AboutScreen"
+    val context = LocalContext.current
+    val logger = Logger(context)
+    logger.logScreen(EventNames.Screen.ABOUT_SCREEN)
     val creditData = viewModel.uiState.collectAsState().value.creditData
     val illuminationData = viewModel.uiState.collectAsState().value.illuminationData
     val colorList = GradientUtil.generateHSLColor(illuminationData)
 
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
-    val context = LocalContext.current
 
     val versionInfo = VersionUtil.getVersionName(context = context)
 
@@ -117,6 +119,7 @@ fun AboutScreen(
                         stringResource(id = creditData.inspiredByKey) to stringResource(id = creditData.inspiredByValue)
                     ),
                     hyperLinkTextEngine = hyperLinkTextEngine,
+                    logger = logger,
                 )
                 Spacer(Modifier.basePadding())
 
@@ -137,6 +140,7 @@ fun AboutScreen(
                         stringResource(id = creditData.suncalcKey) to stringResource(id = creditData.suncalcValue)
                     ),
                     hyperLinkTextEngine = hyperLinkTextEngine,
+                    logger = logger,
                 )
                 Spacer(Modifier.smallPadding())
                 Text(
@@ -147,6 +151,12 @@ fun AboutScreen(
                     ),
                     modifier = Modifier.clickable {
                         context.startActivity(Intent(context, OssLicensesMenuActivity::class.java))
+                        logger.logEvent(
+                            eventName = EventNames.Action.BUTTON,
+                            params = mapOf(
+                                EventNames.Action.Type.OSS to EventNames.Action.Params.BUTTON_CLICK
+                            ),
+                        )
                     }
                 )
                 Spacer(Modifier.basePadding())
@@ -176,10 +186,27 @@ fun AboutScreen(
                             val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
                                 message = "Coming soon!",
                                 actionLabel = "todo"
-                            )
+                            ).also {
+                                logger.logEvent(
+                                    eventName = EventNames.Action.SNACKBAR,
+                                    params = mapOf(
+                                        EventNames.Action.Type.HELP to EventNames.Action.Params.SNACKBAR_SHOWN
+                                    ),
+                                )
+                            }
                             when (snackbarResult) {
-                                SnackbarResult.Dismissed -> Log.d(TAG, "Help Snackbar dismissed")
-                                SnackbarResult.ActionPerformed -> Log.d(TAG, "Help Snackbar button clicked")
+                                SnackbarResult.ActionPerformed -> {
+                                    logger.logEvent(
+                                        eventName = EventNames.Action.SNACKBAR,
+                                        params = mapOf(
+                                            EventNames.Action.Type.HELP to EventNames.Action.Params.BUTTON_CLICK
+                                        ),
+                                    )
+                                }
+
+                                else -> {
+                                    /** do nothing */
+                                }
                             }
                         }
                     }
@@ -194,10 +221,27 @@ fun AboutScreen(
                             val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
                                 message = "Coming soon!",
                                 actionLabel = "todo"
-                            )
+                            ).also {
+                                logger.logEvent(
+                                    eventName = EventNames.Action.SNACKBAR,
+                                    params = mapOf(
+                                        EventNames.Action.Type.COFFEE to EventNames.Action.Params.SNACKBAR_SHOWN
+                                    ),
+                                )
+                            }
                             when (snackbarResult) {
-                                SnackbarResult.Dismissed -> Log.d(TAG, "Coffee Snackbar dismissed")
-                                SnackbarResult.ActionPerformed -> Log.d(TAG, "Coffee Snackbar button clicked")
+                                SnackbarResult.ActionPerformed -> {
+                                    logger.logEvent(
+                                        eventName = EventNames.Action.SNACKBAR,
+                                        params = mapOf(
+                                            EventNames.Action.Type.COFFEE to EventNames.Action.Params.BUTTON_CLICK
+                                        ),
+                                    )
+                                }
+
+                                else -> {
+                                    /** do nothing */
+                                }
                             }
                         }
                     }
