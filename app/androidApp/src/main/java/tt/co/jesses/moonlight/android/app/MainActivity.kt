@@ -3,7 +3,6 @@ package tt.co.jesses.moonlight.android.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -21,7 +20,6 @@ import tt.co.jesses.moonlight.android.view.MoonlightScreen
 import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.android.view.state.Screens
 
-@OptIn(ExperimentalFoundationApi::class)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
@@ -34,11 +32,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    val navController = rememberNavController()
+                    rememberNavController()
                     val viewModel: MoonlightViewModel = viewModel()
                     HorizontalPager(
-                        pageCount = Screens.values().size,
-                        state = rememberPagerState(),
+                        state = rememberPagerState(
+                            pageCount = { Screens.values().size },
+                            initialPage = 0
+                        ),
                         modifier = Modifier.fillMaxSize()
                     ) { page ->
                         when (page) {

@@ -16,6 +16,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.core.text.toSpannable
 import tt.co.jesses.moonlight.android.R
+import tt.co.jesses.moonlight.android.domain.EventNames
+import tt.co.jesses.moonlight.android.domain.Logger
 
 data class HyperLinkTextEngine(
     val textStyle : TextStyle = TextStyle.Default,
@@ -31,6 +33,7 @@ fun HyperlinkText(
     @StringRes fullTextResId: Int,
     hyperLinks: Map<String, String>,
     hyperLinkTextEngine: HyperLinkTextEngine,
+    logger: Logger,
 ) {
     val appName = LocalContext.current.getText(R.string.app)
     val fullText = LocalContext.current.getText(fullTextResId).toSpannable()
@@ -79,6 +82,12 @@ fun HyperlinkText(
                 .getStringAnnotations("URL", it, it)
                 .firstOrNull()?.let { stringAnnotation ->
                     uriHandler.openUri(stringAnnotation.item)
+                    logger.logEvent(
+                        eventName = EventNames.Action.LINK,
+                        params = mapOf(
+                            EventNames.Action.Type.URL to stringAnnotation.item
+                        ),
+                    )
                 }
         }
     )
