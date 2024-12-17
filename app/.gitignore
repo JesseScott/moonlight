@@ -4,6 +4,7 @@
 .DS_Store
 build
 androidApp/release
+androidApp/google-services.json
 captures
 .externalNativeBuild
 .cxx
