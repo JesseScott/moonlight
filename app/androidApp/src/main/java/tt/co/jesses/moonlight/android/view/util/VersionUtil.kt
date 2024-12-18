@@ -10,9 +10,9 @@ object VersionUtil {
         val manager = context.packageManager
         val info = manager.getPackageInfo(context.packageName, PackageManager.GET_ACTIVITIES)
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            "${info.longVersionCode} (${info.versionName})"
+            "${info.versionName} (${info.longVersionCode})"
         } else {
-            "${info.versionCode} (${info.versionName})"
+            "${info.versionName} (${info.versionCode})"
         }
     }
 }
