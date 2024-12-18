@@ -184,7 +184,7 @@ fun AboutScreen(
                 )
                 Spacer(Modifier.smallPadding())
                 Text(
-                    text = "Version: $versionInfo",
+                    text = "Version $versionInfo",
                     fontSize = bodyFontSize,
                     style = textStyle
                 )
