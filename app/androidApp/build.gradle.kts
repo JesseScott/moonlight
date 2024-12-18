@@ -34,6 +34,11 @@ android {
             isMinifyEnabled = false
             signingConfig = signingConfigs.getByName("debug")
         }
+        release {
+            ndk {
+                debugSymbolLevel = "SYMBOL_TABLE"
+            }
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
