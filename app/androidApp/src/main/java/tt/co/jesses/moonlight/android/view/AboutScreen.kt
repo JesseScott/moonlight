@@ -13,6 +13,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -27,6 +28,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tt.co.jesses.moonlight.android.R
 import tt.co.jesses.moonlight.android.domain.EventNames
@@ -269,6 +271,13 @@ fun AboutScreen(
                 )
                 Spacer(Modifier.basePadding())
             }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        while(true) {
+            delay(viewModel.refreshCycle)
+            viewModel.getMoonIllumination()
         }
     }
 }

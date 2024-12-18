@@ -15,7 +15,6 @@ import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.android.view.util.GradientUtil
 import tt.co.jesses.moonlight.android.view.util.angledGradientBackground
 import tt.co.jesses.moonlight.android.view.util.bounded
-import kotlin.time.Duration.Companion.seconds
 
 @Preview
 @Composable
@@ -40,7 +39,7 @@ fun MoonlightScreen(
 
     LaunchedEffect(Unit) {
         while(true) {
-            delay(30.seconds)
+            delay(viewModel.refreshCycle)
             viewModel.getMoonIllumination()
         }
     }
