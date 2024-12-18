@@ -1,6 +1,7 @@
 package tt.co.jesses.moonlight.android.view
 
 import android.content.Intent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -32,10 +34,12 @@ import tt.co.jesses.moonlight.android.domain.Logger
 import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.android.view.sub.HyperLinkTextEngine
 import tt.co.jesses.moonlight.android.view.sub.HyperlinkText
+import tt.co.jesses.moonlight.android.view.util.Constants
 import tt.co.jesses.moonlight.android.view.util.Constants.basePadding
 import tt.co.jesses.moonlight.android.view.util.Constants.bodyFontSize
 import tt.co.jesses.moonlight.android.view.util.Constants.headerFontSize
 import tt.co.jesses.moonlight.android.view.util.Constants.linkTextColor
+import tt.co.jesses.moonlight.android.view.util.EmailUtil.composeEmail
 import tt.co.jesses.moonlight.android.view.util.GradientUtil
 import tt.co.jesses.moonlight.android.view.util.VersionUtil
 import tt.co.jesses.moonlight.android.view.util.angledGradientBackground
@@ -60,11 +64,19 @@ fun AboutScreen(
 
     val versionInfo = VersionUtil.getVersionName(context = context)
 
+    val helpMessage = stringResource(R.string.credits_info_help_message)
+    val helpAction = stringResource(R.string.credits_info_help_action)
+    val helpEmailAddress = stringResource(R.string.credits_info_help_action_email_address)
+    val helpEmailSubject = stringResource(R.string.credits_info_help_action_email_subject)
+
     val textStyle = TextStyle(
         textAlign = TextAlign.Start,
         color = Color.DarkGray
     )
-
+    val borderStroke = BorderStroke(
+        width = Constants.strokeWidth,
+        color = Color.DarkGray,
+    )
     val hyperLinkTextEngine = HyperLinkTextEngine(
         textStyle = textStyle,
         linkTextColor = linkTextColor,
@@ -172,20 +184,17 @@ fun AboutScreen(
                 )
                 Spacer(Modifier.smallPadding())
                 Text(
-                    text = "Version: $versionInfo",
+                    text = "Version $versionInfo",
                     fontSize = bodyFontSize,
                     style = textStyle
                 )
                 Spacer(Modifier.smallPadding())
-                Text(
-                    text = stringResource(R.string.credits_info_help),
-                    fontSize = bodyFontSize,
-                    style = textStyle,
-                    modifier = Modifier.clickable {
+                TextButton(
+                    onClick = {
                         coroutineScope.launch {
                             val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
-                                message = "Coming soon!",
-                                actionLabel = "todo"
+                                message = helpMessage,
+                                actionLabel = helpAction,
                             ).also {
                                 logger.logEvent(
                                     eventName = EventNames.Action.SNACKBAR,
@@ -196,6 +205,11 @@ fun AboutScreen(
                             }
                             when (snackbarResult) {
                                 SnackbarResult.ActionPerformed -> {
+                                    composeEmail(
+                                        addresses = arrayOf(helpEmailAddress),
+                                        subject = helpEmailSubject,
+                                        context = context
+                                    )
                                     logger.logEvent(
                                         eventName = EventNames.Action.SNACKBAR,
                                         params = mapOf(
@@ -209,8 +223,15 @@ fun AboutScreen(
                                 }
                             }
                         }
-                    }
-                )
+                    },
+                    border = borderStroke
+                ) {
+                    Text(
+                        text = stringResource(R.string.credits_info_help),
+                        fontSize = bodyFontSize,
+                        style = textStyle,
+                    )
+                }
                 Spacer(Modifier.smallPadding())
                 Text(
                     text = stringResource(R.string.credits_info_coffee),

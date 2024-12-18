@@ -11,6 +11,10 @@ object EventNames {
         }
     }
 
+    object Property {
+        const val VERSION = "version"
+    }
+
     object Action {
         const val BUTTON = "button"
         const val LINK = "link"

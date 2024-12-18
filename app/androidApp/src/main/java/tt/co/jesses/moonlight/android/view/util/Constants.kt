@@ -5,6 +5,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 object Constants {
+    val strokeWidth = 1.dp
     val smallPadding = 4.dp
     val basePadding = 16.dp
     val linkTextColor = Color.Red
