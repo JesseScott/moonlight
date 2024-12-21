@@ -25,7 +25,7 @@ support
 If you are experiencing difficulties with the application, you can do one of the following:
 
 1. Enter a Bug Report here on **GitHub** under the [/issues](https://github.com/JesseScott/moonlight/issues) page
-2. Leave a review on the respective mobile store #TODO - links
-3. Send an email to foo-bar # TODO - email address
+2. Leave a review on the Google Play Store (#TODO - pending approval, will update)
+3. Send an email to me at [js@](js@jesses.co.tt) my web domain
 
 **moonlight** is a labour of love. If you would like to support the project, please feel free to _TODO - buy me a coffee_
