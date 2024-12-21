@@ -2,7 +2,6 @@ package tt.co.jesses.moonlight.android.view
 
 import android.content.Intent
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -47,6 +45,7 @@ import tt.co.jesses.moonlight.android.view.util.VersionUtil
 import tt.co.jesses.moonlight.android.view.util.angledGradientBackground
 import tt.co.jesses.moonlight.android.view.util.basePadding
 import tt.co.jesses.moonlight.android.view.util.bounded
+import tt.co.jesses.moonlight.android.view.util.launchCustomTabs
 import tt.co.jesses.moonlight.android.view.util.smallPadding
 
 @Preview
@@ -55,8 +54,6 @@ fun AboutScreen(
     viewModel: MoonlightViewModel = viewModel(),
 ) {
     val context = LocalContext.current
-    val uriHandler = LocalUriHandler.current
-
     val logger = Logger(context)
     logger.logScreen(EventNames.Screen.ABOUT_SCREEN)
 
@@ -205,7 +202,7 @@ fun AboutScreen(
                                 message = supportMessage,
                                 actionLabel = supportAction
                             ).also {
-                                uriHandler.openUri(supportUrl)
+                                context.launchCustomTabs(url = supportUrl)
                                 logger.logEvent(
                                     eventName = EventNames.Action.SNACKBAR,
                                     params = mapOf(
