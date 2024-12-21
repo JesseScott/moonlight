@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -17,6 +16,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.core.text.toSpannable
 import tt.co.jesses.moonlight.android.domain.EventNames
 import tt.co.jesses.moonlight.android.domain.Logger
+import tt.co.jesses.moonlight.android.view.util.launchCustomTabs
 
 data class HyperLinkTextEngine(
     val textStyle: TextStyle = TextStyle.Default,
@@ -34,7 +34,8 @@ fun HyperlinkText(
     hyperLinkTextEngine: HyperLinkTextEngine,
     logger: Logger,
 ) {
-    val fullText = LocalContext.current.getText(fullTextResId).toSpannable()
+    val context = LocalContext.current
+    val fullText = context.getText(fullTextResId).toSpannable()
     val annotatedString = buildAnnotatedString {
         withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {}
         append(fullText)
@@ -60,8 +61,6 @@ fun HyperlinkText(
         )
     }
 
-    val uriHandler = LocalUriHandler.current
-
     ClickableText(modifier = modifier,
         text = annotatedString,
         style = hyperLinkTextEngine.textStyle,
@@ -69,7 +68,7 @@ fun HyperlinkText(
             annotatedString.getStringAnnotations("URL", it, it).firstOrNull()
                 ?.let { stringAnnotation ->
                     if (stringAnnotation.item.isNotEmpty()) {
-                        uriHandler.openUri(stringAnnotation.item)
+                        context.launchCustomTabs(url = stringAnnotation.item)
                         logger.logEvent(
                             eventName = EventNames.Action.LINK,
                             params = mapOf(
