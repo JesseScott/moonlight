@@ -41,7 +41,6 @@ import tt.co.jesses.moonlight.android.view.util.Constants
 import tt.co.jesses.moonlight.android.view.util.Constants.basePadding
 import tt.co.jesses.moonlight.android.view.util.Constants.bodyFontSize
 import tt.co.jesses.moonlight.android.view.util.Constants.headerFontSize
-import tt.co.jesses.moonlight.android.view.util.Constants.linkTextColor
 import tt.co.jesses.moonlight.android.view.util.EmailUtil.composeEmail
 import tt.co.jesses.moonlight.android.view.util.GradientUtil
 import tt.co.jesses.moonlight.android.view.util.VersionUtil
@@ -89,7 +88,7 @@ fun AboutScreen(
     )
     val hyperLinkTextEngine = HyperLinkTextEngine(
         textStyle = textStyle,
-        linkTextColor = linkTextColor,
+        linkTextColor = Color.DarkGray,
         fontSize = bodyFontSize,
     )
 
@@ -137,6 +136,7 @@ fun AboutScreen(
                 HyperlinkText(
                     fullTextResId = creditData.madeByFull,
                     hyperLinks = mutableMapOf(
+                        stringResource(id = R.string.app) to "",
                         stringResource(id = creditData.madeByKey) to stringResource(id = creditData.madeByValue),
                         stringResource(id = creditData.inspiredByKey) to stringResource(id = creditData.inspiredByValue)
                     ),
@@ -158,6 +158,7 @@ fun AboutScreen(
                 HyperlinkText(
                     fullTextResId = creditData.sourceFull,
                     hyperLinks = mutableMapOf(
+                        stringResource(id = R.string.app) to "",
                         stringResource(id = creditData.sourceKey) to stringResource(id = creditData.sourceValue),
                         stringResource(id = creditData.suncalcKey) to stringResource(id = creditData.suncalcValue)
                     ),
@@ -165,13 +166,9 @@ fun AboutScreen(
                     logger = logger,
                 )
                 Spacer(Modifier.smallPadding())
-                Text(
-                    text = stringResource(R.string.credits_oss),
-                    fontSize = bodyFontSize,
-                    style = textStyle.copy(
-                        fontWeight = FontWeight.Bold,
-                    ),
-                    modifier = Modifier.clickable {
+
+                TextButton(
+                    onClick = {
                         context.startActivity(Intent(context, OssLicensesMenuActivity::class.java))
                         logger.logEvent(
                             eventName = EventNames.Action.BUTTON,
@@ -179,8 +176,15 @@ fun AboutScreen(
                                 EventNames.Action.Type.OSS to EventNames.Action.Params.BUTTON_CLICK
                             ),
                         )
-                    }
-                )
+                    },
+                    border = borderStroke,
+                ) {
+                    Text(
+                        text = stringResource(R.string.credits_oss),
+                        fontSize = bodyFontSize,
+                        style = textStyle,
+                    )
+                }
                 Spacer(Modifier.basePadding())
 
                 /// INFO
@@ -194,12 +198,43 @@ fun AboutScreen(
                 )
                 Spacer(Modifier.smallPadding())
 
-                Text(
-                    text = "Version $versionInfo",
-                    fontSize = bodyFontSize,
-                    style = textStyle
-                )
-                Spacer(Modifier.smallPadding())
+                TextButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
+                                message = supportMessage,
+                                actionLabel = supportAction
+                            ).also {
+                                uriHandler.openUri(supportUrl)
+                                logger.logEvent(
+                                    eventName = EventNames.Action.SNACKBAR,
+                                    params = mapOf(
+                                        EventNames.Action.Type.COFFEE to EventNames.Action.Params.SNACKBAR_SHOWN
+                                    ),
+                                )
+                            }
+                            when (snackbarResult) {
+                                SnackbarResult.ActionPerformed -> {
+                                    logger.logEvent(
+                                        eventName = EventNames.Action.SNACKBAR,
+                                        params = mapOf(
+                                            EventNames.Action.Type.COFFEE to EventNames.Action.Params.BUTTON_CLICK
+                                        ),
+                                    )
+                                }
+                                else -> { /** do nothing */ }
+                            }
+                        }
+                    },
+                    border = borderStroke,
+                ) {
+                    Text(
+                        text = stringResource(R.string.credits_info_coffee),
+                        fontSize = bodyFontSize,
+                        style = textStyle,
+                    )
+                }
+
                 TextButton(
                     onClick = {
                         coroutineScope.launch {
@@ -228,14 +263,11 @@ fun AboutScreen(
                                         ),
                                     )
                                 }
-
-                                else -> {
-                                    /** do nothing */
-                                }
+                                else -> { /** do nothing */ }
                             }
                         }
                     },
-                    border = borderStroke
+                    border = borderStroke,
                 ) {
                     Text(
                         text = stringResource(R.string.credits_info_help),
@@ -245,46 +277,12 @@ fun AboutScreen(
                 }
                 Spacer(Modifier.smallPadding())
 
-                TextButton(
-                    onClick = {
-                        coroutineScope.launch {
-                            val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
-                                message = supportMessage,
-                                actionLabel = supportAction
-                            ).also {
-                                uriHandler.openUri(supportUrl)
-                                logger.logEvent(
-                                    eventName = EventNames.Action.SNACKBAR,
-                                    params = mapOf(
-                                        EventNames.Action.Type.COFFEE to EventNames.Action.Params.SNACKBAR_SHOWN
-                                    ),
-                                )
-                            }
-                            when (snackbarResult) {
-                                SnackbarResult.ActionPerformed -> {
-                                    logger.logEvent(
-                                        eventName = EventNames.Action.SNACKBAR,
-                                        params = mapOf(
-                                            EventNames.Action.Type.COFFEE to EventNames.Action.Params.BUTTON_CLICK
-                                        ),
-                                    )
-                                }
-
-                                else -> {
-                                    /** do nothing */
-                                }
-                            }
-                        }
-                    },
-                    border = borderStroke,
-                ) {
-                    Text(
-                        text = stringResource(R.string.credits_info_coffee),
-                        fontSize = bodyFontSize,
-                        style = textStyle,
-                    )
-                }
-                Spacer(Modifier.basePadding())
+                Text(
+                    text = "Version $versionInfo",
+                    fontSize = bodyFontSize,
+                    style = textStyle
+                )
+                Spacer(Modifier.smallPadding())
             }
         }
     }

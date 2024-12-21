@@ -15,16 +15,15 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.core.text.toSpannable
-import tt.co.jesses.moonlight.android.R
 import tt.co.jesses.moonlight.android.domain.EventNames
 import tt.co.jesses.moonlight.android.domain.Logger
 
 data class HyperLinkTextEngine(
-    val textStyle : TextStyle = TextStyle.Default,
-    val linkTextColor : Color = Color.Red,
-    val linkTextFontWeight : FontWeight = FontWeight.Normal,
-    val linkTextDecoration : TextDecoration = TextDecoration.None,
-    val fontSize : TextUnit = TextUnit.Unspecified,
+    val textStyle: TextStyle = TextStyle.Default,
+    val linkTextColor: Color = Color.Red,
+    val linkTextFontWeight: FontWeight = FontWeight.Bold,
+    val linkTextDecoration: TextDecoration = TextDecoration.None,
+    val fontSize: TextUnit = TextUnit.Unspecified,
 )
 
 @Composable
@@ -35,15 +34,12 @@ fun HyperlinkText(
     hyperLinkTextEngine: HyperLinkTextEngine,
     logger: Logger,
 ) {
-    val appName = LocalContext.current.getText(R.string.app)
     val fullText = LocalContext.current.getText(fullTextResId).toSpannable()
     val annotatedString = buildAnnotatedString {
-        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-            append("$appName ")
-        }
+        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {}
         append(fullText)
         for ((key, value) in hyperLinks) {
-            val startIndex = fullText.indexOf(key) + appName.length + 1
+            val startIndex = fullText.indexOf(key)
             val endIndex = startIndex + key.length
             addStyle(
                 style = SpanStyle(
@@ -51,44 +47,36 @@ fun HyperlinkText(
                     fontSize = hyperLinkTextEngine.fontSize,
                     fontWeight = hyperLinkTextEngine.linkTextFontWeight,
                     textDecoration = hyperLinkTextEngine.linkTextDecoration
-                ),
-                start = startIndex,
-                end = endIndex
+                ), start = startIndex, end = endIndex
             )
             addStringAnnotation(
-                tag = "URL",
-                annotation = value,
-                start = startIndex,
-                end = endIndex
+                tag = "URL", annotation = value, start = startIndex, end = endIndex
             )
         }
         addStyle(
             style = SpanStyle(
                 fontSize = hyperLinkTextEngine.fontSize
-            ),
-            start = 0,
-            end = fullText.length
+            ), start = 0, end = fullText.length
         )
     }
 
     val uriHandler = LocalUriHandler.current
 
-    ClickableText(
-        modifier = modifier,
+    ClickableText(modifier = modifier,
         text = annotatedString,
         style = hyperLinkTextEngine.textStyle,
         onClick = {
-            annotatedString
-                .getStringAnnotations("URL", it, it)
-                .firstOrNull()?.let { stringAnnotation ->
-                    uriHandler.openUri(stringAnnotation.item)
-                    logger.logEvent(
-                        eventName = EventNames.Action.LINK,
-                        params = mapOf(
-                            EventNames.Action.Type.URL to stringAnnotation.item
-                        ),
-                    )
+            annotatedString.getStringAnnotations("URL", it, it).firstOrNull()
+                ?.let { stringAnnotation ->
+                    if (stringAnnotation.item.isNotEmpty()) {
+                        uriHandler.openUri(stringAnnotation.item)
+                        logger.logEvent(
+                            eventName = EventNames.Action.LINK,
+                            params = mapOf(
+                                EventNames.Action.Type.URL to stringAnnotation.item
+                            ),
+                        )
+                    }
                 }
-        }
-    )
+        })
 }
