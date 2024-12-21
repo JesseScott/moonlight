@@ -54,4 +54,7 @@
     <string name="credits_info_help_action_email_subject">Feedback from the moonlight app</string>
 
     <string name="credits_info_coffee">Buy me a coffee</string>
+    <string name="credits_info_coffee_message">This project is a labour of love. If you are able and willing to support my work, please buy me a coffee</string>
+    <string name="credits_info_coffee_action">support</string>
+    <string name="credits_info_coffee_action_url">https://ko-fi.com/jessescott</string>
 </resources>
