@@ -2,7 +2,6 @@ package tt.co.jesses.moonlight.android.view
 
 import android.content.Intent
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +12,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tt.co.jesses.moonlight.android.R
 import tt.co.jesses.moonlight.android.domain.EventNames
@@ -38,13 +39,13 @@ import tt.co.jesses.moonlight.android.view.util.Constants
 import tt.co.jesses.moonlight.android.view.util.Constants.basePadding
 import tt.co.jesses.moonlight.android.view.util.Constants.bodyFontSize
 import tt.co.jesses.moonlight.android.view.util.Constants.headerFontSize
-import tt.co.jesses.moonlight.android.view.util.Constants.linkTextColor
 import tt.co.jesses.moonlight.android.view.util.EmailUtil.composeEmail
 import tt.co.jesses.moonlight.android.view.util.GradientUtil
 import tt.co.jesses.moonlight.android.view.util.VersionUtil
 import tt.co.jesses.moonlight.android.view.util.angledGradientBackground
 import tt.co.jesses.moonlight.android.view.util.basePadding
 import tt.co.jesses.moonlight.android.view.util.bounded
+import tt.co.jesses.moonlight.android.view.util.launchCustomTabs
 import tt.co.jesses.moonlight.android.view.util.smallPadding
 
 @Preview
@@ -55,6 +56,7 @@ fun AboutScreen(
     val context = LocalContext.current
     val logger = Logger(context)
     logger.logScreen(EventNames.Screen.ABOUT_SCREEN)
+
     val creditData = viewModel.uiState.collectAsState().value.creditData
     val illuminationData = viewModel.uiState.collectAsState().value.illuminationData
     val colorList = GradientUtil.generateHSLColor(illuminationData)
@@ -69,6 +71,10 @@ fun AboutScreen(
     val helpEmailAddress = stringResource(R.string.credits_info_help_action_email_address)
     val helpEmailSubject = stringResource(R.string.credits_info_help_action_email_subject)
 
+    val supportMessage = stringResource(R.string.credits_info_coffee_message)
+    val supportAction = stringResource(R.string.credits_info_coffee_action)
+    val supportUrl = stringResource(R.string.credits_info_coffee_action_url)
+
     val textStyle = TextStyle(
         textAlign = TextAlign.Start,
         color = Color.DarkGray
@@ -79,7 +85,7 @@ fun AboutScreen(
     )
     val hyperLinkTextEngine = HyperLinkTextEngine(
         textStyle = textStyle,
-        linkTextColor = linkTextColor,
+        linkTextColor = Color.DarkGray,
         fontSize = bodyFontSize,
     )
 
@@ -127,6 +133,7 @@ fun AboutScreen(
                 HyperlinkText(
                     fullTextResId = creditData.madeByFull,
                     hyperLinks = mutableMapOf(
+                        stringResource(id = R.string.app) to "",
                         stringResource(id = creditData.madeByKey) to stringResource(id = creditData.madeByValue),
                         stringResource(id = creditData.inspiredByKey) to stringResource(id = creditData.inspiredByValue)
                     ),
@@ -148,6 +155,7 @@ fun AboutScreen(
                 HyperlinkText(
                     fullTextResId = creditData.sourceFull,
                     hyperLinks = mutableMapOf(
+                        stringResource(id = R.string.app) to "",
                         stringResource(id = creditData.sourceKey) to stringResource(id = creditData.sourceValue),
                         stringResource(id = creditData.suncalcKey) to stringResource(id = creditData.suncalcValue)
                     ),
@@ -155,13 +163,9 @@ fun AboutScreen(
                     logger = logger,
                 )
                 Spacer(Modifier.smallPadding())
-                Text(
-                    text = stringResource(R.string.credits_oss),
-                    fontSize = bodyFontSize,
-                    style = textStyle.copy(
-                        fontWeight = FontWeight.Bold,
-                    ),
-                    modifier = Modifier.clickable {
+
+                TextButton(
+                    onClick = {
                         context.startActivity(Intent(context, OssLicensesMenuActivity::class.java))
                         logger.logEvent(
                             eventName = EventNames.Action.BUTTON,
@@ -169,8 +173,15 @@ fun AboutScreen(
                                 EventNames.Action.Type.OSS to EventNames.Action.Params.BUTTON_CLICK
                             ),
                         )
-                    }
-                )
+                    },
+                    border = borderStroke,
+                ) {
+                    Text(
+                        text = stringResource(R.string.credits_oss),
+                        fontSize = bodyFontSize,
+                        style = textStyle,
+                    )
+                }
                 Spacer(Modifier.basePadding())
 
                 /// INFO
@@ -183,12 +194,44 @@ fun AboutScreen(
                     ),
                 )
                 Spacer(Modifier.smallPadding())
-                Text(
-                    text = "Version $versionInfo",
-                    fontSize = bodyFontSize,
-                    style = textStyle
-                )
-                Spacer(Modifier.smallPadding())
+
+                TextButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
+                                message = supportMessage,
+                                actionLabel = supportAction
+                            ).also {
+                                context.launchCustomTabs(url = supportUrl)
+                                logger.logEvent(
+                                    eventName = EventNames.Action.SNACKBAR,
+                                    params = mapOf(
+                                        EventNames.Action.Type.COFFEE to EventNames.Action.Params.SNACKBAR_SHOWN
+                                    ),
+                                )
+                            }
+                            when (snackbarResult) {
+                                SnackbarResult.ActionPerformed -> {
+                                    logger.logEvent(
+                                        eventName = EventNames.Action.SNACKBAR,
+                                        params = mapOf(
+                                            EventNames.Action.Type.COFFEE to EventNames.Action.Params.BUTTON_CLICK
+                                        ),
+                                    )
+                                }
+                                else -> { /** do nothing */ }
+                            }
+                        }
+                    },
+                    border = borderStroke,
+                ) {
+                    Text(
+                        text = stringResource(R.string.credits_info_coffee),
+                        fontSize = bodyFontSize,
+                        style = textStyle,
+                    )
+                }
+
                 TextButton(
                     onClick = {
                         coroutineScope.launch {
@@ -217,14 +260,11 @@ fun AboutScreen(
                                         ),
                                     )
                                 }
-
-                                else -> {
-                                    /** do nothing */
-                                }
+                                else -> { /** do nothing */ }
                             }
                         }
                     },
-                    border = borderStroke
+                    border = borderStroke,
                 ) {
                     Text(
                         text = stringResource(R.string.credits_info_help),
@@ -233,42 +273,21 @@ fun AboutScreen(
                     )
                 }
                 Spacer(Modifier.smallPadding())
-                Text(
-                    text = stringResource(R.string.credits_info_coffee),
-                    fontSize = bodyFontSize,
-                    style = textStyle,
-                    modifier = Modifier.clickable {
-                        coroutineScope.launch {
-                            val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
-                                message = "Coming soon!",
-                                actionLabel = "todo"
-                            ).also {
-                                logger.logEvent(
-                                    eventName = EventNames.Action.SNACKBAR,
-                                    params = mapOf(
-                                        EventNames.Action.Type.COFFEE to EventNames.Action.Params.SNACKBAR_SHOWN
-                                    ),
-                                )
-                            }
-                            when (snackbarResult) {
-                                SnackbarResult.ActionPerformed -> {
-                                    logger.logEvent(
-                                        eventName = EventNames.Action.SNACKBAR,
-                                        params = mapOf(
-                                            EventNames.Action.Type.COFFEE to EventNames.Action.Params.BUTTON_CLICK
-                                        ),
-                                    )
-                                }
 
-                                else -> {
-                                    /** do nothing */
-                                }
-                            }
-                        }
-                    }
+                Text(
+                    text = "Version $versionInfo",
+                    fontSize = bodyFontSize,
+                    style = textStyle
                 )
-                Spacer(Modifier.basePadding())
+                Spacer(Modifier.smallPadding())
             }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        while(true) {
+            delay(viewModel.refreshCycle)
+            viewModel.getMoonIllumination()
         }
     }
 }

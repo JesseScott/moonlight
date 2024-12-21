@@ -24,16 +24,16 @@
     </string>
 
     <!-- Credits -->
-    <string name="credits_made_by_full">was developed by the artist Jesse Scott and was originally inspired an idea by the artist Kelly Andres.</string>
+    <string name="credits_made_by_full">moonlight was developed by the artist Jesse Scott and was originally inspired an idea by the artist Kelly Andres.</string>
     <string name="credits_made_by_key">Jesse Scott</string>
     <string name="credits_made_by_value">http://jesses.co.tt</string>
     <string name="credits_inspired_by_key">Kelly Andres</string>
     <string name="credits_inspired_by_value">https://kellyandres.xyz</string>
 
     <string name="credits_source_full">
-        is an open source application, and the source code can be found on GitHub.
-        \nBelow you can find a list of all the Open Source libraries used in this project.
-        \nSpecial thanks to the developers and maintainers of the SunCalc library, without which this project would not be possible.
+        moonlight is an open source application.
+        \n\nThe code can be found on GitHub and a list of all the libraries used in this project is available below.
+        Special thanks to SunCalc, without which this project would not be possible.
     </string>
     <string name="credits_source_key">GitHub</string>
     <string name="credits_source_value">https://github.com/JesseScott/moonlight</string>
@@ -54,4 +54,7 @@
     <string name="credits_info_help_action_email_subject">Feedback from the moonlight app</string>
 
     <string name="credits_info_coffee">Buy me a coffee</string>
+    <string name="credits_info_coffee_message">This project is a labour of love. If you are able and willing to support my work, please buy me a coffee</string>
+    <string name="credits_info_coffee_action">support</string>
+    <string name="credits_info_coffee_action_url">https://ko-fi.com/jessescott</string>
 </resources>
