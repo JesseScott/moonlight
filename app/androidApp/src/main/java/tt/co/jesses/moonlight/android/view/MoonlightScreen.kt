@@ -9,7 +9,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.delay
-import tt.co.jesses.moonlight.android.domain.EventNames
 import tt.co.jesses.moonlight.android.domain.Logger
 import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.android.view.util.GradientUtil
@@ -24,7 +23,6 @@ fun MoonlightScreen(
     val logger = Logger(LocalContext.current)
     val illuminationData = viewModel.uiState.collectAsState().value.illuminationData
     logger.logConsole("MoonlightScreen: $illuminationData")
-    logger.logScreen(EventNames.Screen.MOONLIGHT_SCREEN)
 
     val colorList = GradientUtil.generateHSLColor(illuminationData)
 
