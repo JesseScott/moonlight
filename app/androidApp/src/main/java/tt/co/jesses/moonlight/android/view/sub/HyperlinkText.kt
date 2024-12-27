@@ -61,7 +61,8 @@ fun HyperlinkText(
         )
     }
 
-    ClickableText(modifier = modifier,
+    ClickableText(
+        modifier = modifier,
         text = annotatedString,
         style = hyperLinkTextEngine.textStyle,
         onClick = {

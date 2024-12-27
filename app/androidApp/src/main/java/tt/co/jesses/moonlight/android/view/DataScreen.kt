@@ -12,7 +12,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.LineBreak
@@ -23,8 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.delay
 import tt.co.jesses.moonlight.android.R
-import tt.co.jesses.moonlight.android.domain.EventNames
-import tt.co.jesses.moonlight.android.domain.Logger
 import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.android.view.sub.TableLike
 import tt.co.jesses.moonlight.android.view.util.Constants.bodyFontSize
@@ -38,8 +35,6 @@ import tt.co.jesses.moonlight.android.view.util.bounded
 fun DataScreen(
     viewModel: MoonlightViewModel = viewModel(),
 ) {
-    val logger = Logger(LocalContext.current)
-    logger.logScreen(EventNames.Screen.DATA_SCREEN)
     val illuminationData = viewModel.uiState.collectAsState().value.illuminationData
     val colorList = GradientUtil.generateHSLColor(illuminationData)
 
