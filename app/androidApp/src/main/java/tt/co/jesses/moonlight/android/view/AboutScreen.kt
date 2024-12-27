@@ -202,7 +202,6 @@ fun AboutScreen(
                                 message = supportMessage,
                                 actionLabel = supportAction
                             ).also {
-                                context.launchCustomTabs(url = supportUrl)
                                 logger.logEvent(
                                     eventName = EventNames.Action.SNACKBAR,
                                     params = mapOf(
@@ -212,6 +211,7 @@ fun AboutScreen(
                             }
                             when (snackbarResult) {
                                 SnackbarResult.ActionPerformed -> {
+                                    context.launchCustomTabs(url = supportUrl)
                                     logger.logEvent(
                                         eventName = EventNames.Action.SNACKBAR,
                                         params = mapOf(
