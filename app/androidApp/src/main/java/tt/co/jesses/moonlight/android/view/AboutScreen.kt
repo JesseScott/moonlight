@@ -134,6 +134,7 @@ fun AboutScreen(
                 )
                 Spacer(Modifier.smallPadding())
                 HyperlinkText(
+                    modifier = Modifier.padding(end = basePadding),
                     fullTextResId = creditData.madeByFull,
                     hyperLinks = mutableMapOf(
                         stringResource(id = R.string.app) to "",
@@ -156,6 +157,7 @@ fun AboutScreen(
                 )
                 Spacer(Modifier.smallPadding())
                 HyperlinkText(
+                    modifier = Modifier.padding(end = basePadding),
                     fullTextResId = creditData.sourceFull,
                     hyperLinks = mutableMapOf(
                         stringResource(id = R.string.app) to "",
