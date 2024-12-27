@@ -58,7 +58,6 @@ fun AboutScreen(
 ) {
     val context = LocalContext.current
     val logger = Logger(context)
-    logger.logScreen(EventNames.Screen.ABOUT_SCREEN)
 
     val creditData = viewModel.uiState.collectAsState().value.creditData
     val illuminationData = viewModel.uiState.collectAsState().value.illuminationData
