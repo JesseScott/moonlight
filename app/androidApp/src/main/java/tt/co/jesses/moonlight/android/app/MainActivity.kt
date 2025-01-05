@@ -10,6 +10,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -64,6 +65,11 @@ class MainActivity : ComponentActivity() {
                             1 -> DataScreen(viewModel = viewModel)
                             2 -> AboutScreen(viewModel = viewModel)
                         }
+                    }
+                    if (viewModel.uiState.collectAsState().value.preferencesData.foo) {
+                        logger.logConsole("Foo is true")
+                    } else {
+                        logger.logConsole("Foo is false")
                     }
                 }
             }
