@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import tt.co.jesses.moonlight.android.data.repository.MoonlightRepository
+import tt.co.jesses.moonlight.android.data.repository.UserPreferencesRepository
 
 import javax.inject.Inject
 import kotlin.time.Duration
@@ -15,7 +16,8 @@ import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class MoonlightViewModel @Inject constructor(
-    private val repository: MoonlightRepository,
+    private val moonlightRepository: MoonlightRepository,
+    private val userPreferencesRepository: UserPreferencesRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MoonlightUiState())
@@ -32,8 +34,15 @@ class MoonlightViewModel @Inject constructor(
 
     fun getMoonIllumination() {
         viewModelScope.launch {
-            val illuminationData = repository.getMoonIllumination()
+            val illuminationData = moonlightRepository.getMoonIllumination()
             _uiState.value = _uiState.value.copy(illuminationData = illuminationData)
+        }
+    }
+
+    fun fetchInitialPreferences() {
+        viewModelScope.launch {
+            val userPreferences = userPreferencesRepository.fetchInitialPreferences()
+            _uiState.value = _uiState.value.copy(preferencesData = userPreferences)
         }
     }
 }

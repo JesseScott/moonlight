@@ -59,6 +59,7 @@ dependencies {
     implementation("androidx.compose.ui:ui:1.7.6")
     implementation("androidx.compose.ui:ui-tooling:1.7.6")
     implementation("androidx.compose.ui:ui-tooling-preview:1.7.6")
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
     implementation("androidx.navigation:navigation-compose:2.8.5")
     implementation("com.google.android.gms:play-services-oss-licenses:17.1.0")
