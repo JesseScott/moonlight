@@ -1,15 +1,20 @@
 package tt.co.jesses.moonlight.android.view
 
+import android.app.Activity
 import androidx.compose.foundation.Canvas
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.delay
-import tt.co.jesses.moonlight.android.domain.Logger
+import kotlinx.coroutines.launch
+import tt.co.jesses.moonlight.android.app.MainActivity
+import tt.co.jesses.moonlight.android.domain.EventNames
 import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.android.view.util.GradientUtil
 import tt.co.jesses.moonlight.android.view.util.angledGradientBackground
@@ -20,9 +25,15 @@ import tt.co.jesses.moonlight.android.view.util.bounded
 fun MoonlightScreen(
     viewModel: MoonlightViewModel = viewModel(),
 ) {
-    val logger = Logger(LocalContext.current)
     val illuminationData = viewModel.uiState.collectAsState().value.illuminationData
-    logger.logConsole("MoonlightScreen: $illuminationData")
+    val shouldShowAnalyticsModal = viewModel.uiState.collectAsState().value.shouldShowAnalyticsModal
+
+    val activity = LocalContext.current as Activity
+    val logger = (activity as? MainActivity)?.logger
+    logger?.logConsole("MoonlightScreen: $illuminationData")
+    logger?.logConsole("MoonlightScreen 1: $shouldShowAnalyticsModal")
+    val coroutineScope = rememberCoroutineScope()
+    val scaffoldState = rememberScaffoldState()
 
     val colorList = GradientUtil.generateHSLColor(illuminationData)
 
@@ -39,6 +50,15 @@ fun MoonlightScreen(
         while(true) {
             delay(viewModel.refreshCycle)
             viewModel.getMoonIllumination()
+            logger?.logConsole("MoonlightScreen 2: ${viewModel.uiState.value.shouldShowAnalyticsModal}")
+            coroutineScope.launch {
+                scaffoldState.snackbarHostState.showSnackbar(
+                    message = "Analytics are not enabled. Please enable them to support the app - no PII is collected, analytics are simply for app improvement.",
+                    actionLabel = "supportAction"
+                ).also {
+                    logger?.logConsole("showing analytics modal")
+                }
+            }
         }
     }
 }

@@ -4,8 +4,13 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import tt.co.jesses.moonlight.android.data.model.AnalyticsAcceptance
 import tt.co.jesses.moonlight.android.data.model.UserPreferences
 import javax.inject.Inject
 
@@ -14,20 +19,31 @@ class UserPreferencesRepository @Inject constructor(
     private val context: Context,
 ) {
 
+    val userPreferencesFlow: Flow<UserPreferences> = dataStore.data
+        .map { preferences ->
+            val analyticsAcceptance = preferences[PreferencesKeys.ANALYTICS_ACCEPTANCE]?: AnalyticsAcceptance.UNSET.ordinal
+            UserPreferences(analyticsAcceptance)
+        }
+
     suspend fun fetchInitialPreferences(): UserPreferences {
         val preferences = dataStore.data.first().toPreferences()
         return mapUserPreferences(preferences)
     }
 
+    suspend fun updateAnalyticsAcceptance(acceptance: Int) {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.ANALYTICS_ACCEPTANCE] = acceptance
+        }
+    }
+
     private fun mapUserPreferences(preferences: Preferences): UserPreferences {
         return UserPreferences(
-            foo = preferences[PreferencesKeys.FOO_BOOLEAN] ?: false
+            analyticsAcceptance = preferences[PreferencesKeys.ANALYTICS_ACCEPTANCE] ?: AnalyticsAcceptance.UNSET.ordinal
         )
     }
 
     private object PreferencesKeys {
-        val FOO_STRING = stringPreferencesKey("user_name")
-        val FOO_BOOLEAN = booleanPreferencesKey("user_is_logged_in")
+        val ANALYTICS_ACCEPTANCE = intPreferencesKey("analytics_acceptance")
     }
 
     companion object {

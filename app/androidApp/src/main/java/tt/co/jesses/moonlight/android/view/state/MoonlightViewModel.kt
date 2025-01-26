@@ -1,5 +1,6 @@
 package tt.co.jesses.moonlight.android.view.state
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -7,9 +8,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import tt.co.jesses.moonlight.android.data.model.AnalyticsAcceptance
 import tt.co.jesses.moonlight.android.data.repository.MoonlightRepository
 import tt.co.jesses.moonlight.android.data.repository.UserPreferencesRepository
-
 import javax.inject.Inject
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
@@ -30,6 +31,7 @@ class MoonlightViewModel @Inject constructor(
 
     init {
         getMoonIllumination()
+        shouldShowAnalyticsModal()
     }
 
     fun getMoonIllumination() {
@@ -39,10 +41,19 @@ class MoonlightViewModel @Inject constructor(
         }
     }
 
-    fun fetchInitialPreferences() {
+    private fun shouldShowAnalyticsModal() {
         viewModelScope.launch {
             val userPreferences = userPreferencesRepository.fetchInitialPreferences()
-            _uiState.value = _uiState.value.copy(preferencesData = userPreferences)
+            val prefsAcceptance = userPreferences.analyticsAcceptance
+            Log.d("VIEWMODEL", "prefsAcceptance: $prefsAcceptance")
+            val analyticsAcceptance = AnalyticsAcceptance.values()[userPreferences.analyticsAcceptance]
+            _uiState.value = _uiState.value.copy(shouldShowAnalyticsModal = analyticsAcceptance == AnalyticsAcceptance.UNSET)
+        }
+    }
+
+    fun updateAnalyticsAcceptance(analyticsAcceptance: AnalyticsAcceptance) {
+        viewModelScope.launch {
+            userPreferencesRepository.updateAnalyticsAcceptance(analyticsAcceptance.ordinal)
         }
     }
 }
