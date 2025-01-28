@@ -56,7 +56,6 @@ import tt.co.jesses.moonlight.android.view.util.smallPadding
 @Composable
 fun AboutScreen(
     viewModel: MoonlightViewModel = viewModel(),
-    //logger: Logger,
 ) {
     val context = LocalContext.current
     val activity = LocalContext.current as Activity
