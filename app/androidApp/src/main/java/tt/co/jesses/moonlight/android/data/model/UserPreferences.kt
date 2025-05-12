@@ -8,14 +8,5 @@ enum class AnalyticsAcceptance {
     UNSET,
     ACCEPTED,
     REJECTED;
-
-    fun valueOf(value: Int): AnalyticsAcceptance {
-        return when (value) {
-            0 -> UNSET
-            1 -> ACCEPTED
-            2 -> REJECTED
-            else -> UNSET
-        }
-    }
 }
 

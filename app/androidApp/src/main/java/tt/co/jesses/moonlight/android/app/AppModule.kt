@@ -40,11 +40,9 @@ object MoonlightModule {
     @Provides
     fun providesUserPreferencesRepository(
         dataStore: DataStore<Preferences>,
-        @ApplicationContext context: Context,
     ): UserPreferencesRepository {
         return UserPreferencesRepository(
             dataStore = dataStore,
-            context = context,
         )
     }
 

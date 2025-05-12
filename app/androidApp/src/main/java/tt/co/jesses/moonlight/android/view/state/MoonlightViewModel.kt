@@ -1,6 +1,5 @@
 package tt.co.jesses.moonlight.android.view.state
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,10 +43,8 @@ class MoonlightViewModel @Inject constructor(
     private fun shouldShowAnalyticsModal() {
         viewModelScope.launch {
             val userPreferences = userPreferencesRepository.fetchInitialPreferences()
-            val prefsAcceptance = userPreferences.analyticsAcceptance
-            Log.d("VIEWMODEL", "prefsAcceptance: $prefsAcceptance")
             val analyticsAcceptance = AnalyticsAcceptance.values()[userPreferences.analyticsAcceptance]
-            _uiState.value = _uiState.value.copy(shouldShowAnalyticsModal = analyticsAcceptance == AnalyticsAcceptance.UNSET)
+            _uiState.value = _uiState.value.copy(isAnalyticsPreferencePending = analyticsAcceptance == AnalyticsAcceptance.UNSET)
         }
     }
 

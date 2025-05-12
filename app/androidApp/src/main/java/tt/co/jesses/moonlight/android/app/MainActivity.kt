@@ -9,17 +9,13 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import tt.co.jesses.moonlight.android.domain.EventNames
 import tt.co.jesses.moonlight.android.domain.Logger
 import tt.co.jesses.moonlight.android.view.AboutScreen
@@ -44,8 +40,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     rememberNavController()
-                    val coroutineScope = rememberCoroutineScope()
-                    val scaffoldState = rememberScaffoldState()
+                    rememberCoroutineScope()
+                    rememberScaffoldState()
                     val viewModel: MoonlightViewModel = viewModel()
                     val pagerState = rememberPagerState(
                         pageCount = { Screens.values().size },
@@ -73,21 +69,16 @@ class MainActivity : ComponentActivity() {
                             2 -> AboutScreen(viewModel = viewModel)
                         }
                     }
-
-                    val shouldShowAnalyticsModal = viewModel.uiState.collectAsState().value.shouldShowAnalyticsModal
-                    if (shouldShowAnalyticsModal) {
-                        logger.logConsole("MAIN: $shouldShowAnalyticsModal")
-                    }
                 }
             }
         }
     }
 }
 
-@Preview
-@Composable
-fun DefaultPreview() {
-    MyApplicationTheme {
-        //MoonlightScreen {}
-    }
-}
+//@Preview
+//@Composable
+//fun DefaultPreview() {
+//    MyApplicationTheme {
+//        MoonlightScreen { MoonlightViewModel() }
+//    }
+//}
