@@ -28,4 +28,4 @@ If you are experiencing difficulties with the application, you can do one of the
 2. Leave a review on the Google Play Store (#TODO - pending approval, will update)
 3. Send an email to me at [js@](js@jesses.co.tt) my web domain
 
-**moonlight** is a labour of love. If you would like to support the project, please feel free to _TODO - buy me a coffee_
+**moonlight** is a labour of love. If you would like to support the project, please feel free to [buy me a coffee](https://ko-fi.com/jessescott)
