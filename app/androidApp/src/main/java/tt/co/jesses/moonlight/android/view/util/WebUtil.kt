@@ -1,9 +1,9 @@
 package tt.co.jesses.moonlight.android.view.util
 
 import android.content.Context
-import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.net.toUri
 
 fun Context.launchCustomTabs(url: String) {
-    CustomTabsIntent.Builder().build().launchUrl(this, Uri.parse(url))
+    CustomTabsIntent.Builder().build().launchUrl(this, url.toUri())
 }
