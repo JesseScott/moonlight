@@ -23,6 +23,12 @@
         \n\nThe alpha of the gradient is extracted from the illuminated fraction of the moon - .0 indicates new moon, 1.0 indicates full moon.
     </string>
 
+    <!-- Analytics -->
+    <string name="analytics_consent_title">Analytics consent</string>
+    <string name="analytics_consent_body">To help us improve your app experience, we\'d like to collect anonymous usage data. Your privacy is important to us, and no personally identifiable information will be collected or shared.</string>
+    <string name="analytics_action_enable">Enable</string>
+    <string name="analytics_action_disable">Disable</string>
+
     <!-- Credits -->
     <string name="credits_made_by_full">moonlight was developed by the artist Jesse Scott and was originally inspired an idea by the artist Kelly Andres.</string>
     <string name="credits_made_by_key">Jesse Scott</string>

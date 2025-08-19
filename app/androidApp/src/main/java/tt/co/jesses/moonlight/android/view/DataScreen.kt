@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.delay
 import tt.co.jesses.moonlight.android.R
+import tt.co.jesses.moonlight.android.domain.Logger
 import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.android.view.sub.TableLike
 import tt.co.jesses.moonlight.android.view.util.Constants.bodyFontSize
