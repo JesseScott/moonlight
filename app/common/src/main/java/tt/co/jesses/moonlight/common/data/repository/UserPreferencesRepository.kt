@@ -1,4 +1,4 @@
-package tt.co.jesses.moonlight.android.data.repository
+package tt.co.jesses.moonlight.common.data.repository
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -6,8 +6,8 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
-import tt.co.jesses.moonlight.android.data.model.AnalyticsAcceptance
-import tt.co.jesses.moonlight.android.data.model.UserPreferences
+import tt.co.jesses.moonlight.common.data.model.AnalyticsAcceptance
+import tt.co.jesses.moonlight.common.data.model.UserPreferences
 import javax.inject.Inject
 
 class UserPreferencesRepository @Inject constructor(

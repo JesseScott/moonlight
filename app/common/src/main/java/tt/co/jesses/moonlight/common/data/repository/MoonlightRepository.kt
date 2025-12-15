@@ -1,7 +1,7 @@
-package tt.co.jesses.moonlight.android.data.repository
+package tt.co.jesses.moonlight.common.data.repository
 
-import tt.co.jesses.moonlight.android.data.model.MoonData
-import tt.co.jesses.moonlight.android.domain.normalize
+import tt.co.jesses.moonlight.common.data.model.MoonData
+import tt.co.jesses.moonlight.common.domain.normalize
 import javax.inject.Inject
 
 /**

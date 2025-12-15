@@ -1,4 +1,4 @@
-package tt.co.jesses.moonlight.android.view.util
+package tt.co.jesses.moonlight.wear.view.util
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
@@ -21,6 +21,4 @@ object GradientUtil {
         )
         return listOf(hsl, silverColor, lsb)
     }
-
-
 }

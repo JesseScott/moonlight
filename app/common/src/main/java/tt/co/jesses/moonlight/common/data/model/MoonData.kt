@@ -1,7 +1,7 @@
-package tt.co.jesses.moonlight.android.data.model
+package tt.co.jesses.moonlight.common.data.model
 
 import androidx.annotation.StringRes
-import tt.co.jesses.moonlight.android.R
+import tt.co.jesses.moonlight.common.R
 
 /**
  * Raw data representation of Moon illumination
