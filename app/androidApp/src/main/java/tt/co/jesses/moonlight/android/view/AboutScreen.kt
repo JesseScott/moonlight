@@ -5,7 +5,9 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Text
@@ -96,6 +98,7 @@ fun AboutScreen(
             colors = colorList,
             degrees = 270f,
         )
+        .windowInsetsPadding(WindowInsets.systemBars)
         .bounded(
             start = basePadding,
             top = basePadding,
