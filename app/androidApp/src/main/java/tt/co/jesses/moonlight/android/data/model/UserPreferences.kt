@@ -9,4 +9,3 @@ enum class AnalyticsAcceptance {
     ACCEPTED,
     REJECTED;
 }
-
