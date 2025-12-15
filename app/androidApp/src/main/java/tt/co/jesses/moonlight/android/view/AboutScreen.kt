@@ -1,5 +1,6 @@
 package tt.co.jesses.moonlight.android.view
 
+import android.app.Activity
 import android.content.Intent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -33,8 +34,8 @@ import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tt.co.jesses.moonlight.android.R
+import tt.co.jesses.moonlight.android.app.MainActivity
 import tt.co.jesses.moonlight.android.domain.EventNames
-import tt.co.jesses.moonlight.android.domain.Logger
 import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.android.view.sub.HyperLinkTextEngine
 import tt.co.jesses.moonlight.android.view.sub.HyperlinkText
@@ -57,7 +58,8 @@ fun AboutScreen(
     viewModel: MoonlightViewModel = viewModel(),
 ) {
     val context = LocalContext.current
-    val logger = Logger(context)
+    val activity = LocalContext.current as Activity
+    val logger = (activity as MainActivity).logger
 
     val creditData = viewModel.uiState.collectAsState().value.creditData
     val illuminationData = viewModel.uiState.collectAsState().value.illuminationData
