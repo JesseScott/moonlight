@@ -2,7 +2,7 @@ package tt.co.jesses.moonlight.android.view.util
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
-import tt.co.jesses.moonlight.android.data.model.MoonData
+import tt.co.jesses.moonlight.common.data.model.MoonData
 
 object GradientUtil {
 

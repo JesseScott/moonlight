@@ -1,9 +1,9 @@
-package tt.co.jesses.moonlight.android.data.repository
+package tt.co.jesses.moonlight.common.data.repository
 
 import android.util.Log
 import org.shredzone.commons.suncalc.MoonIllumination
 import org.shredzone.commons.suncalc.MoonPosition
-import tt.co.jesses.moonlight.android.data.model.MoonData
+import tt.co.jesses.moonlight.common.data.model.MoonData
 import javax.inject.Inject
 
 /**

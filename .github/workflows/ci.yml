@@ -24,3 +24,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew :androidApp:assembleDebug
         working-directory: ./app
+
+      - name: Run Common Module Unit Tests
+        run: ./gradlew :common:testDebugUnitTest
+        working-directory: ./app

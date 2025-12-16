@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Data -->
+    <string name="data_fraction">Fraction</string>
+    <string name="data_phase">Phase</string>
+    <string name="data_angle">Angle</string>
+    <string name="data_azimuth">Azimuth</string>
+    <string name="data_altitude">Altitude</string>
+    <string name="data_distance">Distance</string>
+    <string name="data_parallactic_angle">Parallactic Angle</string>
+</resources>
