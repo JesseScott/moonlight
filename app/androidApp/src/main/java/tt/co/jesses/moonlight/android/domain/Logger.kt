@@ -9,8 +9,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import tt.co.jesses.moonlight.android.data.model.AnalyticsAcceptance
-import tt.co.jesses.moonlight.android.data.repository.UserPreferencesRepository
+import tt.co.jesses.moonlight.common.data.model.AnalyticsAcceptance
+import tt.co.jesses.moonlight.common.data.repository.UserPreferencesRepository
 import tt.co.jesses.moonlight.android.view.util.VersionUtil
 import javax.inject.Inject
 

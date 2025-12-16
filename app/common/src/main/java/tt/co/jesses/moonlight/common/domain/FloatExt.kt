@@ -1,4 +1,4 @@
-package tt.co.jesses.moonlight.android.domain
+package tt.co.jesses.moonlight.common.domain
 
 /**
  * Normalize a float value to a range

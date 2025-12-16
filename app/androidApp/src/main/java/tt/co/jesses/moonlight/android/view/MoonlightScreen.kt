@@ -21,7 +21,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import tt.co.jesses.moonlight.android.app.MainActivity
 import tt.co.jesses.moonlight.android.app.MyApplicationTheme
-import tt.co.jesses.moonlight.android.data.model.AnalyticsAcceptance
+import tt.co.jesses.moonlight.common.data.model.AnalyticsAcceptance
 import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.android.view.sub.AnalyticsOptInDialog
 import tt.co.jesses.moonlight.android.view.util.GradientUtil

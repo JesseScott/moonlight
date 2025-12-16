@@ -15,9 +15,9 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import tt.co.jesses.moonlight.android.data.repository.MoonlightDataSource
-import tt.co.jesses.moonlight.android.data.repository.MoonlightRepository
-import tt.co.jesses.moonlight.android.data.repository.UserPreferencesRepository
+import tt.co.jesses.moonlight.common.data.repository.MoonlightDataSource
+import tt.co.jesses.moonlight.common.data.repository.MoonlightRepository
+import tt.co.jesses.moonlight.common.data.repository.UserPreferencesRepository
 import tt.co.jesses.moonlight.android.domain.Logger
 import javax.inject.Singleton
 
