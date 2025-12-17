@@ -36,7 +36,7 @@ object MoonlightModule {
     fun provideMoonlightDataSource(): MoonlightDataSource {
         return MoonlightDataSource()
     }
-    
+
     @Provides
     fun providesUserPreferencesRepository(
         dataStore: DataStore<Preferences>,
