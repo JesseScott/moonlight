@@ -23,6 +23,8 @@ class MoonlightViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(MoonlightUiState())
     val uiState: StateFlow<MoonlightUiState> = _uiState.asStateFlow()
 
+    val hasSwiped = userPreferencesRepository.hasSwiped
+
     val refreshCycle: Duration
         get() {
             return 30.seconds // todo figure out Debug flag
@@ -37,6 +39,12 @@ class MoonlightViewModel @Inject constructor(
         viewModelScope.launch {
             val illuminationData = moonlightRepository.getMoonIllumination()
             _uiState.value = _uiState.value.copy(illuminationData = illuminationData)
+        }
+    }
+
+    fun setHasSwiped(hasSwiped: Boolean) {
+        viewModelScope.launch {
+            userPreferencesRepository.setHasSwiped(hasSwiped)
         }
     }
 
