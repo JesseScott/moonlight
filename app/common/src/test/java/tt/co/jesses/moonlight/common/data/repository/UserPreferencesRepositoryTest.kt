@@ -3,7 +3,9 @@ package tt.co.jesses.moonlight.common.data.repository
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.mutablePreferencesOf
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -30,9 +32,8 @@ class UserPreferencesRepositoryTest {
     @Test
     fun `fetchInitialPreferences should return correct acceptance`() = runTest {
         // Given
-        val preferences = mock<Preferences>()
         val key = intPreferencesKey("analytics_acceptance")
-        whenever(preferences[key]).thenReturn(AnalyticsAcceptance.ACCEPTED.ordinal)
+        val preferences = mutablePreferencesOf(key to AnalyticsAcceptance.ACCEPTED.ordinal)
         whenever(dataStore.data).thenReturn(flowOf(preferences))
 
         // When
@@ -45,9 +46,7 @@ class UserPreferencesRepositoryTest {
     @Test
     fun `fetchInitialPreferences should return unset when key is missing`() = runTest {
         // Given
-        val preferences = mock<Preferences>()
-        val key = intPreferencesKey("analytics_acceptance")
-        whenever(preferences[key]).thenReturn(null)
+        val preferences = emptyPreferences()
         whenever(dataStore.data).thenReturn(flowOf(preferences))
 
         // When
