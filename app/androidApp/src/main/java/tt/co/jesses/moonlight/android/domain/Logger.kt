@@ -12,6 +12,7 @@ import kotlinx.coroutines.runBlocking
 import tt.co.jesses.moonlight.common.data.model.AnalyticsAcceptance
 import tt.co.jesses.moonlight.common.data.repository.UserPreferencesRepository
 import tt.co.jesses.moonlight.android.view.util.VersionUtil
+import tt.co.jesses.moonlight.android.BuildConfig
 import javax.inject.Inject
 
 class Logger @Inject constructor(
@@ -67,7 +68,9 @@ class Logger @Inject constructor(
     }
 
     fun logConsole(message: String) {
-        Log.d(TAG, message)
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, message)
+        }
     }
 
     companion object {

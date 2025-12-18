@@ -4,6 +4,7 @@ import android.util.Log
 import org.shredzone.commons.suncalc.MoonIllumination
 import org.shredzone.commons.suncalc.MoonPosition
 import tt.co.jesses.moonlight.common.data.model.MoonData
+import tt.co.jesses.moonlight.common.BuildConfig
 import javax.inject.Inject
 
 /**
@@ -17,8 +18,10 @@ class MoonlightDataSource @Inject constructor() {
     fun getMoonIllumination(): MoonData {
         val illumination = MoonIllumination.compute().execute()
         val position = MoonPosition.compute().execute()
-        Log.d(TAG, "MoonIllumination from SunCalc: $illumination")
-        Log.d(TAG, "MoonPosition from SunCalc: $position")
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "MoonIllumination from SunCalc: $illumination")
+            Log.d(TAG, "MoonPosition from SunCalc: $position")
+        }
         return MoonData(
             fraction = illumination.fraction.toFloat(),
             phase = illumination.phase.toFloat(),
