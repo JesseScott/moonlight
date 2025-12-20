@@ -7,8 +7,6 @@
     <string name="title_data">data</string>
     <string name="title_about">about</string>
 
-    <string name="swipe_to_see_more">Swipe to see more</string>
-
     <!-- Data -->
     <string name="data_fraction">Fraction</string>
     <string name="data_phase">Phase</string>
