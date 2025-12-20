@@ -1,4 +1,4 @@
-package tt.co.jesses.moonlight.widget.util
+package tt.co.jesses.moonlight.common.util
 
 import android.graphics.Bitmap
 import android.graphics.Canvas

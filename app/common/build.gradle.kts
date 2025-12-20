@@ -15,10 +15,6 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
-    buildFeatures {
-        buildConfig = true
-    }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -35,9 +31,18 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
+    }
 }
 
 dependencies {
+    implementation("androidx.compose.ui:ui:1.6.2")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("org.shredzone.commons:commons-suncalc:3.7")
     implementation("androidx.datastore:datastore-preferences:1.1.1")
