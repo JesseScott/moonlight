@@ -17,8 +17,10 @@ class MoonlightDataSource @Inject constructor() {
     fun getMoonIllumination(): MoonData {
         val illumination = MoonIllumination.compute().execute()
         val position = MoonPosition.compute().execute()
-        Log.d(TAG, "MoonIllumination from SunCalc: $illumination")
-        Log.d(TAG, "MoonPosition from SunCalc: $position")
+        if (tt.co.jesses.moonlight.common.BuildConfig.DEBUG) {
+            Log.d(TAG, "MoonIllumination from SunCalc: $illumination")
+            Log.d(TAG, "MoonPosition from SunCalc: $position")
+        }
         return MoonData(
             fraction = illumination.fraction.toFloat(),
             phase = illumination.phase.toFloat(),
