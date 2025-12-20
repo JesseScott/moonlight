@@ -17,10 +17,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import tt.co.jesses.moonlight.android.R
 import tt.co.jesses.moonlight.android.domain.EventNames
 import tt.co.jesses.moonlight.android.domain.Logger
 import tt.co.jesses.moonlight.android.view.AboutScreen
@@ -57,8 +60,9 @@ class MainActivity : ComponentActivity() {
                     LaunchedEffect(key1 = hasSwiped) {
                         if (!hasSwiped) {
                             coroutineScope.launch {
+                                delay(5000)
                                 scaffoldState.snackbarHostState.showSnackbar(
-                                    message = "Swipe to see more"
+                                    message = getString(R.string.swipe_to_see_more)
                                 )
                             }
                         }
