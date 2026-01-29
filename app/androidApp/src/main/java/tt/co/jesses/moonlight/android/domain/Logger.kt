@@ -67,7 +67,9 @@ class Logger @Inject constructor(
     }
 
     fun logConsole(message: String) {
-        Log.d(TAG, message)
+        if (tt.co.jesses.moonlight.android.BuildConfig.DEBUG) {
+            Log.d(TAG, message)
+        }
     }
 
     companion object {
