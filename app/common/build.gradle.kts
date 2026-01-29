@@ -31,25 +31,16 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
 }
 
 dependencies {
-    implementation("androidx.compose.ui:ui:1.6.2")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("org.shredzone.commons:commons-suncalc:3.7")
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.50")
-    kapt("com.google.dagger:hilt-compiler:2.50")
+    implementation("com.google.dagger:hilt-android:2.49")
+    kapt("com.google.dagger:hilt-compiler:2.44")
 
     // Testing
     testImplementation("junit:junit:4.13.2")
