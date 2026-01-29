@@ -48,6 +48,12 @@ class MoonlightViewModel @Inject constructor(
         }
     }
 
+    fun setHasSwiped(hasSwiped: Boolean) {
+        viewModelScope.launch {
+            userPreferencesRepository.setHasSwiped(hasSwiped)
+        }
+    }
+
     fun updateAnalyticsAcceptance(analyticsAcceptance: AnalyticsAcceptance) {
         viewModelScope.launch {
             userPreferencesRepository.updateAnalyticsAcceptance(analyticsAcceptance.ordinal)
