@@ -20,7 +20,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
+        kotlinCompilerExtensionVersion = "1.5.1"
     }
 
     packaging {
@@ -64,8 +64,8 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.8.2")
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.49")
-    kapt("com.google.dagger:hilt-compiler:2.44")
+    implementation("com.google.dagger:hilt-android:2.50")
+    kapt("com.google.dagger:hilt-compiler:2.50")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     // Lifecycle
