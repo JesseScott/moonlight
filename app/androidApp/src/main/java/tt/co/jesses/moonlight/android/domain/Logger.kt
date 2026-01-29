@@ -32,7 +32,7 @@ class Logger @Inject constructor(
     private fun shouldEnableAnalytics() {
         CoroutineScope(Dispatchers.Default).launch {
             val userPreferences = userPreferencesRepository.fetchInitialPreferences()
-            val analyticsAcceptance = AnalyticsAcceptance.values()[userPreferences.analyticsAcceptance]
+            val analyticsAcceptance = AnalyticsAcceptance.entries[userPreferences.analyticsAcceptance]
             analyticsAccepted = analyticsAcceptance == AnalyticsAcceptance.ACCEPTED
         }
     }
@@ -67,7 +67,9 @@ class Logger @Inject constructor(
     }
 
     fun logConsole(message: String) {
-        Log.d(TAG, message)
+        if (tt.co.jesses.moonlight.android.BuildConfig.DEBUG) {
+            Log.d(TAG, message)
+        }
     }
 
     companion object {
