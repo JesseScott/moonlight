@@ -23,6 +23,8 @@ class MoonlightViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(MoonlightUiState())
     val uiState: StateFlow<MoonlightUiState> = _uiState.asStateFlow()
 
+    val hasSwiped = userPreferencesRepository.hasSwiped
+
     val refreshCycle: Duration
         get() {
             return 30.seconds // todo figure out Debug flag
@@ -40,17 +42,17 @@ class MoonlightViewModel @Inject constructor(
         }
     }
 
+    fun setHasSwiped(hasSwiped: Boolean) {
+        viewModelScope.launch {
+            userPreferencesRepository.setHasSwiped(hasSwiped)
+        }
+    }
+
     private fun shouldShowAnalyticsModal() {
         viewModelScope.launch {
             val userPreferences = userPreferencesRepository.fetchInitialPreferences()
             val analyticsAcceptance = AnalyticsAcceptance.values()[userPreferences.analyticsAcceptance]
             _uiState.value = _uiState.value.copy(isAnalyticsPreferencePending = analyticsAcceptance == AnalyticsAcceptance.UNSET)
-        }
-    }
-
-    fun setHasSwiped(hasSwiped: Boolean) {
-        viewModelScope.launch {
-            userPreferencesRepository.setHasSwiped(hasSwiped)
         }
     }
 
