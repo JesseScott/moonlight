@@ -50,7 +50,7 @@ dependencies {
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.49")
-    kapt("com.google.dagger:hilt-compiler:2.44")
+    kapt("com.google.dagger:hilt-compiler:2.49")
 
     // Testing
     testImplementation("junit:junit:4.13.2")
