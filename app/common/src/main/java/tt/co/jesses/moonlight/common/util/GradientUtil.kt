@@ -1,9 +1,7 @@
 package tt.co.jesses.moonlight.common.util
 
-import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.LinearGradient
-import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Shader
 import androidx.compose.ui.graphics.Color
