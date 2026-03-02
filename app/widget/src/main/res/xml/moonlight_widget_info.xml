@@ -3,9 +3,7 @@
     android:minWidth="40dp"
     android:minHeight="40dp"
     android:updatePeriodMillis="86400000"
-    android:initialLayout="@layout/moonlight_widget_layout"
-    android:previewImage="@drawable/moonlight_widget_preview"
+    android:initialLayout="@layout/glance_default_loading_layout"
     android:resizeMode="horizontal|vertical"
-    android:widgetCategory="home_screen"
-    android:description="@string/app_widget_description">
+    android:widgetCategory="home_screen">
 </appwidget-provider>

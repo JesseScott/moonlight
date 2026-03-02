@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="wallpaper_name">moonlight</string>
-    <string name="app_widget_description">A beautiful gradient widget displaying Moonlight.</string>
 </resources>

@@ -1,15 +1,13 @@
 package tt.co.jesses.moonlight.widget
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.toArgb
-import androidx.core.graphics.createBitmap
 import androidx.glance.BitmapImageProvider
 import androidx.glance.GlanceId
 import androidx.glance.Image
-import androidx.glance.LocalContext
-import androidx.glance.LocalSize
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.provideContent
 import androidx.glance.layout.Alignment
@@ -28,12 +26,9 @@ class MoonlightWidget : GlanceAppWidget() {
 
     @Composable
     fun MoonlightWidgetContent(context: Context) {
-        val size = LocalSize.current
-        val density = LocalContext.current.resources.displayMetrics.density
-        val widthPx = (size.width.value * density).toInt()
-        val heightPx = (size.height.value * density).toInt()
-
-        val bitmap = createBitmap(widthPx, heightPx)
+        val width = 256
+        val height = 256
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
 
         drawAngledGradient(
@@ -49,8 +44,8 @@ class MoonlightWidget : GlanceAppWidget() {
             Image(
                 provider = BitmapImageProvider(bitmap),
                 contentDescription = "Moonlight gradient background",
-                modifier = androidx.glance.GlanceModifier.fillMaxSize()
             )
+            Text("Moonlight Widget")
         }
     }
 }
