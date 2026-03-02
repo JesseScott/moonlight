@@ -43,7 +43,6 @@ import tt.co.jesses.moonlight.android.view.util.Constants
 import tt.co.jesses.moonlight.android.view.util.Constants.basePadding
 import tt.co.jesses.moonlight.android.view.util.Constants.bodyFontSize
 import tt.co.jesses.moonlight.android.view.util.Constants.headerFontSize
-import tt.co.jesses.moonlight.android.view.util.EmailUtil.composeEmail
 import tt.co.jesses.moonlight.android.view.util.GradientUtil
 import tt.co.jesses.moonlight.android.view.util.VersionUtil
 import tt.co.jesses.moonlight.android.view.util.angledGradientBackground

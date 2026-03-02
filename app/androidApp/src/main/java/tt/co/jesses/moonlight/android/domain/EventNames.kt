@@ -21,7 +21,6 @@ object EventNames {
         const val SNACKBAR = "snackbar"
 
         object Type {
-            const val HELP = "help"
             const val FEEDBACK = "feedback"
             const val COFFEE = "coffee"
             const val OSS = "oss"

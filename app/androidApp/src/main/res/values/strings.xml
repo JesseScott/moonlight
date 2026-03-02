@@ -57,7 +57,7 @@
 
     <string name="credits_info_feedback">Feedback</string>
     <string name="credits_info_feedback_message">Send me your feedback, questions, or concerns!</string>
-    <string name="credits_info_feedback_action">feedback</string>
+    <string name="credits_info_feedback_action">submit</string>
     <string name="credits_info_feedback_action_url">https://workable-zydeco-5d0.notion.site/3171a41696ff80fdb7a8d43084bb74cb?pvs=105</string>
 
     <string name="credits_info_coffee">Buy me a coffee</string>
