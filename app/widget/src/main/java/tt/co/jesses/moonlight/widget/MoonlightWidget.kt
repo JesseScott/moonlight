@@ -14,6 +14,7 @@ import androidx.glance.layout.Alignment
 import androidx.glance.layout.Box
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.text.Text
+import tt.co.jesses.moonlight.widget.R
 import tt.co.jesses.moonlight.common.util.GradientUtil
 import tt.co.jesses.moonlight.common.util.drawAngledGradient
 
@@ -43,9 +44,9 @@ class MoonlightWidget : GlanceAppWidget() {
         ) {
             Image(
                 provider = BitmapImageProvider(bitmap),
-                contentDescription = "Moonlight gradient background",
+                contentDescription = context.getString(R.string.widget_content_description),
             )
-            Text("Moonlight Widget")
+            Text(context.getString(R.string.widget_name))
         }
     }
 }
