@@ -18,9 +18,11 @@ class UserPreferencesRepository @Inject constructor(
 ) {
     private val _isAnalyticsPreferencePending = MutableStateFlow(true)
 
-    val hasSwiped: Flow<Boolean> = dataStore.data.map { preferences ->
-        preferences[PreferencesKeys.HAS_SWIPED] ?: false
-    }
+    val hasSwiped: Flow<Boolean>
+        get() = dataStore.data
+            .map { preferences ->
+                preferences[PreferencesKeys.HAS_SWIPED] ?: false
+            }
 
     suspend fun setHasSwiped(hasSwiped: Boolean) {
         dataStore.edit { preferences ->
@@ -29,9 +31,10 @@ class UserPreferencesRepository @Inject constructor(
     }
 
     suspend fun fetchInitialPreferences(): UserPreferences {
-        val preferences = dataStore.data.first().toPreferences()
+        val preferences = dataStore.data.first()
         return UserPreferences(
-            analyticsAcceptance = preferences[PreferencesKeys.ANALYTICS_ACCEPTANCE] ?: AnalyticsAcceptance.UNSET.ordinal
+            analyticsAcceptance = preferences[PreferencesKeys.ANALYTICS_ACCEPTANCE] ?: AnalyticsAcceptance.UNSET.ordinal,
+            hasSwiped = preferences[PreferencesKeys.HAS_SWIPED] ?: false
         )
     }
 
