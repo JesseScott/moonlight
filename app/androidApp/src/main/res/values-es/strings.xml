@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app">moonlight</string>
+
+    <!-- Screens -->
+    <string name="title_moon">luna</string>
+    <string name="title_data">datos</string>
+    <string name="title_about">info</string>
+
+    <string name="swipe_to_see_more">Desliza para ver más</string>
+
+    <!-- Data -->
+    <string name="data_fraction">Fracción</string>
+    <string name="data_phase">Fase</string>
+    <string name="data_angle">Ángulo</string>
+    <string name="data_azimuth">Azimut</string>
+    <string name="data_altitude">Altitud</string>
+    <string name="data_distance">Distancia</string>
+    <string name="data_parallactic_angle">Ángulo Paraláctico</string>
+    <string name="data_description">
+        Los datos anteriores son una representación en tiempo real del estado actual de la luna. Los datos se utilizan como un algoritmo para generar un degradado personalizado.
+        \n\nEl tono del degradado se obtiene mapeando la fase actual, que comienza en -180.0 (luna nueva, creciente), pasa por 0.0 (luna llena) y se mueve hacia 180.0 (menguante, luna nueva).
+        \n\nLa saturación está impulsada por la altitud: 0.0 significa que el centro de la luna está en el horizonte, 90.0 en el cenit (directamente sobre su cabeza).
+        \n\nLa luminosidad se deriva del ángulo de iluminación de la luna en relación con la tierra. La luna es creciente si el ángulo es negativo y menguante si es positivo.
+        \n\nEl alfa del degradado se extrae de la fracción iluminada de la luna: .0 indica luna nueva, 1.0 indica luna llena.
+    </string>
+
+    <!-- Analytics -->
+    <string name="analytics_consent_title">Consentimiento de analíticas</string>
+    <string name="analytics_consent_body">Para ayudarnos a mejorar su experiencia con la aplicación, nos gustaría recopilar datos de uso anónimos. Su privacidad es importante para nosotros y no se recopilará ni compartirá ninguna información de identificación personal.</string>
+    <string name="analytics_action_enable">Habilitar</string>
+    <string name="analytics_action_disable">Deshabilitar</string>
+
+    <!-- Credits -->
+    <string name="credits_made_by_full">moonlight fue desarrollado por el artista Jesse Scott y se inspiró originalmente en una idea de la artista Kelly Andres.</string>
+    <string name="credits_made_by_key">Jesse Scott</string>
+    <string name="credits_made_by_value">http://jesses.co.tt</string>
+    <string name="credits_inspired_by_key">Kelly Andres</string>
+    <string name="credits_inspired_by_value">https://kellyandres.xyz</string>
+
+    <string name="credits_source_full">
+        moonlight es una aplicación de código abierto.
+        \n\nEl código se puede encontrar en GitHub y a continuación se muestra una lista de todas las bibliotecas utilizadas en este proyecto.
+        Un agradecimiento especial a SunCalc, sin el cual este proyecto no sería posible.
+    </string>
+    <string name="credits_source_key">GitHub</string>
+    <string name="credits_source_value">https://github.com/JesseScott/moonlight</string>
+    <string name="credits_suncalc_key">SunCalc</string>
+    <string name="credits_suncalc_value">https://github.com/shred/commons-suncalc</string>
+
+    <string name="credits_credits_header">créditos</string>
+    <string name="credits_ack_header">agradecimientos</string>
+    <string name="credits_oss">Licencias de código abierto</string>
+    <string name="credits_info_header">información</string>
+
+    <string name="credits_info_version">Versión %s</string>
+    <string name="credits_info_version_label">Versión: </string>
+
+    <string name="credits_info_feedback">Comentarios</string>
+    <string name="credits_info_feedback_message">¡Envíeme sus comentarios, preguntas o inquietudes!</string>
+    <string name="credits_info_feedback_action">enviar</string>
+    <string name="credits_info_feedback_action_url">https://workable-zydeco-5d0.notion.site/3171a41696ff80fdb7a8d43084bb74cb?pvs=105</string>
+
+    <string name="credits_info_coffee">Cómprame un café</string>
+    <string name="credits_info_coffee_message">Este proyecto es un trabajo de amor. Si puede y está dispuesto a apoyar mi trabajo, cómpreme un café.</string>
+    <string name="credits_info_coffee_action">apoyar</string>
+    <string name="credits_info_coffee_action_url">https://ko-fi.com/jessescott</string>
+</resources>

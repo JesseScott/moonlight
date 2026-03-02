@@ -277,7 +277,7 @@ fun AboutScreen(
                 Text(
                     text = buildAnnotatedString {
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                            append("Version: ")
+                            append(stringResource(R.string.credits_info_version_label))
                         }
                         append(versionInfo)
                     },
