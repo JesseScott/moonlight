@@ -86,7 +86,7 @@ class UserPreferencesRepositoryTest {
         val result = repository.hasSwiped.first()
 
         // Then
-        assertEquals(true, result, "Should emit true when datastore has true")
+        assertEquals(true, result)
     }
 
     @Test
