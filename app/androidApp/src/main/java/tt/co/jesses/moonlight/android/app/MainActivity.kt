@@ -17,7 +17,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,7 +51,7 @@ class MainActivity : ComponentActivity() {
                     val scaffoldState = rememberScaffoldState()
                     val viewModel: MoonlightViewModel = viewModel()
                     val pagerState = rememberPagerState(
-                        pageCount = { Screens.values().size },
+                        pageCount = { Screens.entries.size },
                         initialPage = 0,
                     )
                     val hasSwiped by viewModel.hasSwiped.collectAsState(initial = false)
