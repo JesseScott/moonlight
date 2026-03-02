@@ -81,6 +81,7 @@ class UserPreferencesRepositoryTest {
         val key = booleanPreferencesKey("has_swiped")
         val preferences = mutablePreferencesOf(key to true)
         whenever(dataStore.data).thenReturn(flowOf(preferences))
+        val repository = UserPreferencesRepository(dataStore)
 
         // When
         val result = repository.hasSwiped.first()
@@ -106,6 +107,7 @@ class UserPreferencesRepositoryTest {
         val key = booleanPreferencesKey("has_swiped")
         val preferences = mutablePreferencesOf(key to true)
         whenever(dataStore.data).thenReturn(flowOf(preferences))
+        val repository = UserPreferencesRepository(dataStore)
 
         // When
         val result = repository.fetchInitialPreferences()
