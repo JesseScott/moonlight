@@ -1,11 +1,13 @@
 package tt.co.jesses.moonlight.widget
 
-import android.service.wallpaper.WallpaperService
-import android.view.SurfaceHolder
 import android.graphics.Canvas
-import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
+import android.service.wallpaper.WallpaperService
+import android.view.SurfaceHolder
+import androidx.compose.ui.graphics.toArgb
+import tt.co.jesses.moonlight.common.util.GradientUtil
+import tt.co.jesses.moonlight.common.util.drawAngledGradient
 
 class MoonlightWallpaperService : WallpaperService() {
 
@@ -47,8 +49,12 @@ class MoonlightWallpaperService : WallpaperService() {
             try {
                 canvas = holder.lockCanvas()
                 if (canvas != null) {
-                    // For now, just draw a color
-                    canvas.drawColor(Color.BLACK)
+                    // Draw your gradient here
+                    drawAngledGradient(
+                        degrees = 270f,
+                        canvas = canvas,
+                        colors = GradientUtil.generateHSLColor().map { it.toArgb() }
+                    )
                 }
             } finally {
                 if (canvas != null) {
@@ -58,7 +64,8 @@ class MoonlightWallpaperService : WallpaperService() {
 
             handler.removeCallbacks(drawRunner)
             if (isVisible) {
-                handler.postDelayed(drawRunner, 1000L / 60L) // 60fps
+                // Continue drawing at 60fps only if visible
+                handler.postDelayed(drawRunner, 1000L / 60L)
             }
         }
     }
