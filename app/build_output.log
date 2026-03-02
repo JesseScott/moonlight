@@ -1,0 +1,155 @@
+Configuration on demand is an incubating feature.
+Calculating task graph as configuration cache cannot be reused because the file system entry '../../home/jules/.konan/kotlin-native-prebuilt-linux-x86_64-1.9.0/konan/lib/kotlin-native-compiler-embeddable.jar' has been created.
+
+> Configure project :shared
+w: Kotlin Multiplatform <-> Android Gradle Plugin compatibility issue: The applied Android Gradle Plugin version (8.6.0) is higher than the maximum known to the Kotlin Gradle Plugin. Tooling stability in such configuration isn't tested, please report encountered issues to https://kotl.in/issue
+Minimum supported Android Gradle Plugin version: 7.0
+Maximum tested Android Gradle Plugin version: 8.2
+To suppress this message add 'kotlin.mpp.androidGradlePluginCompatibility.nowarn=true' to your gradle.properties
+
+w: Please use `androidTarget` function instead of `android` to configure android target inside `kotlin { }` block.
+See the details here: https://kotl.in/android-target-dsl
+
+Some Kotlin/Native targets cannot be built on this linux_x64 machine and are disabled:
+    * In project ':shared':
+        * targets 'iosX64', 'iosArm64', 'iosSimulatorArm64' (can be built with one of the hosts: macos_x64, macos_arm64)
+To hide this message, add 'kotlin.native.ignoreDisabledTargets=true' to the Gradle properties.
+
+
+> Task :common:preBuild UP-TO-DATE
+> Task :common:preDebugBuild UP-TO-DATE
+> Task :shared:preBuild UP-TO-DATE
+> Task :shared:preDebugBuild UP-TO-DATE
+> Task :androidApp:preBuild UP-TO-DATE
+> Task :androidApp:preDebugBuild UP-TO-DATE
+> Task :androidApp:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :shared:writeDebugAarMetadata UP-TO-DATE
+> Task :androidApp:generateDebugBuildConfig UP-TO-DATE
+> Task :common:writeDebugAarMetadata UP-TO-DATE
+> Task :androidApp:generateDebugResValues UP-TO-DATE
+> Task :androidApp:debugOssDependencyTask UP-TO-DATE
+> Task :androidApp:injectCrashlyticsMappingFileIdDebug UP-TO-DATE
+> Task :androidApp:debugOssLicensesTask UP-TO-DATE
+> Task :common:generateDebugResValues UP-TO-DATE
+> Task :shared:generateDebugResValues UP-TO-DATE
+> Task :androidApp:processDebugGoogleServices UP-TO-DATE
+> Task :shared:generateDebugResources UP-TO-DATE
+> Task :common:generateDebugResources UP-TO-DATE
+> Task :androidApp:generateDebugResources UP-TO-DATE
+> Task :androidApp:checkDebugAarMetadata UP-TO-DATE
+> Task :androidApp:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :androidApp:extractDeepLinksDebug UP-TO-DATE
+> Task :common:extractDeepLinksDebug UP-TO-DATE
+> Task :common:processDebugManifest UP-TO-DATE
+> Task :shared:extractDeepLinksDebug UP-TO-DATE
+> Task :shared:packageDebugResources UP-TO-DATE
+> Task :common:packageDebugResources UP-TO-DATE
+> Task :androidApp:packageDebugResources UP-TO-DATE
+> Task :shared:compileDebugLibraryResources UP-TO-DATE
+> Task :shared:processDebugManifest UP-TO-DATE
+> Task :androidApp:parseDebugLocalResources UP-TO-DATE
+> Task :common:compileDebugLibraryResources UP-TO-DATE
+> Task :common:parseDebugLocalResources UP-TO-DATE
+> Task :androidApp:mapDebugSourceSetPaths UP-TO-DATE
+> Task :common:generateDebugRFile UP-TO-DATE
+> Task :common:generateDebugBuildConfig UP-TO-DATE
+> Task :androidApp:processDebugMainManifest UP-TO-DATE
+> Task :androidApp:processDebugManifest
+> Task :shared:parseDebugLocalResources
+> Task :androidApp:processDebugManifestForPackage
+> Task :shared:generateDebugRFile
+> Task :common:javaPreCompileDebug
+> Task :shared:javaPreCompileDebug
+> Task :androidApp:javaPreCompileDebug FROM-CACHE
+> Task :androidApp:mergeDebugShaders
+> Task :androidApp:compileDebugShaders NO-SOURCE
+> Task :androidApp:generateDebugAssets UP-TO-DATE
+> Task :common:mergeDebugShaders
+> Task :common:compileDebugShaders NO-SOURCE
+> Task :common:generateDebugAssets UP-TO-DATE
+> Task :common:packageDebugAssets
+> Task :shared:mergeDebugShaders
+> Task :shared:compileDebugShaders NO-SOURCE
+> Task :shared:generateDebugAssets UP-TO-DATE
+> Task :shared:packageDebugAssets
+> Task :androidApp:mergeDebugAssets
+> Task :androidApp:compressDebugAssets
+> Task :androidApp:desugarDebugFileDependencies
+> Task :androidApp:mergeDebugResources
+> Task :androidApp:checkDebugDuplicateClasses
+
+> Task :common:kaptGenerateStubsDebugKotlin
+e: java.lang.IllegalAccessError: superclass access check failed: class org.jetbrains.kotlin.kapt3.base.javac.KaptJavaCompiler (in unnamed module @0x1a875c51) cannot access class com.sun.tools.javac.main.JavaCompiler (in module jdk.compiler) because module jdk.compiler does not export com.sun.tools.javac.main to unnamed module @0x1a875c51
+	at java.base/java.lang.ClassLoader.defineClass1(Native Method)
+	at java.base/java.lang.ClassLoader.defineClass(ClassLoader.java:1027)
+	at java.base/java.security.SecureClassLoader.defineClass(SecureClassLoader.java:150)
+	at java.base/java.net.URLClassLoader.defineClass(URLClassLoader.java:524)
+	at java.base/java.net.URLClassLoader$1.run(URLClassLoader.java:427)
+	at java.base/java.net.URLClassLoader$1.run(URLClassLoader.java:421)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:714)
+	at java.base/java.net.URLClassLoader.findClass(URLClassLoader.java:420)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:593)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)
+	at org.jetbrains.kotlin.kapt3.base.KaptContext.<init>(KaptContext.kt:55)
+	at org.jetbrains.kotlin.kapt3.KaptContextForStubGeneration.<init>(KaptContextForStubGeneration.kt:38)
+	at org.jetbrains.kotlin.kapt3.AbstractKapt3Extension.contextForStubGeneration(Kapt3Extension.kt:295)
+	at org.jetbrains.kotlin.kapt3.AbstractKapt3Extension.analysisCompleted(Kapt3Extension.kt:174)
+	at org.jetbrains.kotlin.kapt3.ClasspathBasedKapt3Extension.analysisCompleted(Kapt3Extension.kt:104)
+	at org.jetbrains.kotlin.cli.jvm.compiler.TopDownAnalyzerFacadeForJVM$analyzeFilesWithJavaIntegration$2.invoke(TopDownAnalyzerFacadeForJVM.kt:104)
+	at org.jetbrains.kotlin.cli.jvm.compiler.TopDownAnalyzerFacadeForJVM.analyzeFilesWithJavaIntegration(TopDownAnalyzerFacadeForJVM.kt:114)
+	at org.jetbrains.kotlin.cli.jvm.compiler.TopDownAnalyzerFacadeForJVM.analyzeFilesWithJavaIntegration$default(TopDownAnalyzerFacadeForJVM.kt:88)
+	at org.jetbrains.kotlin.cli.jvm.compiler.KotlinToJVMBytecodeCompiler$analyze$1.invoke(KotlinToJVMBytecodeCompiler.kt:256)
+	at org.jetbrains.kotlin.cli.jvm.compiler.KotlinToJVMBytecodeCompiler$analyze$1.invoke(KotlinToJVMBytecodeCompiler.kt:42)
+	at org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport.analyzeAndReport(AnalyzerWithCompilerReport.kt:115)
+	at org.jetbrains.kotlin.cli.jvm.compiler.KotlinToJVMBytecodeCompiler.analyze(KotlinToJVMBytecodeCompiler.kt:247)
+	at org.jetbrains.kotlin.cli.jvm.compiler.KotlinToJVMBytecodeCompiler.compileModules$cli(KotlinToJVMBytecodeCompiler.kt:87)
+	at org.jetbrains.kotlin.cli.jvm.compiler.KotlinToJVMBytecodeCompiler.compileModules$cli$default(KotlinToJVMBytecodeCompiler.kt:47)
+	at org.jetbrains.kotlin.cli.jvm.K2JVMCompiler.doExecute(K2JVMCompiler.kt:168)
+	at org.jetbrains.kotlin.cli.jvm.K2JVMCompiler.doExecute(K2JVMCompiler.kt:53)
+	at org.jetbrains.kotlin.cli.common.CLICompiler.execImpl(CLICompiler.kt:100)
+	at org.jetbrains.kotlin.cli.common.CLICompiler.execImpl(CLICompiler.kt:46)
+	at org.jetbrains.kotlin.cli.common.CLITool.exec(CLITool.kt:101)
+	at org.jetbrains.kotlin.incremental.IncrementalJvmCompilerRunner.runCompiler(IncrementalJvmCompilerRunner.kt:460)
+	at org.jetbrains.kotlin.incremental.IncrementalJvmCompilerRunner.runCompiler(IncrementalJvmCompilerRunner.kt:62)
+	at org.jetbrains.kotlin.incremental.IncrementalCompilerRunner.doCompile(IncrementalCompilerRunner.kt:476)
+	at org.jetbrains.kotlin.incremental.IncrementalCompilerRunner.compileImpl(IncrementalCompilerRunner.kt:399)
+	at org.jetbrains.kotlin.incremental.IncrementalCompilerRunner.compileNonIncrementally(IncrementalCompilerRunner.kt:280)
+	at org.jetbrains.kotlin.incremental.IncrementalCompilerRunner.compile(IncrementalCompilerRunner.kt:124)
+	at org.jetbrains.kotlin.daemon.CompileServiceImplBase.execIncrementalCompiler(CompileServiceImpl.kt:636)
+	at org.jetbrains.kotlin.daemon.CompileServiceImplBase.access$execIncrementalCompiler(CompileServiceImpl.kt:101)
+	at org.jetbrains.kotlin.daemon.CompileServiceImpl.compile(CompileServiceImpl.kt:1598)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.rmi/sun.rmi.server.UnicastServerRef.dispatch(UnicastServerRef.java:360)
+	at java.rmi/sun.rmi.transport.Transport$1.run(Transport.java:200)
+	at java.rmi/sun.rmi.transport.Transport$1.run(Transport.java:197)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:714)
+	at java.rmi/sun.rmi.transport.Transport.serviceCall(Transport.java:196)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.handleMessages(TCPTransport.java:598)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(TCPTransport.java:844)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.lambda$run$0(TCPTransport.java:721)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(TCPTransport.java:720)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+
+Errors were stored into /app/app/.gradle/kotlin/errors/errors-1772430874561.log
+
+> Task :common:kaptGenerateStubsDebugKotlin FAILED
+> Task :androidApp:processDebugResources
+> Task :shared:compileDebugKotlinAndroid
+> Task :androidApp:mergeExtDexDebug
+
+Daemon is stopping immediately stop command received
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Gradle build daemon has been stopped: stop command received
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.

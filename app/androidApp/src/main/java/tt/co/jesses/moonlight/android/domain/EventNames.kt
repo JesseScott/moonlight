@@ -22,6 +22,7 @@ object EventNames {
 
         object Type {
             const val HELP = "help"
+            const val FEEDBACK = "feedback"
             const val COFFEE = "coffee"
             const val OSS = "oss"
             const val URL = "url"
