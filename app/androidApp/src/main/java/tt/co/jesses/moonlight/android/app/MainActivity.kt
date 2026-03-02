@@ -58,12 +58,10 @@ class MainActivity : ComponentActivity() {
 
                     LaunchedEffect(key1 = hasSwiped) {
                         if (!hasSwiped) {
-                            coroutineScope.launch {
-                                delay(5000)
-                                scaffoldState.snackbarHostState.showSnackbar(
-                                    message = getString(R.string.swipe_to_see_more)
-                                )
-                            }
+                            delay(5000)
+                            scaffoldState.snackbarHostState.showSnackbar(
+                                message = getString(R.string.swipe_to_see_more)
+                            )
                         }
                     }
 
