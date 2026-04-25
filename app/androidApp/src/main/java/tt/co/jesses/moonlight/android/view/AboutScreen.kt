@@ -43,7 +43,6 @@ import tt.co.jesses.moonlight.android.view.util.Constants
 import tt.co.jesses.moonlight.android.view.util.Constants.basePadding
 import tt.co.jesses.moonlight.android.view.util.Constants.bodyFontSize
 import tt.co.jesses.moonlight.android.view.util.Constants.headerFontSize
-import tt.co.jesses.moonlight.android.view.util.EmailUtil.composeEmail
 import tt.co.jesses.moonlight.android.view.util.GradientUtil
 import tt.co.jesses.moonlight.android.view.util.VersionUtil
 import tt.co.jesses.moonlight.android.view.util.angledGradientBackground
@@ -70,10 +69,9 @@ fun AboutScreen(
 
     val versionInfo = VersionUtil.getVersionName(context = context)
 
-    val helpMessage = stringResource(R.string.credits_info_help_message)
-    val helpAction = stringResource(R.string.credits_info_help_action)
-    val helpEmailAddress = stringResource(R.string.credits_info_help_action_email_address)
-    val helpEmailSubject = stringResource(R.string.credits_info_help_action_email_subject)
+    val feedbackMessage = stringResource(R.string.credits_info_feedback_message)
+    val feedbackAction = stringResource(R.string.credits_info_feedback_action)
+    val feedbackUrl = stringResource(R.string.credits_info_feedback_action_url)
 
     val supportMessage = stringResource(R.string.credits_info_coffee_message)
     val supportAction = stringResource(R.string.credits_info_coffee_action)
@@ -242,27 +240,23 @@ fun AboutScreen(
                     onClick = {
                         coroutineScope.launch {
                             val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
-                                message = helpMessage,
-                                actionLabel = helpAction,
+                                message = feedbackMessage,
+                                actionLabel = feedbackAction,
                             ).also {
                                 logger.logEvent(
                                     eventName = EventNames.Action.SNACKBAR,
                                     params = mapOf(
-                                        EventNames.Action.Type.HELP to EventNames.Action.Params.SNACKBAR_SHOWN
+                                        EventNames.Action.Type.FEEDBACK to EventNames.Action.Params.SNACKBAR_SHOWN
                                     ),
                                 )
                             }
                             when (snackbarResult) {
                                 SnackbarResult.ActionPerformed -> {
-                                    composeEmail(
-                                        addresses = arrayOf(helpEmailAddress),
-                                        subject = helpEmailSubject,
-                                        context = context
-                                    )
+                                    context.launchCustomTabs(url = feedbackUrl)
                                     logger.logEvent(
                                         eventName = EventNames.Action.SNACKBAR,
                                         params = mapOf(
-                                            EventNames.Action.Type.HELP to EventNames.Action.Params.BUTTON_CLICK
+                                            EventNames.Action.Type.FEEDBACK to EventNames.Action.Params.BUTTON_CLICK
                                         ),
                                     )
                                 }
@@ -273,7 +267,7 @@ fun AboutScreen(
                     border = borderStroke,
                 ) {
                     Text(
-                        text = stringResource(R.string.credits_info_help),
+                        text = stringResource(R.string.credits_info_feedback),
                         fontSize = bodyFontSize,
                         style = textStyle,
                     )
@@ -283,7 +277,7 @@ fun AboutScreen(
                 Text(
                     text = buildAnnotatedString {
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                            append("Version: ")
+                            append(stringResource(R.string.credits_info_version_label))
                         }
                         append(versionInfo)
                     },
