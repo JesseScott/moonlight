@@ -32,7 +32,7 @@ class MoonlightViewModel @Inject constructor(
 
     init {
         getMoonIllumination()
-        shouldShowAnalyticsModal()
+        observeAnalyticsAcceptance()
     }
 
     fun getMoonIllumination() {
@@ -48,11 +48,13 @@ class MoonlightViewModel @Inject constructor(
         }
     }
 
-    private fun shouldShowAnalyticsModal() {
+    private fun observeAnalyticsAcceptance() {
         viewModelScope.launch {
-            val userPreferences = userPreferencesRepository.fetchInitialPreferences()
-            val analyticsAcceptance = AnalyticsAcceptance.values()[userPreferences.analyticsAcceptance]
-            _uiState.value = _uiState.value.copy(isAnalyticsPreferencePending = analyticsAcceptance == AnalyticsAcceptance.UNSET)
+            userPreferencesRepository.analyticsAcceptance.collect { acceptance ->
+                _uiState.value = _uiState.value.copy(
+                    isAnalyticsPreferencePending = acceptance == AnalyticsAcceptance.UNSET
+                )
+            }
         }
     }
 
