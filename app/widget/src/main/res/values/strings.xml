@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="wallpaper_name">moonlight</string>
+    <string name="widget_name">Moonlight Widget</string>
+    <string name="widget_content_description">Moonlight gradient background</string>
 </resources>

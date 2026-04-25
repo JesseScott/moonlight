@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallpaper_name">moonlight</string>
+    <string name="widget_name">Widget de Moonlight</string>
+    <string name="widget_content_description">Fondo degradado de Moonlight</string>
+</resources>

@@ -54,6 +54,7 @@
     <string name="credits_info_header">info</string>
 
     <string name="credits_info_version">Version %s</string>
+    <string name="credits_info_version_label">Version: </string>
 
     <string name="credits_info_feedback">Feedback</string>
     <string name="credits_info_feedback_message">Send me your feedback, questions, or concerns!</string>
