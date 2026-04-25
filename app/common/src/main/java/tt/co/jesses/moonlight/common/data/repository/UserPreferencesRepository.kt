@@ -18,6 +18,12 @@ class UserPreferencesRepository @Inject constructor(
 ) {
     private val _isAnalyticsPreferencePending = MutableStateFlow(true)
 
+    val analyticsAcceptance: Flow<AnalyticsAcceptance> = dataStore.data
+        .map { preferences ->
+            val acceptanceOrdinal = preferences[PreferencesKeys.ANALYTICS_ACCEPTANCE] ?: AnalyticsAcceptance.UNSET.ordinal
+            AnalyticsAcceptance.entries[acceptanceOrdinal]
+        }
+
     val hasSwiped: Flow<Boolean> = dataStore.data
         .map { preferences ->
             preferences[PreferencesKeys.HAS_SWIPED] ?: false
