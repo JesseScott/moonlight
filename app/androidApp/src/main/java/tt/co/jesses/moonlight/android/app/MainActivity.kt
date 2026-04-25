@@ -48,7 +48,6 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     rememberNavController()
-                    val coroutineScope = rememberCoroutineScope()
                     val scaffoldState = rememberScaffoldState()
                     val viewModel: MoonlightViewModel = viewModel()
                     val pagerState = rememberPagerState(
