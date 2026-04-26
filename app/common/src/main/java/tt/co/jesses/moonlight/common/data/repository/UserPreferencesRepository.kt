@@ -6,7 +6,6 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import tt.co.jesses.moonlight.common.data.model.AnalyticsAcceptance
@@ -16,8 +15,6 @@ import javax.inject.Inject
 class UserPreferencesRepository @Inject constructor(
     private val dataStore: DataStore<Preferences>,
 ) {
-    private val _isAnalyticsPreferencePending = MutableStateFlow(true)
-
     val analyticsAcceptance: Flow<AnalyticsAcceptance> = dataStore.data
         .map { preferences ->
             val acceptanceOrdinal = preferences[PreferencesKeys.ANALYTICS_ACCEPTANCE] ?: AnalyticsAcceptance.UNSET.ordinal

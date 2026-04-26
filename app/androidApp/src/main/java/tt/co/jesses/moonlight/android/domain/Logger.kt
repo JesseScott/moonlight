@@ -13,6 +13,11 @@ import tt.co.jesses.moonlight.common.data.repository.UserPreferencesRepository
 import tt.co.jesses.moonlight.android.view.util.VersionUtil
 import javax.inject.Inject
 
+/**
+ * Logger class for handling analytics and console logging.
+ * Implements EU Consent Mode v2 (Advanced).
+ * Ref: https://developers.google.com/tag-platform/security/guides/app-consent?platform=android&consentmode=advanced
+ */
 class Logger @Inject constructor(
     @ApplicationContext context: Context,
     private val userPreferencesRepository: UserPreferencesRepository,
@@ -26,7 +31,7 @@ class Logger @Inject constructor(
     private val versionName = VersionUtil.getVersionName(context)
 
     private fun observeAnalyticsAcceptance() {
-        CoroutineScope(Dispatchers.Default).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             userPreferencesRepository.analyticsAcceptance.collect { acceptance ->
                 updateConsent(acceptance)
             }

@@ -10,6 +10,9 @@
         android:allowBackup="false"
         android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/AppTheme">
+
+        <!-- EU Consent Mode v2 configuration
+             Ref: https://developers.google.com/tag-platform/security/guides/app-consent?platform=android&consentmode=advanced -->
         <meta-data android:name="google_analytics_default_allow_analytics_storage" android:value="false" />
         <meta-data android:name="google_analytics_default_allow_ad_storage" android:value="false" />
         <meta-data android:name="google_analytics_default_allow_ad_user_data" android:value="false" />
@@ -35,4 +38,4 @@
         <activity android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
     </application>
-</manifest> 
+</manifest>
