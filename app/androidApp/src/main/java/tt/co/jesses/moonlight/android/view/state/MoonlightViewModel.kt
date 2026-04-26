@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import tt.co.jesses.moonlight.common.data.model.AnalyticsAcceptance
 import tt.co.jesses.moonlight.common.data.repository.MoonlightRepository
 import tt.co.jesses.moonlight.common.data.repository.UserPreferencesRepository
+import tt.co.jesses.moonlight.android.BuildConfig
 import javax.inject.Inject
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
@@ -28,7 +29,11 @@ class MoonlightViewModel @Inject constructor(
 
     val refreshCycle: Duration
         get() {
-            return 30.seconds // todo figure out Debug flag
+            return if (BuildConfig.DEBUG) {
+                5.seconds
+            } else {
+                30.seconds
+            }
         }
 
     init {
