@@ -7,11 +7,8 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -54,17 +51,16 @@ fun MoonlightScreen(
 
     Canvas(modifier = gradientModifier) {}
 
-    var showAnalyticsDialog by rememberSaveable { mutableStateOf(!uiState.isAnalyticsPreferencePending) }
     if (uiState.isAnalyticsPreferencePending) {
         AnalyticsOptInDialog(
             onDismissRequest = {
-                showAnalyticsDialog = false
+                // Do nothing, the dialog should be mandatory for compliance if we follow v2 strictly
+                // or just rely on the user to pick one.
             },
             onConfirmation = { optedIn ->
                 viewModel.updateAnalyticsAcceptance(
                     if (optedIn) AnalyticsAcceptance.ACCEPTED else AnalyticsAcceptance.REJECTED
                 )
-                showAnalyticsDialog = false
             }
         )
     }

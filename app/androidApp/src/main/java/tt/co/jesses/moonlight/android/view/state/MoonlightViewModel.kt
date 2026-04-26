@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tt.co.jesses.moonlight.common.data.model.AnalyticsAcceptance
 import tt.co.jesses.moonlight.common.data.repository.MoonlightRepository
@@ -32,13 +33,13 @@ class MoonlightViewModel @Inject constructor(
 
     init {
         getMoonIllumination()
-        shouldShowAnalyticsModal()
+        observeAnalyticsAcceptance()
     }
 
     fun getMoonIllumination() {
         viewModelScope.launch {
             val illuminationData = moonlightRepository.getMoonIllumination()
-            _uiState.value = _uiState.value.copy(illuminationData = illuminationData)
+            _uiState.update { it.copy(illuminationData = illuminationData) }
         }
     }
 
@@ -48,11 +49,13 @@ class MoonlightViewModel @Inject constructor(
         }
     }
 
-    private fun shouldShowAnalyticsModal() {
+    private fun observeAnalyticsAcceptance() {
         viewModelScope.launch {
-            val userPreferences = userPreferencesRepository.fetchInitialPreferences()
-            val analyticsAcceptance = AnalyticsAcceptance.values()[userPreferences.analyticsAcceptance]
-            _uiState.value = _uiState.value.copy(isAnalyticsPreferencePending = analyticsAcceptance == AnalyticsAcceptance.UNSET)
+            userPreferencesRepository.analyticsAcceptance.collect { acceptance ->
+                _uiState.update {
+                    it.copy(isAnalyticsPreferencePending = acceptance == AnalyticsAcceptance.UNSET)
+                }
+            }
         }
     }
 
