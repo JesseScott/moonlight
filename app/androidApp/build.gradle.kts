@@ -51,6 +51,11 @@ android {
 }
 
 dependencies {
+    constraints {
+        implementation("androidx.vectordrawable:vectordrawable:1.1.0")
+        implementation("androidx.vectordrawable:vectordrawable-animated:1.1.0")
+    }
+
     implementation(project(":shared"))
     implementation(project(":common"))
 
