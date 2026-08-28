@@ -8,3 +8,4 @@ local.properties
 # publishing
 publishing/*
 /app/.kotlin/metadata
+/app/.kotlin/sessions

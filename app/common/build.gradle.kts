@@ -1,5 +1,6 @@
 plugins {
     kotlin("android")
+    kotlin("plugin.compose")
     id("com.android.library")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
@@ -8,7 +9,7 @@ plugins {
 
 android {
     namespace = "tt.co.jesses.moonlight.common"
-    compileSdk = 34
+    compileSdk = 36
     defaultConfig {
         minSdk = 24
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -37,9 +38,7 @@ android {
         jvmTarget = "17"
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
+
 }
 
 dependencies {
@@ -49,8 +48,8 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.49")
-    kapt("com.google.dagger:hilt-compiler:2.49")
+    implementation("com.google.dagger:hilt-android:2.55")
+    kapt("com.google.dagger:hilt-compiler:2.55")
 
     // Testing
     testImplementation("junit:junit:4.13.2")

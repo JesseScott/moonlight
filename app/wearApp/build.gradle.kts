@@ -1,5 +1,6 @@
 plugins {
     kotlin("android")
+    kotlin("plugin.compose")
     id("com.android.application")
     id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
@@ -7,7 +8,7 @@ plugins {
 
 android {
     namespace = "tt.co.jesses.moonlight.wear"
-    compileSdk = 34
+    compileSdk = 36
     defaultConfig {
         applicationId = "tt.co.jesses.moonlight.wear"
         minSdk = 30
@@ -19,9 +20,7 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
+
 
     packaging {
         resources {
@@ -64,8 +63,8 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.8.2")
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.49")
-    kapt("com.google.dagger:hilt-compiler:2.49")
+    implementation("com.google.dagger:hilt-android:2.55")
+    kapt("com.google.dagger:hilt-compiler:2.55")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     // Lifecycle
