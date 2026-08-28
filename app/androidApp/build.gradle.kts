@@ -1,5 +1,6 @@
 plugins {
     kotlin("android")
+    kotlin("plugin.compose")
     id("com.android.application")
     id("com.google.android.gms.oss-licenses-plugin")
     id("com.google.dagger.hilt.android")
@@ -10,20 +11,17 @@ plugins {
 
 android {
     namespace = "tt.co.jesses.moonlight.android"
-    compileSdk = 34
+    compileSdk = 36
     defaultConfig {
         applicationId = "tt.co.jesses.moonlight.android"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 8
         versionName = "0.5.3"
     }
     buildFeatures {
         compose = true
         buildConfig = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
     }
     packaging {
         resources {
@@ -33,6 +31,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
         release {
@@ -70,11 +69,11 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
     implementation("androidx.navigation:navigation-compose:2.8.5")
-    implementation("com.google.android.gms:play-services-oss-licenses:17.1.0")
+    implementation("com.google.android.gms:play-services-oss-licenses:17.5.1")
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.49")
-    kapt("com.google.dagger:hilt-compiler:2.49")
+    implementation("com.google.dagger:hilt-android:2.55")
+    kapt("com.google.dagger:hilt-compiler:2.55")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     // Firebase
