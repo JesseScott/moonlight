@@ -6,7 +6,11 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Text
@@ -96,10 +100,9 @@ fun AboutScreen(
             colors = colorList,
             degrees = 270f,
         )
-        .bounded(
-            start = basePadding,
-            top = basePadding,
-        )
+        .fillMaxSize()
+        .windowInsetsPadding(WindowInsets.systemBars)
+        .padding(start = basePadding, top = basePadding, end = basePadding)
 
     Scaffold(scaffoldState = scaffoldState) { innerPadding ->
         Column(
