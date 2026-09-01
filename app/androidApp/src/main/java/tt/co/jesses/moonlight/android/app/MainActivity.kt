@@ -3,6 +3,7 @@ package tt.co.jesses.moonlight.android.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -39,6 +40,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         setContent {
             MyApplicationTheme {
@@ -84,12 +86,11 @@ class MainActivity : ComponentActivity() {
                             logger.logConsole("Page changed to $screen")
                         }
                     }
-                    Scaffold(scaffoldState = scaffoldState) { paddingValues ->
+                    Scaffold(scaffoldState = scaffoldState) { _ ->
                         HorizontalPager(
                             state = pagerState,
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(paddingValues)
                         ) { page ->
                             when (page) {
                                 0 -> MoonlightScreen(viewModel = viewModel)

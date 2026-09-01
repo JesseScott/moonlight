@@ -2,6 +2,7 @@ package tt.co.jesses.moonlight.android.view
 
 import android.app.Activity
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -47,7 +48,7 @@ fun MoonlightScreen(
             colors = colorList,
             degrees = 270f,
         )
-        .bounded()
+        .fillMaxSize()
 
     Canvas(modifier = gradientModifier) {}
 

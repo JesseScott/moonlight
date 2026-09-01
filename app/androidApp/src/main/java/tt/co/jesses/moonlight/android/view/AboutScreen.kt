@@ -6,7 +6,11 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Text
@@ -96,22 +100,21 @@ fun AboutScreen(
             colors = colorList,
             degrees = 270f,
         )
-        .bounded(
-            start = basePadding,
-            top = basePadding,
-        )
+        .fillMaxSize()
 
-    Scaffold(scaffoldState = scaffoldState) { innerPadding ->
+    Scaffold(
+        scaffoldState = scaffoldState,
+        modifier = gradientModifier
+    ) { innerPadding ->
         Column(
-            modifier = Modifier.padding(innerPadding),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .windowInsetsPadding(WindowInsets.systemBars)
+                .padding(start = basePadding, top = basePadding, end = basePadding),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top
         ) {
-            Column(
-                modifier = gradientModifier,
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.Top
-            ) {
                 /// TITLE
                 Text(
                     text = stringResource(creditData.creditTitle),
@@ -285,7 +288,6 @@ fun AboutScreen(
                     style = textStyle
                 )
                 Spacer(Modifier.smallPadding())
-            }
         }
     }
 
