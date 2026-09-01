@@ -12,23 +12,25 @@ import tt.co.jesses.moonlight.common.data.model.AnalyticsAcceptance
 import tt.co.jesses.moonlight.common.data.repository.UserPreferencesRepository
 import tt.co.jesses.moonlight.android.view.util.VersionUtil
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Logger class for handling analytics and console logging.
  * Implements EU Consent Mode v2 (Advanced).
  * Ref: https://developers.google.com/tag-platform/security/guides/app-consent?platform=android&consentmode=advanced
  */
+@Singleton
 class Logger @Inject constructor(
     @ApplicationContext context: Context,
     private val userPreferencesRepository: UserPreferencesRepository,
 ) {
 
+    private val firebaseAnalytics = FirebaseAnalytics.getInstance(context)
+    private val versionName = VersionUtil.getVersionName(context)
+
     init {
         observeAnalyticsAcceptance()
     }
-
-    private val firebaseAnalytics = FirebaseAnalytics.getInstance(context)
-    private val versionName = VersionUtil.getVersionName(context)
 
     private fun observeAnalyticsAcceptance() {
         CoroutineScope(Dispatchers.IO).launch {

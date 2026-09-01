@@ -55,6 +55,7 @@ object MoonlightModule {
         )
     }
 
+    @Singleton
     @Provides
     fun providesLogger(
         @ApplicationContext context: Context,
