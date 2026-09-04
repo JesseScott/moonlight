@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -11,14 +12,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material.Scaffold
-import androidx.compose.material.SnackbarResult
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,15 +62,15 @@ fun AboutScreen(
     viewModel: MoonlightViewModel = viewModel(),
 ) {
     val context = LocalContext.current
-    val activity = LocalActivity.current as MainActivity
-    val logger = activity.logger
+    val activity = LocalActivity.current as? MainActivity
+    val logger = activity?.logger
 
     val creditData = viewModel.uiState.collectAsState().value.creditData
     val illuminationData = viewModel.uiState.collectAsState().value.illuminationData
     val colorList = GradientUtil.generateHSLColor(illuminationData)
 
     val coroutineScope = rememberCoroutineScope()
-    val scaffoldState = rememberScaffoldState()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     val versionInfo = VersionUtil.getVersionName(context = context)
 
@@ -94,46 +96,42 @@ fun AboutScreen(
         fontSize = bodyFontSize,
     )
 
-    val gradientModifier = Modifier
-        .angledGradientBackground(
-            colors = colorList,
-            degrees = 270f,
-        )
-        .fillMaxSize()
-        .windowInsetsPadding(WindowInsets.systemBars)
-        .padding(start = basePadding, top = basePadding, end = basePadding)
-
-    Scaffold(scaffoldState = scaffoldState) { innerPadding ->
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .angledGradientBackground(
+                colors = colorList,
+                degrees = 270f,
+            )
+            .windowInsetsPadding(WindowInsets.systemBars)
+            .padding(start = basePadding, top = basePadding, end = basePadding, bottom = basePadding)
+    ) {
         Column(
-            modifier = Modifier.padding(innerPadding),
+            modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top
         ) {
-            Column(
-                modifier = gradientModifier,
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.Top
-            ) {
-                /// TITLE
-                Text(
-                    text = stringResource(creditData.creditTitle),
-                    fontSize = headerFontSize,
-                    style = textStyle.copy(
-                        textDecoration = TextDecoration.Underline
-                    ),
-                )
-                Spacer(Modifier.basePadding())
+            /// TITLE
+            Text(
+                text = stringResource(creditData.creditTitle),
+                fontSize = headerFontSize,
+                style = textStyle.copy(
+                    textDecoration = TextDecoration.Underline
+                ),
+            )
+            Spacer(Modifier.basePadding())
 
-                /// CREDITS
-                Text(
-                    text = stringResource(R.string.credits_credits_header),
-                    fontSize = bodyFontSize,
-                    style = textStyle.copy(
-                        textDecoration = TextDecoration.Underline,
-                        fontWeight = FontWeight.Bold,
-                    ),
-                )
-                Spacer(Modifier.smallPadding())
+            /// CREDITS
+            Text(
+                text = stringResource(R.string.credits_credits_header),
+                fontSize = bodyFontSize,
+                style = textStyle.copy(
+                    textDecoration = TextDecoration.Underline,
+                    fontWeight = FontWeight.Bold,
+                ),
+            )
+            Spacer(Modifier.smallPadding())
+            if (logger != null) {
                 HyperlinkText(
                     modifier = Modifier.padding(end = basePadding),
                     fullTextResId = creditData.madeByFull,
@@ -145,18 +143,20 @@ fun AboutScreen(
                     hyperLinkTextEngine = hyperLinkTextEngine,
                     logger = logger,
                 )
-                Spacer(Modifier.basePadding())
+            }
+            Spacer(Modifier.basePadding())
 
-                /// ACKNOWLEDGEMENTS
-                Text(
-                    text = stringResource(R.string.credits_ack_header),
-                    fontSize = bodyFontSize,
-                    style = textStyle.copy(
-                        textDecoration = TextDecoration.Underline,
-                        fontWeight = FontWeight.Bold,
-                    ),
-                )
-                Spacer(Modifier.smallPadding())
+            /// ACKNOWLEDGEMENTS
+            Text(
+                text = stringResource(R.string.credits_ack_header),
+                fontSize = bodyFontSize,
+                style = textStyle.copy(
+                    textDecoration = TextDecoration.Underline,
+                    fontWeight = FontWeight.Bold,
+                ),
+            )
+            Spacer(Modifier.smallPadding())
+            if (logger != null) {
                 HyperlinkText(
                     modifier = Modifier.padding(end = basePadding),
                     fullTextResId = creditData.sourceFull,
@@ -168,128 +168,133 @@ fun AboutScreen(
                     hyperLinkTextEngine = hyperLinkTextEngine,
                     logger = logger,
                 )
-                Spacer(Modifier.smallPadding())
-
-                TextButton(
-                    onClick = {
-                        context.startActivity(Intent(context, OssLicensesMenuActivity::class.java))
-                        logger.logEvent(
-                            eventName = EventNames.Action.BUTTON,
-                            params = mapOf(
-                                EventNames.Action.Type.OSS to EventNames.Action.Params.BUTTON_CLICK
-                            ),
-                        )
-                    },
-                    border = borderStroke,
-                ) {
-                    Text(
-                        text = stringResource(R.string.credits_oss),
-                        fontSize = bodyFontSize,
-                        style = textStyle,
-                    )
-                }
-                Spacer(Modifier.basePadding())
-
-                /// INFO
-                Text(
-                    text = stringResource(R.string.credits_info_header),
-                    fontSize = bodyFontSize,
-                    style = textStyle.copy(
-                        textDecoration = TextDecoration.Underline,
-                        fontWeight = FontWeight.Bold,
-                    ),
-                )
-                Spacer(Modifier.smallPadding())
-
-                TextButton(
-                    onClick = {
-                        coroutineScope.launch {
-                            val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
-                                message = supportMessage,
-                                actionLabel = supportAction
-                            ).also {
-                                logger.logEvent(
-                                    eventName = EventNames.Action.SNACKBAR,
-                                    params = mapOf(
-                                        EventNames.Action.Type.COFFEE to EventNames.Action.Params.SNACKBAR_SHOWN
-                                    ),
-                                )
-                            }
-                            when (snackbarResult) {
-                                SnackbarResult.ActionPerformed -> {
-                                    context.launchCustomTabs(url = supportUrl)
-                                    logger.logEvent(
-                                        eventName = EventNames.Action.SNACKBAR,
-                                        params = mapOf(
-                                            EventNames.Action.Type.COFFEE to EventNames.Action.Params.BUTTON_CLICK
-                                        ),
-                                    )
-                                }
-                                else -> { /** do nothing */ }
-                            }
-                        }
-                    },
-                    border = borderStroke,
-                ) {
-                    Text(
-                        text = stringResource(R.string.credits_info_coffee),
-                        fontSize = bodyFontSize,
-                        style = textStyle,
-                    )
-                }
-
-                TextButton(
-                    onClick = {
-                        coroutineScope.launch {
-                            val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
-                                message = feedbackMessage,
-                                actionLabel = feedbackAction,
-                            ).also {
-                                logger.logEvent(
-                                    eventName = EventNames.Action.SNACKBAR,
-                                    params = mapOf(
-                                        EventNames.Action.Type.FEEDBACK to EventNames.Action.Params.SNACKBAR_SHOWN
-                                    ),
-                                )
-                            }
-                            when (snackbarResult) {
-                                SnackbarResult.ActionPerformed -> {
-                                    context.launchCustomTabs(url = feedbackUrl)
-                                    logger.logEvent(
-                                        eventName = EventNames.Action.SNACKBAR,
-                                        params = mapOf(
-                                            EventNames.Action.Type.FEEDBACK to EventNames.Action.Params.BUTTON_CLICK
-                                        ),
-                                    )
-                                }
-                                else -> { /** do nothing */ }
-                            }
-                        }
-                    },
-                    border = borderStroke,
-                ) {
-                    Text(
-                        text = stringResource(R.string.credits_info_feedback),
-                        fontSize = bodyFontSize,
-                        style = textStyle,
-                    )
-                }
-                Spacer(Modifier.smallPadding())
-
-                Text(
-                    text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                            append(stringResource(R.string.credits_info_version_label))
-                        }
-                        append(" ")
-                        append(versionInfo)
-                    },
-                    fontSize = bodyFontSize,
-                    style = textStyle
-                )
-                Spacer(Modifier.smallPadding())
             }
+            Spacer(Modifier.smallPadding())
+
+            TextButton(
+                onClick = {
+                    context.startActivity(Intent(context, OssLicensesMenuActivity::class.java))
+                    logger?.logEvent(
+                        eventName = EventNames.Action.BUTTON,
+                        params = mapOf(
+                            EventNames.Action.Type.OSS to EventNames.Action.Params.BUTTON_CLICK
+                        ),
+                    )
+                },
+                border = borderStroke,
+            ) {
+                Text(
+                    text = stringResource(R.string.credits_oss),
+                    fontSize = bodyFontSize,
+                    style = textStyle,
+                )
+            }
+            Spacer(Modifier.basePadding())
+
+            /// INFO
+            Text(
+                text = stringResource(R.string.credits_info_header),
+                fontSize = bodyFontSize,
+                style = textStyle.copy(
+                    textDecoration = TextDecoration.Underline,
+                    fontWeight = FontWeight.Bold,
+                ),
+            )
+            Spacer(Modifier.smallPadding())
+
+            TextButton(
+                onClick = {
+                    coroutineScope.launch {
+                        val snackbarResult = snackbarHostState.showSnackbar(
+                            message = supportMessage,
+                            actionLabel = supportAction
+                        ).also {
+                            logger?.logEvent(
+                                eventName = EventNames.Action.SNACKBAR,
+                                params = mapOf(
+                                    EventNames.Action.Type.COFFEE to EventNames.Action.Params.SNACKBAR_SHOWN
+                                ),
+                            )
+                        }
+                        when (snackbarResult) {
+                            SnackbarResult.ActionPerformed -> {
+                                context.launchCustomTabs(url = supportUrl)
+                                logger?.logEvent(
+                                    eventName = EventNames.Action.SNACKBAR,
+                                    params = mapOf(
+                                        EventNames.Action.Type.COFFEE to EventNames.Action.Params.BUTTON_CLICK
+                                    ),
+                                )
+                            }
+                            else -> { /** do nothing */ }
+                        }
+                    }
+                },
+                border = borderStroke,
+            ) {
+                Text(
+                    text = stringResource(R.string.credits_info_coffee),
+                    fontSize = bodyFontSize,
+                    style = textStyle,
+                )
+            }
+
+            TextButton(
+                onClick = {
+                    coroutineScope.launch {
+                        val snackbarResult = snackbarHostState.showSnackbar(
+                            message = feedbackMessage,
+                            actionLabel = feedbackAction,
+                        ).also {
+                            logger?.logEvent(
+                                eventName = EventNames.Action.SNACKBAR,
+                                params = mapOf(
+                                    EventNames.Action.Type.FEEDBACK to EventNames.Action.Params.SNACKBAR_SHOWN
+                                ),
+                            )
+                        }
+                        when (snackbarResult) {
+                            SnackbarResult.ActionPerformed -> {
+                                context.launchCustomTabs(url = feedbackUrl)
+                                logger?.logEvent(
+                                    eventName = EventNames.Action.SNACKBAR,
+                                    params = mapOf(
+                                        EventNames.Action.Type.FEEDBACK to EventNames.Action.Params.BUTTON_CLICK
+                                    ),
+                                )
+                            }
+                            else -> { /** do nothing */ }
+                        }
+                    }
+                },
+                border = borderStroke,
+            ) {
+                Text(
+                    text = stringResource(R.string.credits_info_feedback),
+                    fontSize = bodyFontSize,
+                    style = textStyle,
+                )
+            }
+            Spacer(Modifier.smallPadding())
+
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                        append(stringResource(R.string.credits_info_version_label))
+                    }
+                    append(" ")
+                    append(versionInfo)
+                },
+                fontSize = bodyFontSize,
+                style = textStyle
+            )
+            Spacer(Modifier.smallPadding())
         }
+
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier.align(Alignment.BottomCenter)
+        )
     }
 
     LaunchedEffect(Unit) {
