@@ -32,7 +32,7 @@ fun HyperlinkText(
     @StringRes fullTextResId: Int,
     hyperLinks: Map<String, String>,
     hyperLinkTextEngine: HyperLinkTextEngine,
-    logger: Logger,
+    logger: Logger?,
 ) {
     val context = LocalContext.current
     val fullText = context.getText(fullTextResId)
@@ -58,7 +58,7 @@ fun HyperlinkText(
                             val url = (it as LinkAnnotation.Url).url
                             if (url.isNotEmpty()) {
                                 context.launchCustomTabs(url = url)
-                                logger.logEvent(
+                                logger?.logEvent(
                                     eventName = EventNames.Action.LINK,
                                     params = mapOf(
                                         EventNames.Action.Type.URL to url

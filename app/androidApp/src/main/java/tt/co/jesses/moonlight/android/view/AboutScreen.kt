@@ -1,7 +1,7 @@
 package tt.co.jesses.moonlight.android.view
 
-import android.app.Activity
 import android.content.Intent
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -61,8 +61,8 @@ fun AboutScreen(
     viewModel: MoonlightViewModel = viewModel(),
 ) {
     val context = LocalContext.current
-    val activity = LocalContext.current as Activity
-    val logger = (activity as MainActivity).logger
+    val activity = LocalActivity.current
+    val logger = (activity as? MainActivity)?.logger
 
     val creditData = viewModel.uiState.collectAsState().value.creditData
     val illuminationData = viewModel.uiState.collectAsState().value.illuminationData
@@ -174,7 +174,7 @@ fun AboutScreen(
                 TextButton(
                     onClick = {
                         context.startActivity(Intent(context, OssLicensesMenuActivity::class.java))
-                        logger.logEvent(
+                        logger?.logEvent(
                             eventName = EventNames.Action.BUTTON,
                             params = mapOf(
                                 EventNames.Action.Type.OSS to EventNames.Action.Params.BUTTON_CLICK
@@ -209,7 +209,7 @@ fun AboutScreen(
                                 message = supportMessage,
                                 actionLabel = supportAction
                             ).also {
-                                logger.logEvent(
+                                logger?.logEvent(
                                     eventName = EventNames.Action.SNACKBAR,
                                     params = mapOf(
                                         EventNames.Action.Type.COFFEE to EventNames.Action.Params.SNACKBAR_SHOWN
@@ -219,7 +219,7 @@ fun AboutScreen(
                             when (snackbarResult) {
                                 SnackbarResult.ActionPerformed -> {
                                     context.launchCustomTabs(url = supportUrl)
-                                    logger.logEvent(
+                                    logger?.logEvent(
                                         eventName = EventNames.Action.SNACKBAR,
                                         params = mapOf(
                                             EventNames.Action.Type.COFFEE to EventNames.Action.Params.BUTTON_CLICK
@@ -246,7 +246,7 @@ fun AboutScreen(
                                 message = feedbackMessage,
                                 actionLabel = feedbackAction,
                             ).also {
-                                logger.logEvent(
+                                logger?.logEvent(
                                     eventName = EventNames.Action.SNACKBAR,
                                     params = mapOf(
                                         EventNames.Action.Type.FEEDBACK to EventNames.Action.Params.SNACKBAR_SHOWN
@@ -256,7 +256,7 @@ fun AboutScreen(
                             when (snackbarResult) {
                                 SnackbarResult.ActionPerformed -> {
                                     context.launchCustomTabs(url = feedbackUrl)
-                                    logger.logEvent(
+                                    logger?.logEvent(
                                         eventName = EventNames.Action.SNACKBAR,
                                         params = mapOf(
                                             EventNames.Action.Type.FEEDBACK to EventNames.Action.Params.BUTTON_CLICK

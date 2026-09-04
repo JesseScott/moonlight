@@ -1,6 +1,6 @@
 package tt.co.jesses.moonlight.android.view
 
-import android.app.Activity
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.Canvas
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.rememberScaffoldState
@@ -10,7 +10,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -33,7 +32,7 @@ fun MoonlightScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val illuminationData = uiState.illuminationData
 
-    val activity = LocalContext.current as Activity
+    val activity = LocalActivity.current
     val logger = (activity as? MainActivity)?.logger
     logger?.logConsole("MoonlightScreen: $illuminationData")
     rememberCoroutineScope()
