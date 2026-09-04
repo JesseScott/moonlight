@@ -1,11 +1,12 @@
 package tt.co.jesses.moonlight.android.view.sub
 
 import androidx.annotation.StringRes
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
@@ -34,10 +35,10 @@ fun HyperlinkText(
     hyperLinkTextEngine: HyperLinkTextEngine,
     logger: Logger,
 ) {
+    val fullText = stringResource(fullTextResId)
     val context = LocalContext.current
-    val fullText = context.getText(fullTextResId)
     val annotatedString = buildAnnotatedString {
-        append(fullText.toString())
+        append(fullText)
         for ((key, value) in hyperLinks) {
             val startIndex = fullText.indexOf(key)
             if (startIndex == -1) continue

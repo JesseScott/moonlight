@@ -4,19 +4,22 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.SnackbarDuration
-import androidx.compose.material.SnackbarResult
-import androidx.compose.material.Surface
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.ui.graphics.Color
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -46,10 +49,10 @@ class MainActivity : ComponentActivity() {
             MyApplicationTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    color = Color.Transparent
                 ) {
                     rememberNavController()
-                    val scaffoldState = rememberScaffoldState()
+                    val snackbarHostState = remember { SnackbarHostState() }
                     val viewModel: MoonlightViewModel = viewModel()
                     val pagerState = rememberPagerState(
                         pageCount = { Screens.entries.size },
@@ -60,7 +63,7 @@ class MainActivity : ComponentActivity() {
                     LaunchedEffect(key1 = hasSwiped) {
                         if (!hasSwiped) {
                             delay(5000)
-                            val result = scaffoldState.snackbarHostState.showSnackbar(
+                            val result = snackbarHostState.showSnackbar(
                                 message = getString(R.string.swipe_to_see_more),
                                 actionLabel = getString(R.string.ok),
                                 duration = SnackbarDuration.Long
@@ -86,7 +89,11 @@ class MainActivity : ComponentActivity() {
                             logger.logConsole("Page changed to $screen")
                         }
                     }
-                    Scaffold(scaffoldState = scaffoldState) { paddingValues ->
+                    Scaffold(
+                        snackbarHost = { SnackbarHost(snackbarHostState) },
+                        containerColor = Color.Transparent,
+                        contentWindowInsets = WindowInsets(0, 0, 0, 0)
+                    ) { paddingValues ->
                         HorizontalPager(
                             state = pagerState,
                             modifier = Modifier
