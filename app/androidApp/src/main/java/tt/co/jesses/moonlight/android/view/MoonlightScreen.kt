@@ -2,13 +2,9 @@ package tt.co.jesses.moonlight.android.view
 
 import android.app.Activity
 import androidx.compose.foundation.Canvas
-import androidx.compose.material.SnackbarHostState
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,9 +32,6 @@ fun MoonlightScreen(
     val activity = LocalContext.current as Activity
     val logger = (activity as? MainActivity)?.logger
     logger?.logConsole("MoonlightScreen: $illuminationData")
-    rememberCoroutineScope()
-    rememberScaffoldState()
-    remember { SnackbarHostState() }
 
     val colorList = GradientUtil.generateHSLColor(illuminationData)
 
