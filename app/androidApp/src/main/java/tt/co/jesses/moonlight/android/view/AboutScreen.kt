@@ -19,7 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -35,13 +35,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.gms.oss.licenses.v2.OssLicensesMenuActivity
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import tt.co.jesses.moonlight.android.R
 import tt.co.jesses.moonlight.android.app.MainActivity
+import tt.co.jesses.moonlight.android.app.MyApplicationTheme
 import tt.co.jesses.moonlight.android.domain.EventNames
+import tt.co.jesses.moonlight.android.view.state.MoonlightUiState
 import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.android.view.sub.HyperLinkTextEngine
 import tt.co.jesses.moonlight.android.view.sub.HyperlinkText
@@ -55,24 +59,44 @@ import tt.co.jesses.moonlight.android.view.util.angledGradientBackground
 import tt.co.jesses.moonlight.android.view.util.basePadding
 import tt.co.jesses.moonlight.android.view.util.launchCustomTabs
 import tt.co.jesses.moonlight.android.view.util.smallPadding
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
-@Preview
 @Composable
 fun AboutScreen(
     viewModel: MoonlightViewModel = viewModel(),
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    AboutScreen(
+        uiState = uiState,
+        onRefresh = { viewModel.getMoonIllumination() },
+        refreshCycle = viewModel.refreshCycle
+    )
+}
+
+@Composable
+fun AboutScreen(
+    uiState: MoonlightUiState,
+    onRefresh: () -> Unit = {},
+    refreshCycle: Duration = 30.seconds,
 ) {
     val context = LocalContext.current
     val activity = LocalActivity.current as? MainActivity
     val logger = activity?.logger
 
-    val creditData = viewModel.uiState.collectAsState().value.creditData
-    val illuminationData = viewModel.uiState.collectAsState().value.illuminationData
+    val creditData = uiState.creditData
+    val illuminationData = uiState.illuminationData
     val colorList = GradientUtil.generateHSLColor(illuminationData)
 
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val versionInfo = VersionUtil.getVersionName(context = context)
+    val isPreview = androidx.compose.ui.platform.LocalInspectionMode.current
+    val versionInfo = try {
+        if (isPreview) "1.0 (1)" else VersionUtil.getVersionName(context = context)
+    } catch (_: Exception) {
+        "1.0 (1)"
+    }
 
     val feedbackMessage = stringResource(R.string.credits_info_feedback_message)
     val feedbackAction = stringResource(R.string.credits_info_feedback_action)
@@ -298,9 +322,19 @@ fun AboutScreen(
     }
 
     LaunchedEffect(Unit) {
-        while(true) {
-            delay(viewModel.refreshCycle)
-            viewModel.getMoonIllumination()
+        while(isActive) {
+            delay(refreshCycle)
+            onRefresh()
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AboutScreenPreview() {
+    MyApplicationTheme {
+        AboutScreen(
+            uiState = MoonlightUiState()
+        )
     }
 }

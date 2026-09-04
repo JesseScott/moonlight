@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,22 +23,41 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import tt.co.jesses.moonlight.android.R
+import tt.co.jesses.moonlight.android.app.MyApplicationTheme
+import tt.co.jesses.moonlight.android.view.state.MoonlightUiState
 import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.android.view.sub.TableLike
 import tt.co.jesses.moonlight.android.view.util.Constants.bodyFontSize
 import tt.co.jesses.moonlight.android.view.util.Constants.headerFontSize
 import tt.co.jesses.moonlight.android.view.util.GradientUtil
 import tt.co.jesses.moonlight.android.view.util.angledGradientBackground
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
-@Preview
 @Composable
 fun DataScreen(
     viewModel: MoonlightViewModel = viewModel(),
 ) {
-    val illuminationData = viewModel.uiState.collectAsState().value.illuminationData
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    DataScreen(
+        uiState = uiState,
+        onRefresh = { viewModel.getMoonIllumination() },
+        refreshCycle = viewModel.refreshCycle
+    )
+}
+
+@Composable
+fun DataScreen(
+    uiState: MoonlightUiState,
+    onRefresh: () -> Unit = {},
+    refreshCycle: Duration = 30.seconds,
+) {
+    val illuminationData = uiState.illuminationData
     val colorList = GradientUtil.generateHSLColor(illuminationData)
 
     val padding = 16.dp
@@ -132,9 +151,19 @@ fun DataScreen(
     }
 
     LaunchedEffect(Unit) {
-        while(true) {
-            delay(viewModel.refreshCycle)
-            viewModel.getMoonIllumination()
+        while(isActive) {
+            delay(refreshCycle)
+            onRefresh()
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DataScreenPreview() {
+    MyApplicationTheme {
+        DataScreen(
+            uiState = MoonlightUiState()
+        )
     }
 }

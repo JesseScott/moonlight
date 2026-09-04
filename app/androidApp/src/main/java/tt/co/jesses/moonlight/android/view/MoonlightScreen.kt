@@ -16,24 +16,41 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import tt.co.jesses.moonlight.android.app.MainActivity
 import tt.co.jesses.moonlight.android.app.MyApplicationTheme
+import tt.co.jesses.moonlight.android.view.state.MoonlightUiState
 import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.android.view.sub.AnalyticsOptInDialog
 import tt.co.jesses.moonlight.android.view.util.GradientUtil
 import tt.co.jesses.moonlight.android.view.util.angledGradientBackground
 import tt.co.jesses.moonlight.android.view.util.bounded
 import tt.co.jesses.moonlight.common.data.model.AnalyticsAcceptance
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
-@Preview
 @Composable
 fun MoonlightScreen(
     viewModel: MoonlightViewModel = viewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    MoonlightScreen(
+        uiState = uiState,
+        onUpdateAnalyticsAcceptance = { viewModel.updateAnalyticsAcceptance(it) },
+        onRefresh = { viewModel.getMoonIllumination() },
+        refreshCycle = viewModel.refreshCycle
+    )
+}
+
+@Composable
+fun MoonlightScreen(
+    uiState: MoonlightUiState,
+    onUpdateAnalyticsAcceptance: (AnalyticsAcceptance) -> Unit = {},
+    onRefresh: () -> Unit = {},
+    refreshCycle: Duration = 30.seconds,
+) {
     val illuminationData = uiState.illuminationData
 
-    val activity = LocalActivity.current as MainActivity
-    val logger = activity.logger
-    logger.logConsole("MoonlightScreen: $illuminationData")
+    val activity = LocalActivity.current as? MainActivity
+    val logger = activity?.logger
+    logger?.logConsole("MoonlightScreen: $illuminationData")
     rememberCoroutineScope()
     remember { SnackbarHostState() }
 
@@ -55,7 +72,7 @@ fun MoonlightScreen(
                 // or just rely on the user to pick one.
             },
             onConfirmation = { optedIn ->
-                viewModel.updateAnalyticsAcceptance(
+                onUpdateAnalyticsAcceptance(
                     if (optedIn) AnalyticsAcceptance.ACCEPTED else AnalyticsAcceptance.REJECTED
                 )
             }
@@ -64,8 +81,8 @@ fun MoonlightScreen(
 
     LaunchedEffect(Unit) {
         while(isActive) {
-            delay(viewModel.refreshCycle)
-            viewModel.getMoonIllumination()
+            delay(refreshCycle)
+            onRefresh()
         }
     }
 }
@@ -74,6 +91,8 @@ fun MoonlightScreen(
 @Composable
 fun MoonlightScreenPreview() {
     MyApplicationTheme {
-        MoonlightScreen()
+        MoonlightScreen(
+            uiState = MoonlightUiState()
+        )
     }
 }
