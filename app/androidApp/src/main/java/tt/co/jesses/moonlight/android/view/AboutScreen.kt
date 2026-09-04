@@ -282,6 +282,7 @@ fun AboutScreen(
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                             append(stringResource(R.string.credits_info_version_label))
                         }
+                        append(" ")
                         append(versionInfo)
                     },
                     fontSize = bodyFontSize,
