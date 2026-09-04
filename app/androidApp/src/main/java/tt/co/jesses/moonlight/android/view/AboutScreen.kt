@@ -1,7 +1,7 @@
 package tt.co.jesses.moonlight.android.view
 
-import android.app.Activity
 import android.content.Intent
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -51,7 +51,6 @@ import tt.co.jesses.moonlight.android.view.util.GradientUtil
 import tt.co.jesses.moonlight.android.view.util.VersionUtil
 import tt.co.jesses.moonlight.android.view.util.angledGradientBackground
 import tt.co.jesses.moonlight.android.view.util.basePadding
-import tt.co.jesses.moonlight.android.view.util.bounded
 import tt.co.jesses.moonlight.android.view.util.launchCustomTabs
 import tt.co.jesses.moonlight.android.view.util.smallPadding
 
@@ -61,8 +60,8 @@ fun AboutScreen(
     viewModel: MoonlightViewModel = viewModel(),
 ) {
     val context = LocalContext.current
-    val activity = LocalContext.current as Activity
-    val logger = (activity as MainActivity).logger
+    val activity = LocalActivity.current as MainActivity
+    val logger = activity.logger
 
     val creditData = viewModel.uiState.collectAsState().value.creditData
     val illuminationData = viewModel.uiState.collectAsState().value.illuminationData
