@@ -12,9 +12,9 @@ android {
     defaultConfig {
         applicationId = "tt.co.jesses.moonlight.android"
         minSdk = 30
-        targetSdk = 34
-        versionCode = 1012 // 1000 + :androidApp version
-        versionName = "0.5.7"
+        targetSdk = 36
+        versionCode = 1013 // 1000 + :androidApp version
+        versionName = "0.6.0"
     }
 
     buildFeatures {

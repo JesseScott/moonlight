@@ -4,6 +4,7 @@
 .DS_Store
 build
 androidApp/release
+wearApp/release
 androidApp/google-services.json
 captures
 .externalNativeBuild
