@@ -34,8 +34,8 @@ import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.android.view.sub.TableLike
 import tt.co.jesses.moonlight.android.view.util.Constants.bodyFontSize
 import tt.co.jesses.moonlight.android.view.util.Constants.headerFontSize
-import tt.co.jesses.moonlight.android.view.util.GradientUtil
-import tt.co.jesses.moonlight.android.view.util.angledGradientBackground
+import tt.co.jesses.moonlight.common.util.GradientUtil
+import tt.co.jesses.moonlight.common.util.angledGradientBackground
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 

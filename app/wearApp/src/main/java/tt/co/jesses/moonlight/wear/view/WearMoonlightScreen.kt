@@ -1,23 +1,18 @@
 package tt.co.jesses.moonlight.wear.view
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.wear.compose.material.MaterialTheme
-import androidx.wear.compose.material.Text
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
-import tt.co.jesses.moonlight.common.data.model.MoonData
 import tt.co.jesses.moonlight.wear.view.state.MoonlightViewModel
-import tt.co.jesses.moonlight.wear.view.util.GradientUtil
-import tt.co.jesses.moonlight.wear.view.util.angledGradientBackground
+import tt.co.jesses.moonlight.common.util.GradientUtil
+import tt.co.jesses.moonlight.common.util.angledGradientBackground
 
 @Composable
 fun WearMoonlightScreen(

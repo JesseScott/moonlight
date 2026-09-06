@@ -19,8 +19,8 @@ import tt.co.jesses.moonlight.android.app.MyApplicationTheme
 import tt.co.jesses.moonlight.android.view.state.MoonlightUiState
 import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.android.view.sub.AnalyticsOptInDialog
-import tt.co.jesses.moonlight.android.view.util.GradientUtil
-import tt.co.jesses.moonlight.android.view.util.angledGradientBackground
+import tt.co.jesses.moonlight.common.util.GradientUtil
+import tt.co.jesses.moonlight.common.util.angledGradientBackground
 import tt.co.jesses.moonlight.android.view.util.bounded
 import tt.co.jesses.moonlight.common.data.model.AnalyticsAcceptance
 import kotlin.time.Duration
