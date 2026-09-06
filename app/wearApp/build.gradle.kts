@@ -13,8 +13,8 @@ android {
         applicationId = "tt.co.jesses.moonlight.android"
         minSdk = 30
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 1012 // 1000 + :androidApp version
+        versionName = "0.5.7"
     }
 
     buildFeatures {
