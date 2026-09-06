@@ -53,9 +53,9 @@ import tt.co.jesses.moonlight.android.view.util.Constants
 import tt.co.jesses.moonlight.android.view.util.Constants.basePadding
 import tt.co.jesses.moonlight.android.view.util.Constants.bodyFontSize
 import tt.co.jesses.moonlight.android.view.util.Constants.headerFontSize
-import tt.co.jesses.moonlight.android.view.util.GradientUtil
 import tt.co.jesses.moonlight.android.view.util.VersionUtil
-import tt.co.jesses.moonlight.android.view.util.angledGradientBackground
+import tt.co.jesses.moonlight.common.util.GradientUtil
+import tt.co.jesses.moonlight.common.util.angledGradientBackground
 import tt.co.jesses.moonlight.android.view.util.basePadding
 import tt.co.jesses.moonlight.android.view.util.launchCustomTabs
 import tt.co.jesses.moonlight.android.view.util.smallPadding
