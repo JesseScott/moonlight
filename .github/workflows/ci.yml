@@ -22,9 +22,9 @@ jobs:
         run: chmod +x app/gradlew
 
       - name: Build with Gradle
-        run: ./gradlew :androidApp:assembleDebug
+        run: ./gradlew assembleDebug
         working-directory: ./app
 
       - name: Run Common Module Unit Tests
-        run: ./gradlew :common:testDebugUnitTest
+        run: ./gradlew testDebugUnitTest
         working-directory: ./app
