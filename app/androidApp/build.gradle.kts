@@ -16,8 +16,8 @@ android {
         applicationId = "tt.co.jesses.moonlight.android"
         minSdk = 24
         targetSdk = 36
-        versionCode = 10
-        versionName = "0.5.5"
+        versionCode = 12
+        versionName = "0.5.7"
     }
     buildFeatures {
         compose = true
