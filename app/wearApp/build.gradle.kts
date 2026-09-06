@@ -10,7 +10,7 @@ android {
     namespace = "tt.co.jesses.moonlight.wear"
     compileSdk = 36
     defaultConfig {
-        applicationId = "tt.co.jesses.moonlight.wear"
+        applicationId = "tt.co.jesses.moonlight.android"
         minSdk = 30
         targetSdk = 34
         versionCode = 1
@@ -31,7 +31,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
-            //shrinkResources = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             ndk {
                 debugSymbolLevel = "FULL"
