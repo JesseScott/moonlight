@@ -48,7 +48,7 @@ android {
 dependencies {
     implementation("androidx.compose.ui:ui:1.6.2")
     implementation("androidx.core:core-ktx:1.12.0")
-    implementation("org.shredzone.commons:commons-suncalc:3.7")
+    implementation("org.shredzone.commons:commons-suncalc:3.11")
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 
     // Hilt
