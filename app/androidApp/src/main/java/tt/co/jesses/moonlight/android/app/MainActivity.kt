@@ -40,6 +40,7 @@ import tt.co.jesses.moonlight.android.view.MoonlightScreen
 import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.android.view.state.Screens
 import tt.co.jesses.moonlight.android.view.sub.LocationRationaleDialog
+import tt.co.jesses.moonlight.common.util.RefreshWhileStarted
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -60,6 +61,10 @@ class MainActivity : ComponentActivity() {
                     rememberNavController()
                     val snackbarHostState = remember { SnackbarHostState() }
                     val viewModel: MoonlightViewModel = viewModel()
+                    RefreshWhileStarted(
+                        refreshCycle = viewModel.refreshCycle,
+                        onRefresh = { viewModel.getMoonIllumination() },
+                    )
                     val pagerState = rememberPagerState(
                         pageCount = { Screens.entries.size },
                         initialPage = 0,

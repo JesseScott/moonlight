@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,8 +24,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
 import tt.co.jesses.moonlight.android.R
 import tt.co.jesses.moonlight.android.app.MyApplicationTheme
 import tt.co.jesses.moonlight.android.view.state.MoonlightUiState
@@ -37,7 +34,6 @@ import tt.co.jesses.moonlight.android.view.util.Constants.headerFontSize
 import tt.co.jesses.moonlight.common.util.GradientUtil
 import tt.co.jesses.moonlight.common.util.angledGradientBackground
 import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun DataScreen(
@@ -46,16 +42,12 @@ fun DataScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     DataScreen(
         uiState = uiState,
-        onRefresh = { viewModel.getMoonIllumination() },
-        refreshCycle = viewModel.refreshCycle
     )
 }
 
 @Composable
 fun DataScreen(
     uiState: MoonlightUiState,
-    onRefresh: () -> Unit = {},
-    refreshCycle: Duration = 30.seconds,
 ) {
     val illuminationData = uiState.illuminationData
     val colorList = GradientUtil.generateHSLColor(illuminationData)
@@ -158,12 +150,6 @@ fun DataScreen(
         }
     }
 
-    LaunchedEffect(Unit) {
-        while(isActive) {
-            delay(refreshCycle)
-            onRefresh()
-        }
-    }
 }
 
 private fun degrees(value: Float): String = "%.1f°".format(value)

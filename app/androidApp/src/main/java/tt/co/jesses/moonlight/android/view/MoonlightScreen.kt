@@ -4,7 +4,6 @@ import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.Canvas
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -12,8 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
 import tt.co.jesses.moonlight.android.app.MainActivity
 import tt.co.jesses.moonlight.android.app.MyApplicationTheme
 import tt.co.jesses.moonlight.android.view.state.MoonlightUiState
@@ -24,7 +21,6 @@ import tt.co.jesses.moonlight.common.util.angledGradientBackground
 import tt.co.jesses.moonlight.android.view.util.bounded
 import tt.co.jesses.moonlight.common.data.model.AnalyticsAcceptance
 import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun MoonlightScreen(
@@ -34,8 +30,6 @@ fun MoonlightScreen(
     MoonlightScreen(
         uiState = uiState,
         onUpdateAnalyticsAcceptance = { viewModel.updateAnalyticsAcceptance(it) },
-        onRefresh = { viewModel.getMoonIllumination() },
-        refreshCycle = viewModel.refreshCycle
     )
 }
 
@@ -43,8 +37,6 @@ fun MoonlightScreen(
 fun MoonlightScreen(
     uiState: MoonlightUiState,
     onUpdateAnalyticsAcceptance: (AnalyticsAcceptance) -> Unit = {},
-    onRefresh: () -> Unit = {},
-    refreshCycle: Duration = 30.seconds,
 ) {
     val illuminationData = uiState.illuminationData
 
@@ -79,12 +71,6 @@ fun MoonlightScreen(
         )
     }
 
-    LaunchedEffect(Unit) {
-        while(isActive) {
-            delay(refreshCycle)
-            onRefresh()
-        }
-    }
 }
 
 @Preview(showBackground = true)

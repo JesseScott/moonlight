@@ -3,15 +3,13 @@ package tt.co.jesses.moonlight.wear.view
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
 import tt.co.jesses.moonlight.wear.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.common.util.GradientUtil
+import tt.co.jesses.moonlight.common.util.RefreshWhileStarted
 import tt.co.jesses.moonlight.common.util.angledGradientBackground
 
 @Composable
@@ -35,10 +33,8 @@ fun WearMoonlightScreen(
         // but for now just the gradient as requested.
     }
 
-    LaunchedEffect(Unit) {
-        while(isActive) {
-            delay(viewModel.refreshCycle)
-            viewModel.getMoonIllumination()
-        }
-    }
+    RefreshWhileStarted(
+        refreshCycle = viewModel.refreshCycle,
+        onRefresh = { viewModel.getMoonIllumination() },
+    )
 }
