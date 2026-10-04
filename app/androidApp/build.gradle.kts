@@ -84,5 +84,5 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics")
 
     // SunCalc
-    implementation("org.shredzone.commons:commons-suncalc:3.7")
+    implementation("org.shredzone.commons:commons-suncalc:3.11")
 }

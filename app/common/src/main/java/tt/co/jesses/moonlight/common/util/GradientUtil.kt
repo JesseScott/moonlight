@@ -20,19 +20,82 @@ import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
 
+/**
+ * The colour of the moon, as HSL + alpha. Hue is in degrees (0..360), the rest are 0..1.
+ */
+data class MoonHsl(
+    val hue: Float,
+    val saturation: Float,
+    val lightness: Float,
+    val alpha: Float,
+)
+
 object GradientUtil {
     private val silverColor = Color(0xFFC0C0C0)
     private val lsb = Color(0xFFCCE5FF)
+
+    private const val HUE_NEW_MOON = 230f // cool blue
+    private const val HUE_FULL_MOON = 45f // warm gold
+    private const val HUE_WAX_WANE_TILT = 25f // waxing leans one way, waning the other
+
+    private const val SATURATION_HORIZON = 0.25f
+    private const val SATURATION_ZENITH = 0.65f
+
+    private const val LIGHTNESS_NEW_MOON = 0.35f
+    private const val LIGHTNESS_FULL_MOON = 0.75f
+
+    private const val ALPHA_NEW_MOON = 0.25f
+
+    private const val ZENITH_DEGREES = 90f
+    private const val TWILIGHT_DEGREES = 12f // how far below the horizon the muted wash takes to fully fade in
+    private const val NIGHT_SATURATION_DROP = 0.6f
+    private const val NIGHT_LIGHTNESS_DROP = 0.5f
+
+    /** Used when there is no location, and so no real altitude */
+    const val NEUTRAL_ALTITUDE_DEGREES = 45f
+
+    /**
+     * Maps the moon to a colour.
+     *
+     * - hue follows the phase: new moon is [HUE_NEW_MOON], full moon is [HUE_FULL_MOON], and a waxing moon is
+     *   tilted one way and a waning moon the other (zero tilt at new and full moon, so the cycle has no jump)
+     * - saturation grows with altitude: [SATURATION_HORIZON] at the horizon to [SATURATION_ZENITH] at the zenith
+     * - lightness and alpha grow with the illuminated [fraction]
+     * - below the horizon the colour fades to a darker, more muted wash
+     *
+     * @param phase degrees, -180 (new, waxing) through 0 (full) to 180 (waning, new)
+     * @param fraction illuminated fraction, 0 (new) to 1 (full)
+     * @param altitude degrees above the horizon, -90 to 90
+     */
+    fun moonHsl(phase: Float, fraction: Float, altitude: Float): MoonHsl {
+        val illumination = fraction.coerceIn(0f, 1f)
+        val up = (altitude / ZENITH_DEGREES).coerceIn(0f, 1f)
+        val night = (-altitude / TWILIGHT_DEGREES).coerceIn(0f, 1f)
+
+        val tilt = HUE_WAX_WANE_TILT * sin(Math.toRadians(phase.toDouble())).toFloat()
+        val hue = (HUE_NEW_MOON + (HUE_FULL_MOON - HUE_NEW_MOON) * illumination + tilt).mod(360f)
+
+        val saturation = (SATURATION_HORIZON + (SATURATION_ZENITH - SATURATION_HORIZON) * up) *
+            (1f - NIGHT_SATURATION_DROP * night)
+        val lightness = (LIGHTNESS_NEW_MOON + (LIGHTNESS_FULL_MOON - LIGHTNESS_NEW_MOON) * illumination) *
+            (1f - NIGHT_LIGHTNESS_DROP * night)
+        val alpha = ALPHA_NEW_MOON + (1f - ALPHA_NEW_MOON) * illumination
+
+        return MoonHsl(hue = hue, saturation = saturation, lightness = lightness, alpha = alpha)
+    }
 
     fun generateHSLColor(
         moonData: MoonData? = null,
     ): List<Color> {
         val hsl = if (moonData != null) {
+            // Without a location the altitude is unknown, so assume the moon is part way up the sky
+            val altitude = if (moonData.hasPosition) moonData.altitude else NEUTRAL_ALTITUDE_DEGREES
+            val moon = moonHsl(moonData.phase, moonData.fraction, altitude)
             Color.hsl(
-                hue = moonData.phase,
-                saturation = moonData.altitude,
-                lightness = moonData.angle,
-                alpha = moonData.fraction,
+                hue = moon.hue,
+                saturation = moon.saturation,
+                lightness = moon.lightness,
+                alpha = moon.alpha,
                 colorSpace = ColorSpaces.Srgb,
             )
         } else {
