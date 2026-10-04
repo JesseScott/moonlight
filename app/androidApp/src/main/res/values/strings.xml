@@ -21,10 +21,10 @@
     <string name="data_location_unavailable">Location unavailable. Allow location access to see the moon\'s position where you are.</string>
     <string name="data_description">
         The above data is a realtime representation of the moon\'s current status. The data is used as an algorithm to render a custom gradient.
-        \n\nThe gradient\'s hue is attained by mapping the current phase, which starts at -180.0 (new moon, waxing), passes 0.0 (full moon) and moves toward 180.0 (waning, new moon).
-        \n\nSaturation is driven by the altitude - 0.0 means the moon\'s center is at the horizon, 90.0 at the zenith (straight over your head).
-        \n\nLightness is derived from the angle of the moon illumination relative to earth. The moon is waxing if the angle is negative, and waning if positive.
-        \n\nThe alpha of the gradient is extracted from the illuminated fraction of the moon - .0 indicates new moon, 1.0 indicates full moon.
+        \n\nThe gradient\'s hue follows the phase of the moon: cool blue at new moon, warm gold at full moon. A waxing moon (phase below 0) leans one way and a waning moon (phase above 0) the other.
+        \n\nSaturation grows with the altitude - 0° means the moon\'s center is at the horizon, 90° at the zenith (straight over your head). Below the horizon the colors turn darker and more muted.
+        \n\nLightness and opacity grow with the illuminated fraction of the moon - 0.0 indicates new moon, 1.0 indicates full moon.
+        \n\nWithout location access the altitude is unknown, so the moon is assumed to be part way up the sky.
     </string>
 
     <!-- Analytics -->
