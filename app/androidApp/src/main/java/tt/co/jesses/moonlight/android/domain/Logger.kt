@@ -1,9 +1,9 @@
 package tt.co.jesses.moonlight.android.domain
 
 import android.content.Context
+import android.os.Bundle
 import android.util.Log
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.logEvent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -58,10 +58,13 @@ class Logger @Inject constructor(
 
     fun logScreen(screen: String) {
         logConsole(screen)
-        firebaseAnalytics.logEvent(screen) {
-            param(EventNames.Screen.Params.SCREEN, screen)
-            param(EventNames.Property.VERSION, versionName)
-        }
+        firebaseAnalytics.logEvent(
+            screen,
+            Bundle().apply {
+                putString(EventNames.Screen.Params.SCREEN, screen)
+                putString(EventNames.Property.VERSION, versionName)
+            }
+        )
     }
 
     fun logEvent(
@@ -69,14 +72,17 @@ class Logger @Inject constructor(
         params: Map<String, String> = emptyMap(),
     ) {
         logConsole(eventName)
-        firebaseAnalytics.logEvent(eventName) {
-            if (params.isNotEmpty()) {
-                val key = params.keys.first()
-                val value = params.values.first()
-                param(key, value)
+        firebaseAnalytics.logEvent(
+            eventName,
+            Bundle().apply {
+                if (params.isNotEmpty()) {
+                    val key = params.keys.first()
+                    val value = params.values.first()
+                    putString(key, value)
+                }
+                putString(EventNames.Property.VERSION, versionName)
             }
-            param(EventNames.Property.VERSION, versionName)
-        }
+        )
     }
 
     fun logConsole(message: String) {
