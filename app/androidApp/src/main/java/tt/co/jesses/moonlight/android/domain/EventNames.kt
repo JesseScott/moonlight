@@ -24,6 +24,8 @@ object EventNames {
             const val FEEDBACK = "feedback"
             const val COFFEE = "coffee"
             const val OSS = "oss"
+            const val WALLPAPER = "wallpaper"
+            const val WIDGET = "widget"
             const val URL = "url"
         }
 

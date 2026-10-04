@@ -57,6 +57,13 @@
     <string name="credits_credits_header">créditos</string>
     <string name="credits_ack_header">agradecimientos</string>
     <string name="credits_oss">Licencias de código abierto</string>
+    <string name="credits_extras_header">fondo de pantalla y widget</string>
+    <string name="credits_extras_description">moonlight también es un fondo de pantalla animado y un widget de inicio que brillan con la luna.</string>
+    <string name="credits_extras_wallpaper">Usar como fondo de pantalla</string>
+    <string name="credits_extras_widget">Añadir widget</string>
+    <string name="credits_extras_wallpaper_unavailable">No se pudo abrir el selector de fondos. Prueba en Ajustes, Fondo de pantalla y estilo.</string>
+    <string name="credits_extras_widget_unavailable">No se pudo añadir el widget. Mantén pulsada la pantalla de inicio y elige Widgets.</string>
+    <string name="credits_extras_widget_hint">Para añadir el widget, mantén pulsada la pantalla de inicio y elige Widgets.</string>
     <string name="credits_info_header">información</string>
 
     <string name="credits_info_version">Versión %s</string>

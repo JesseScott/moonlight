@@ -12,6 +12,8 @@ import tt.co.jesses.moonlight.common.data.model.MoonData
 
 class MoonColorSourceTest {
 
+    private val DAY = LocationDataSource.BACKGROUND_MAX_FIX_AGE_MS
+
     private lateinit var repository: MoonlightRepository
     private lateinit var locationDataSource: LocationDataSource
     private lateinit var source: MoonColorSource
@@ -24,19 +26,19 @@ class MoonColorSourceTest {
     }
 
     @Test
-    fun `uses the location when there is one, without waiting for a fresh fix`() = runTest {
+    fun `uses a location from the last day without waiting for a fresh fix`() = runTest {
         val moon = MoonData(hasPosition = true)
-        whenever(locationDataSource.getCoordinates(false)).thenReturn(Coordinates(49.26, -123.05))
+        whenever(locationDataSource.getCoordinates(false, DAY)).thenReturn(Coordinates(49.26, -123.05))
         whenever(repository.getMoonIllumination(49.26, -123.05)).thenReturn(moon)
 
         assertEquals(moon, source.moonData())
-        verify(locationDataSource).getCoordinates(false)
+        verify(locationDataSource).getCoordinates(false, DAY)
     }
 
     @Test
     fun `falls back to no location when there is none`() = runTest {
         val moon = MoonData(hasPosition = false)
-        whenever(locationDataSource.getCoordinates(false)).thenReturn(null)
+        whenever(locationDataSource.getCoordinates(false, DAY)).thenReturn(null)
         whenever(repository.getMoonIllumination(null, null)).thenReturn(moon)
 
         assertEquals(moon, source.moonData())

@@ -3,6 +3,7 @@
     <string name="wallpaper_name">moonlight</string>
     <string name="widget_name">moonlight</string>
     <string name="widget_description">Un resplandor que sigue a la luna</string>
+    <string name="wallpaper_author">Jesse Scott</string>
     <string name="wallpaper_description">Un resplandor que sigue a la luna</string>
     <string name="widget_content_description">Fondo degradado de Moonlight</string>
 </resources>
