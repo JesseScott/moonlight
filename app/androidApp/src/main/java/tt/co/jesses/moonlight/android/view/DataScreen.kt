@@ -93,7 +93,7 @@ fun DataScreen(
             TableLike(
                 data = Pair(
                     stringResource(illuminationData.fractionRes),
-                    "${illuminationData.fraction}"
+                    "%.2f".format(illuminationData.fraction)
                 )
             )
         }
@@ -101,7 +101,7 @@ fun DataScreen(
             TableLike(
                 data = Pair(
                     stringResource(illuminationData.phaseRes),
-                    "${illuminationData.phase}"
+                    degrees(illuminationData.phase)
                 )
             )
         }
@@ -109,7 +109,7 @@ fun DataScreen(
             TableLike(
                 data = Pair(
                     stringResource(illuminationData.angleRes),
-                    "${illuminationData.angle}"
+                    degrees(illuminationData.angle)
                 )
             )
         }
@@ -117,7 +117,7 @@ fun DataScreen(
             TableLike(
                 data = Pair(
                     stringResource(illuminationData.azimuthRes),
-                    positionValue(illuminationData.azimuth, illuminationData.hasPosition)
+                    positionValue(degrees(illuminationData.azimuth), illuminationData.hasPosition)
                 )
             )
         }
@@ -125,7 +125,7 @@ fun DataScreen(
             TableLike(
                 data = Pair(
                     stringResource(illuminationData.altitudeRes),
-                    positionValue(illuminationData.altitude, illuminationData.hasPosition)
+                    positionValue(degrees(illuminationData.altitude), illuminationData.hasPosition)
                 )
             )
         }
@@ -133,7 +133,7 @@ fun DataScreen(
             TableLike(
                 data = Pair(
                     stringResource(illuminationData.distanceRes),
-                    positionValue(illuminationData.distance, illuminationData.hasPosition)
+                    positionValue("%,.0f km".format(illuminationData.distance), illuminationData.hasPosition)
                 )
             )
         }
@@ -166,8 +166,10 @@ fun DataScreen(
     }
 }
 
-private fun positionValue(value: Float, hasPosition: Boolean): String =
-    if (hasPosition) "$value" else "--"
+private fun degrees(value: Float): String = "%.1f°".format(value)
+
+private fun positionValue(value: String, hasPosition: Boolean): String =
+    if (hasPosition) value else "--"
 
 @Preview(showBackground = true)
 @Composable
