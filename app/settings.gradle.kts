@@ -15,7 +15,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "moonlight"
 include(":androidApp")
-include(":shared")
 include(":common")
 include(":wearApp")
 include(":widget")
