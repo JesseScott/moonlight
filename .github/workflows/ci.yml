@@ -6,25 +6,62 @@ on:
   pull_request:
     branches: [ main ]
 
+# A newer push to the same pull request makes the older run pointless; never cancel runs on main
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
 jobs:
   android-build:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
+
       - name: Set up JDK 17
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v6
         with:
           java-version: '17'
           distribution: 'temurin'
 
+      # Caches the Gradle distribution, dependencies and build/configuration caches between runs.
+      # Runs on main write the cache; pull requests read it.
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+
       - name: Grant execute permission to gradlew
         run: chmod +x app/gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew assembleDebug
+      - name: Build and run unit tests
+        run: ./gradlew assembleDebug testDebugUnitTest
         working-directory: ./app
 
-      - name: Run Common Module Unit Tests
-        run: ./gradlew testDebugUnitTest
+  # R8/ProGuard problems only show up in a release build, which the job above never makes.
+  # Runs in parallel on main only, so pull requests are not slowed down.
+  android-release-build:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v6
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Grant execute permission to gradlew
+        run: chmod +x app/gradlew
+
+      - name: Build release variants
+        run: ./gradlew assembleRelease
         working-directory: ./app
