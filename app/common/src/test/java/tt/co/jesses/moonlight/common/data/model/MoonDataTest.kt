@@ -1,6 +1,7 @@
 package tt.co.jesses.moonlight.common.data.model
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
 import tt.co.jesses.moonlight.common.R
 
@@ -24,6 +25,7 @@ class MoonDataTest {
         assertEquals(0.0f, moonData.distance)
         assertEquals(R.string.data_parallactic_angle, moonData.parallacticAngleRes)
         assertEquals(0.0f, moonData.parallacticAngle)
+        assertFalse(moonData.hasPosition)
     }
 
     @Test

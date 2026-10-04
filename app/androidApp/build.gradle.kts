@@ -29,6 +29,10 @@ android {
         }
     }
     buildTypes {
+        getByName("debug") {
+            // Install alongside the Play Store release instead of clashing with its signature
+            applicationIdSuffix = ".debug"
+        }
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true

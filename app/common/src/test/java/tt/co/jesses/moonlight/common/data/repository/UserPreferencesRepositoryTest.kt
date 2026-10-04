@@ -115,4 +115,27 @@ class UserPreferencesRepositoryTest {
         // Then
         assertTrue(result.hasSwiped)
     }
+
+    @Test
+    fun `hasSeenLocationRationale should default to false`() = runTest {
+        assertEquals(false, repository.hasSeenLocationRationale.first())
+    }
+
+    @Test
+    fun `hasSeenLocationRationale should emit value from datastore`() = runTest {
+        val key = booleanPreferencesKey("has_seen_location_rationale")
+        whenever(dataStore.data).thenReturn(flowOf(mutablePreferencesOf(key to true)))
+        repository = UserPreferencesRepository(dataStore)
+
+        assertEquals(true, repository.hasSeenLocationRationale.first())
+    }
+
+    @Test
+    fun `setHasSeenLocationRationale should update datastore`() = runTest {
+        repository.setHasSeenLocationRationale(true)
+
+        argumentCaptor<suspend (MutablePreferences) -> Unit>().apply {
+            verify(dataStore).edit(capture())
+        }
+    }
 }

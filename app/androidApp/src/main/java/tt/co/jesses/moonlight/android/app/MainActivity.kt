@@ -1,8 +1,11 @@
 package tt.co.jesses.moonlight.android.app
 
+import android.Manifest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,7 +22,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -34,6 +39,7 @@ import tt.co.jesses.moonlight.android.view.DataScreen
 import tt.co.jesses.moonlight.android.view.MoonlightScreen
 import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.android.view.state.Screens
+import tt.co.jesses.moonlight.android.view.sub.LocationRationaleDialog
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -60,8 +66,32 @@ class MainActivity : ComponentActivity() {
                     )
                     val hasSwiped by viewModel.hasSwiped.collectAsState(initial = false)
 
-                    LaunchedEffect(key1 = hasSwiped) {
-                        if (!hasSwiped) {
+                    // Coarse location is only used on-device to work out where the moon is in the sky
+                    var isPermissionPromptShowing by remember { mutableStateOf(false) }
+                    val locationPermissionLauncher = rememberLauncherForActivityResult(
+                        ActivityResultContracts.RequestPermission()
+                    ) {
+                        isPermissionPromptShowing = false
+                        viewModel.getMoonIllumination()
+                    }
+                    val uiState by viewModel.uiState.collectAsState()
+                    if (uiState.isLocationRationalePending) {
+                        LocationRationaleDialog(
+                            onDismissRequest = { viewModel.onLocationRationaleSeen() },
+                            onConfirmation = {
+                                viewModel.onLocationRationaleSeen()
+                                isPermissionPromptShowing = true
+                                locationPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+                            }
+                        )
+                    }
+
+                    // Hold the swipe hint back until the first-launch dialogs are out of the way
+                    val isOnboarding = uiState.isAnalyticsPreferencePending ||
+                        uiState.isLocationRationalePending ||
+                        isPermissionPromptShowing
+                    LaunchedEffect(key1 = hasSwiped, key2 = isOnboarding) {
+                        if (!hasSwiped && !isOnboarding) {
                             delay(5000)
                             val result = snackbarHostState.showSnackbar(
                                 message = getString(R.string.swipe_to_see_more),

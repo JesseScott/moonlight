@@ -11,7 +11,7 @@ class MoonlightRepository @Inject constructor(
     private val dataSource: MoonlightDataSource,
 ) {
 
-    fun getMoonIllumination(latitude: Double = 0.0, longitude: Double = 0.0): MoonData {
+    fun getMoonIllumination(latitude: Double? = null, longitude: Double? = null): MoonData {
         return normalizeData(dataSource.getMoonIllumination(latitude, longitude))
     }
 

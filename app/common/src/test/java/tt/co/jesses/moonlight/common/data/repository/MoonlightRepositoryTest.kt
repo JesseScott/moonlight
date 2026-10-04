@@ -55,4 +55,14 @@ class MoonlightRepositoryTest {
         // parallacticAngle: (200 - (-180)) / (180 - (-180)) = 380 / 360 = 1.0555556
         assertEquals(1.0555556f, result.parallacticAngle, 0.0001f)
     }
+
+    @Test
+    fun `getMoonIllumination should pass the location through to the data source`() {
+        val data = MoonData(hasPosition = true)
+        whenever(dataSource.getMoonIllumination(37.77, -122.42)).thenReturn(data)
+
+        val result = repository.getMoonIllumination(latitude = 37.77, longitude = -122.42)
+
+        assertEquals(true, result.hasPosition)
+    }
 }

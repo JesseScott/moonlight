@@ -21,4 +21,6 @@ data class MoonData(
     val distance: Float = 0.0f,
     @StringRes val parallacticAngleRes: Int = R.string.data_parallactic_angle,
     val parallacticAngle: Float = 0.0f,
+    /** False when no location was available, so azimuth/altitude/distance/parallacticAngle are not real values */
+    val hasPosition: Boolean = false,
 )
