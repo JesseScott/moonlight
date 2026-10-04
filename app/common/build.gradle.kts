@@ -48,6 +48,7 @@ android {
 dependencies {
     implementation("androidx.compose.ui:ui:1.6.2")
     implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
     implementation("org.shredzone.commons:commons-suncalc:3.11")
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 
@@ -62,6 +63,7 @@ dependencies {
     testImplementation("org.mockito:mockito-core:5.8.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation("androidx.lifecycle:lifecycle-runtime-testing:2.8.7")
 }
 
 tasks.withType<Test> {

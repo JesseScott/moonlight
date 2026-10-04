@@ -20,7 +20,6 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -40,8 +39,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.gms.oss.licenses.v2.OssLicensesMenuActivity
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import tt.co.jesses.moonlight.android.R
 import tt.co.jesses.moonlight.android.app.MainActivity
@@ -63,7 +60,6 @@ import tt.co.jesses.moonlight.android.view.util.basePadding
 import tt.co.jesses.moonlight.android.view.util.launchCustomTabs
 import tt.co.jesses.moonlight.android.view.util.smallPadding
 import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun AboutScreen(
@@ -72,16 +68,12 @@ fun AboutScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     AboutScreen(
         uiState = uiState,
-        onRefresh = { viewModel.getMoonIllumination() },
-        refreshCycle = viewModel.refreshCycle
     )
 }
 
 @Composable
 fun AboutScreen(
     uiState: MoonlightUiState,
-    onRefresh: () -> Unit = {},
-    refreshCycle: Duration = 30.seconds,
 ) {
     val context = LocalContext.current
     val activity = LocalActivity.current as? MainActivity
@@ -406,12 +398,6 @@ fun AboutScreen(
         )
     }
 
-    LaunchedEffect(Unit) {
-        while(isActive) {
-            delay(refreshCycle)
-            onRefresh()
-        }
-    }
 }
 
 @Preview(showBackground = true)
