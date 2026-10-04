@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tt.co.jesses.moonlight.common.data.model.AnalyticsAcceptance
@@ -41,6 +42,7 @@ class MoonlightViewModel @Inject constructor(
     init {
         getMoonIllumination()
         observeAnalyticsAcceptance()
+        observeLocationRationale()
     }
 
     fun getMoonIllumination() {
@@ -69,6 +71,29 @@ class MoonlightViewModel @Inject constructor(
                     it.copy(isAnalyticsPreferencePending = acceptance == AnalyticsAcceptance.UNSET)
                 }
             }
+        }
+    }
+
+    /**
+     * The location explainer is only shown once the analytics choice has been made, so the two dialogs never
+     * stack, and never again after the user has seen it (or already granted location).
+     */
+    private fun observeLocationRationale() {
+        viewModelScope.launch {
+            combine(
+                userPreferencesRepository.analyticsAcceptance,
+                userPreferencesRepository.hasSeenLocationRationale,
+            ) { acceptance, hasSeenRationale ->
+                acceptance != AnalyticsAcceptance.UNSET && !hasSeenRationale && !hasLocationPermission()
+            }.collect { pending ->
+                _uiState.update { it.copy(isLocationRationalePending = pending) }
+            }
+        }
+    }
+
+    fun onLocationRationaleSeen() {
+        viewModelScope.launch {
+            userPreferencesRepository.setHasSeenLocationRationale(true)
         }
     }
 

@@ -32,6 +32,10 @@
     <string name="analytics_consent_body">Para ayudarnos a mejorar su experiencia con la aplicación, nos gustaría recopilar datos de uso anónimos. Su privacidad es importante para nosotros y no se recopilará ni compartirá ninguna información de identificación personal.</string>
     <string name="analytics_action_enable">Habilitar</string>
     <string name="analytics_action_disable">Deshabilitar</string>
+    <string name="location_rationale_title">¿Dónde está la luna?</string>
+    <string name="location_rationale_body">La luna aparece en una parte distinta del cielo según dónde te encuentres. moonlight usa tu ubicación aproximada para calcular la posición de la luna (azimut, altitud y distancia) desde donde estás.\n\nTu ubicación se usa solo en tu dispositivo para este cálculo. Nunca se almacena ni se envía a ningún sitio.\n\nSin ella, moonlight sigue mostrando la fase de la luna, pero no su posición.</string>
+    <string name="location_rationale_continue">Continuar</string>
+    <string name="location_rationale_not_now">Ahora no</string>
 
     <!-- Credits -->
     <string name="credits_made_by_full">moonlight fue desarrollado por el artista Jesse Scott y se inspiró originalmente en una idea de la artista Kelly Andres.</string>

@@ -37,6 +37,7 @@ import tt.co.jesses.moonlight.android.view.DataScreen
 import tt.co.jesses.moonlight.android.view.MoonlightScreen
 import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.android.view.state.Screens
+import tt.co.jesses.moonlight.android.view.sub.LocationRationaleDialog
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -67,10 +68,15 @@ class MainActivity : ComponentActivity() {
                     val locationPermissionLauncher = rememberLauncherForActivityResult(
                         ActivityResultContracts.RequestPermission()
                     ) { viewModel.getMoonIllumination() }
-                    LaunchedEffect(Unit) {
-                        if (!viewModel.hasLocationPermission()) {
-                            locationPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
-                        }
+                    val uiState by viewModel.uiState.collectAsState()
+                    if (uiState.isLocationRationalePending) {
+                        LocationRationaleDialog(
+                            onDismissRequest = { viewModel.onLocationRationaleSeen() },
+                            onConfirmation = {
+                                viewModel.onLocationRationaleSeen()
+                                locationPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+                            }
+                        )
                     }
 
                     LaunchedEffect(key1 = hasSwiped) {

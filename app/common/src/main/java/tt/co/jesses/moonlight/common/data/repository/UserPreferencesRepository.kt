@@ -26,6 +26,17 @@ class UserPreferencesRepository @Inject constructor(
             preferences[PreferencesKeys.HAS_SWIPED] ?: false
         }
 
+    val hasSeenLocationRationale: Flow<Boolean> = dataStore.data
+        .map { preferences ->
+            preferences[PreferencesKeys.HAS_SEEN_LOCATION_RATIONALE] ?: false
+        }
+
+    suspend fun setHasSeenLocationRationale(hasSeen: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PreferencesKeys.HAS_SEEN_LOCATION_RATIONALE] = hasSeen
+        }
+    }
+
     suspend fun setHasSwiped(hasSwiped: Boolean) {
         dataStore.edit { preferences ->
             preferences[PreferencesKeys.HAS_SWIPED] = hasSwiped
@@ -49,6 +60,7 @@ class UserPreferencesRepository @Inject constructor(
     private object PreferencesKeys {
         val ANALYTICS_ACCEPTANCE = intPreferencesKey("analytics_acceptance")
         val HAS_SWIPED = booleanPreferencesKey("has_swiped")
+        val HAS_SEEN_LOCATION_RATIONALE = booleanPreferencesKey("has_seen_location_rationale")
     }
 
     companion object {
