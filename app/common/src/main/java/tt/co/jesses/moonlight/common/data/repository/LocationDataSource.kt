@@ -30,10 +30,14 @@ class LocationDataSource @Inject constructor(
             ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
         }
 
-    suspend fun getCoordinates(): Coordinates? {
+    /**
+     * @param allowFreshFix when false only an existing recent fix is used, so the call returns straight away.
+     * Widgets and wallpapers run in the background, where waiting for a new fix is not wanted (or allowed).
+     */
+    suspend fun getCoordinates(allowFreshFix: Boolean = true): Coordinates? {
         if (!hasPermission()) return null
         val manager = context.getSystemService(Context.LOCATION_SERVICE) as? LocationManager ?: return null
-        val location = lastKnownLocation(manager) ?: currentLocation(manager)
+        val location = lastKnownLocation(manager) ?: if (allowFreshFix) currentLocation(manager) else null
         return location?.let { Coordinates(it.latitude, it.longitude) }
     }
 

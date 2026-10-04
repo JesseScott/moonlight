@@ -58,6 +58,7 @@ dependencies {
     }
 
     implementation(project(":common"))
+    implementation(project(":widget"))
 
     implementation("androidx.activity:activity-compose:1.13.0")
     implementation("androidx.browser:browser:1.10.0")

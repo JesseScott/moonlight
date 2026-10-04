@@ -3,7 +3,6 @@ package tt.co.jesses.moonlight.common.util
 import android.graphics.Canvas
 import android.graphics.LinearGradient
 import android.graphics.Paint
-import android.graphics.PointF
 import android.graphics.Shader
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -16,9 +15,7 @@ import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.hypot
-import kotlin.math.pow
 import kotlin.math.sin
-import kotlin.math.sqrt
 
 /**
  * The colour of the moon, as HSL + alpha. Hue is in degrees (0..360), the rest are 0..1.
@@ -110,12 +107,24 @@ object GradientUtil {
     }
 }
 
-fun Modifier.angledGradientBackground(colors: List<Color>, degrees: Float) = this.drawBehind {
-    val (x, y) = size
-    val gamma = atan2(y, x)
+/**
+ * The start and end of a linear gradient across a [width] x [height] area, in pixels.
+ */
+data class GradientLine(val startX: Float, val startY: Float, val endX: Float, val endY: Float)
+
+/**
+ * Where a gradient at [degrees] starts and ends so that it just covers a [width] x [height] area.
+ * Like CSS gradient angles, but measured counter-clockwise from the +x axis with y pointing down:
+ * 0 runs left to right, 90 top to bottom, 180 right to left and 270 bottom to top.
+ *
+ * Shared by the Compose background and the canvas version (used by the widget and live wallpaper) so they
+ * always agree. Returns null for an area with no height (or width), which can not be drawn.
+ */
+fun angledGradientLine(width: Float, height: Float, degrees: Float): GradientLine? {
+    val gamma = atan2(height, width)
 
     if (gamma == 0f || (gamma == (PI / 2).toFloat())) {
-        return@drawBehind
+        return null
     }
 
     val degreesNormalised = (degrees % 360).let { if (it < 0) it + 360 else it }
@@ -123,55 +132,61 @@ fun Modifier.angledGradientBackground(colors: List<Color>, degrees: Float) = thi
 
     val gradientLength = when (alpha) {
         in 0f..gamma, in (2 * PI - gamma)..2 * PI -> {
-            x / cos(alpha)
+            width / cos(alpha)
         }
         in gamma..(PI - gamma).toFloat() -> {
-            y / sin(alpha)
+            height / sin(alpha)
         }
         in (PI - gamma)..(PI + gamma) -> {
-            x / -cos(alpha)
+            width / -cos(alpha)
         }
         in (PI + gamma)..(2 * PI - gamma) -> {
-            y / -sin(alpha)
+            height / -sin(alpha)
         }
-        else -> hypot(x, y)
+        else -> hypot(width, height)
     }
 
+    val centerX = width / 2
+    val centerY = height / 2
     val centerOffsetX = cos(alpha) * gradientLength / 2
     val centerOffsetY = sin(alpha) * gradientLength / 2
+
+    return GradientLine(
+        startX = centerX - centerOffsetX,
+        startY = centerY - centerOffsetY,
+        endX = centerX + centerOffsetX,
+        endY = centerY + centerOffsetY,
+    )
+}
+
+fun Modifier.angledGradientBackground(colors: List<Color>, degrees: Float) = this.drawBehind {
+    val line = angledGradientLine(size.width, size.height, degrees) ?: return@drawBehind
 
     drawRect(
         brush = Brush.linearGradient(
             colors = colors,
-            start = Offset(center.x - centerOffsetX, center.y - centerOffsetY),
-            end = Offset(center.x + centerOffsetX, center.y + centerOffsetY),
+            start = Offset(line.startX, line.startY),
+            end = Offset(line.endX, line.endY),
         ),
         size = size,
     )
 }
 
 fun drawAngledGradient(degrees: Float, canvas: Canvas, colors: List<Int>) {
-    val (width, height) = canvas.width.toFloat() to canvas.height.toFloat()
-    val (x, y) = width to height
-    val gamma = (degrees / 180f) * Math.PI
-    val yComponent = cos(gamma)
-    val xComponent = sin(gamma)
-    val r = sqrt(x.pow(2) + y.pow(2)) / 2f
-    val offset = PointF(x / 2f, y / 2f)
-    val offset2 = PointF(xComponent.toFloat() * r, yComponent.toFloat() * r)
-
-    val gradient = LinearGradient(
-        offset.x - offset2.x,
-        offset.y - offset2.y,
-        offset.x + offset2.x,
-        offset.y + offset2.y,
-        colors.toIntArray(),
-        null,
-        Shader.TileMode.CLAMP
-    )
+    val width = canvas.width.toFloat()
+    val height = canvas.height.toFloat()
+    val line = angledGradientLine(width, height, degrees) ?: return
 
     val paint = Paint().apply {
-        shader = gradient
+        shader = LinearGradient(
+            line.startX,
+            line.startY,
+            line.endX,
+            line.endY,
+            colors.toIntArray(),
+            null,
+            Shader.TileMode.CLAMP
+        )
     }
 
     canvas.drawRect(0f, 0f, width, height, paint)

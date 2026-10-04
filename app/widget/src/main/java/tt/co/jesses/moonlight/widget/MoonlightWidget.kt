@@ -4,49 +4,44 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.toArgb
 import androidx.glance.BitmapImageProvider
 import androidx.glance.GlanceId
+import androidx.glance.GlanceModifier
 import androidx.glance.Image
+import androidx.glance.ImageProvider
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.provideContent
-import androidx.glance.layout.Alignment
-import androidx.glance.layout.Box
+import androidx.glance.layout.ContentScale
 import androidx.glance.layout.fillMaxSize
-import androidx.glance.text.Text
-import tt.co.jesses.moonlight.widget.R
-import tt.co.jesses.moonlight.common.util.GradientUtil
+import tt.co.jesses.moonlight.common.data.repository.MoonColorSource
 import tt.co.jesses.moonlight.common.util.drawAngledGradient
 
+/**
+ * Home screen widget: the moon's gradient, stretched to whatever size the widget is given.
+ */
 class MoonlightWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
+        val colors = MoonColorSource.create(context).argbColors()
         provideContent {
-            MoonlightWidgetContent(context)
+            MoonlightWidgetContent(context, colors)
         }
     }
 
     @Composable
-    fun MoonlightWidgetContent(context: Context) {
-        val width = 256
-        val height = 256
-        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
+    fun MoonlightWidgetContent(context: Context, colors: List<Int>) {
+        val bitmap = Bitmap.createBitmap(BITMAP_SIZE, BITMAP_SIZE, Bitmap.Config.ARGB_8888)
+        drawAngledGradient(degrees = 270f, canvas = Canvas(bitmap), colors = colors)
 
-        drawAngledGradient(
-            degrees = 270f,
-            canvas = canvas,
-            colors = GradientUtil.generateHSLColor().map { it.toArgb() }
+        Image(
+            provider = BitmapImageProvider(bitmap),
+            contentDescription = context.getString(R.string.widget_content_description),
+            contentScale = ContentScale.FillBounds,
+            modifier = GlanceModifier.fillMaxSize(),
         )
+    }
 
-        Box(
-            modifier = androidx.glance.GlanceModifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Image(
-                provider = BitmapImageProvider(bitmap),
-                contentDescription = context.getString(R.string.widget_content_description),
-            )
-            Text(context.getString(R.string.widget_name))
-        }
+    private companion object {
+        // Only a colour ramp, so a small bitmap is enough and keeps the widget update light
+        const val BITMAP_SIZE = 128
     }
 }

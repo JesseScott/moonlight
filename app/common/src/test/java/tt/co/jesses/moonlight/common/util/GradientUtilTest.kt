@@ -99,4 +99,32 @@ class GradientUtilTest {
         assertEquals(1f, moon.alpha, delta)
         assertEquals(0.65f, moon.saturation, delta)
     }
+
+    @Test
+    fun `270 degrees runs bottom to top, straight up the middle`() {
+        val line = angledGradientLine(width = 1080f, height = 2400f, degrees = 270f)!!
+
+        assertEquals(540f, line.startX, delta)
+        assertEquals(540f, line.endX, delta)
+        assertEquals(2400f, line.startY, delta)
+        assertEquals(0f, line.endY, delta)
+    }
+
+    @Test
+    fun `0 and 90 degrees run left to right and top to bottom`() {
+        val across = angledGradientLine(width = 1080f, height = 2400f, degrees = 0f)!!
+        assertEquals(0f, across.startX, delta)
+        assertEquals(1080f, across.endX, delta)
+        assertEquals(across.startY, across.endY, 0.01f)
+
+        val down = angledGradientLine(width = 1080f, height = 2400f, degrees = 90f)!!
+        assertEquals(0f, down.startY, delta)
+        assertEquals(2400f, down.endY, delta)
+        assertEquals(down.startX, down.endX, 0.01f)
+    }
+
+    @Test
+    fun `an area with no height can not be drawn`() {
+        assertEquals(null, angledGradientLine(width = 1080f, height = 0f, degrees = 270f))
+    }
 }
