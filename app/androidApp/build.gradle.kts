@@ -57,7 +57,6 @@ dependencies {
         implementation("androidx.vectordrawable:vectordrawable-animated:1.1.0")
     }
 
-    implementation(project(":shared"))
     implementation(project(":common"))
 
     implementation("androidx.activity:activity-compose:1.13.0")
