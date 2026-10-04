@@ -57,6 +57,13 @@
     <string name="credits_credits_header">credits</string>
     <string name="credits_ack_header">acknowledgements</string>
     <string name="credits_oss">Open Source licenses</string>
+    <string name="credits_extras_header">wallpaper and widget</string>
+    <string name="credits_extras_description">moonlight is also a live wallpaper and a home screen widget that glow with the moon.</string>
+    <string name="credits_extras_wallpaper">Set as wallpaper</string>
+    <string name="credits_extras_widget">Add widget</string>
+    <string name="credits_extras_wallpaper_unavailable">Couldn\'t open the wallpaper picker. Try Settings, Wallpaper &amp; style.</string>
+    <string name="credits_extras_widget_unavailable">Couldn\'t add the widget. Long-press your home screen and choose Widgets.</string>
+    <string name="credits_extras_widget_hint">To add the widget, long-press your home screen and choose Widgets.</string>
     <string name="credits_info_header">info</string>
 
     <string name="credits_info_version">Version %s</string>

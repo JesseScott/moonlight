@@ -30,10 +30,19 @@ class LocationDataSource @Inject constructor(
             ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
         }
 
-    suspend fun getCoordinates(): Coordinates? {
+    /**
+     * @param allowFreshFix when false only an existing recent fix is used, so the call returns straight away.
+     * Widgets and wallpapers run in the background, where waiting for a new fix is not wanted (or allowed).
+     * @param maxFixAgeMs how old an existing fix may be. Callers that can ask for a fresh fix keep the short
+     * default; background callers can not, so they accept an older one (the moon barely changes for a day's travel).
+     */
+    suspend fun getCoordinates(
+        allowFreshFix: Boolean = true,
+        maxFixAgeMs: Long = MAX_FIX_AGE_MS,
+    ): Coordinates? {
         if (!hasPermission()) return null
         val manager = context.getSystemService(Context.LOCATION_SERVICE) as? LocationManager ?: return null
-        val location = lastKnownLocation(manager) ?: currentLocation(manager)
+        val location = lastKnownLocation(manager, maxFixAgeMs) ?: if (allowFreshFix) currentLocation(manager) else null
         return location?.let { Coordinates(it.latitude, it.longitude) }
     }
 
@@ -43,13 +52,13 @@ class LocationDataSource @Inject constructor(
         add(LocationManager.NETWORK_PROVIDER)
     }
 
-    private fun lastKnownLocation(manager: LocationManager): Location? {
+    private fun lastKnownLocation(manager: LocationManager, maxFixAgeMs: Long): Location? {
         val candidates = (providers() + LocationManager.PASSIVE_PROVIDER).mapNotNull { provider ->
             runCatching { manager.getLastKnownLocation(provider) }.getOrNull()
         }
         // The moon barely moves relative to a few km of travel, but don't trust a very old fix
         return candidates
-            .filter { System.currentTimeMillis() - it.time < MAX_FIX_AGE_MS }
+            .filter { System.currentTimeMillis() - it.time < maxFixAgeMs }
             .maxByOrNull { it.time }
     }
 
@@ -74,6 +83,7 @@ class LocationDataSource @Inject constructor(
 
     companion object {
         private const val MAX_FIX_AGE_MS = 6 * 60 * 60 * 1000L
+        const val BACKGROUND_MAX_FIX_AGE_MS = 24 * 60 * 60 * 1000L
         private const val CURRENT_LOCATION_TIMEOUT_MS = 10_000L
     }
 }

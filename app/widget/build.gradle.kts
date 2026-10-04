@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "tt.co.jesses.moonlight.widget"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 24
@@ -42,6 +42,7 @@ android {
 dependencies {
     implementation(project(":common"))
     implementation("androidx.core:core-ktx:1.12.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("androidx.glance:glance-appwidget:1.0.0")
     implementation("androidx.compose.ui:ui:1.6.2")
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.2")

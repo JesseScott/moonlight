@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tt.co.jesses.moonlight.widget">
-    <uses-feature android:name="android.software.live_wallpaper" />
+    <uses-feature
+        android:name="android.software.live_wallpaper"
+        android:required="false" />
     <application>
         <receiver
             android:name=".MoonlightWidgetReceiver"
+            android:label="@string/widget_name"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

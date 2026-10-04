@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -54,6 +56,7 @@ import tt.co.jesses.moonlight.android.view.util.Constants.basePadding
 import tt.co.jesses.moonlight.android.view.util.Constants.bodyFontSize
 import tt.co.jesses.moonlight.android.view.util.Constants.headerFontSize
 import tt.co.jesses.moonlight.android.view.util.VersionUtil
+import tt.co.jesses.moonlight.android.view.util.WallpaperWidgetUtil
 import tt.co.jesses.moonlight.common.util.GradientUtil
 import tt.co.jesses.moonlight.common.util.angledGradientBackground
 import tt.co.jesses.moonlight.android.view.util.basePadding
@@ -102,6 +105,11 @@ fun AboutScreen(
     val feedbackAction = stringResource(R.string.credits_info_feedback_action)
     val feedbackUrl = stringResource(R.string.credits_info_feedback_action_url)
 
+    val wallpaperUnavailableMessage = stringResource(R.string.credits_extras_wallpaper_unavailable)
+    val widgetUnavailableMessage = stringResource(R.string.credits_extras_widget_unavailable)
+    val canSetWallpaper = !isPreview && WallpaperWidgetUtil.supportsLiveWallpaper(context)
+    val canPinWidget = !isPreview && WallpaperWidgetUtil.canPinWidget(context)
+
     val supportMessage = stringResource(R.string.credits_info_coffee_message)
     val supportAction = stringResource(R.string.credits_info_coffee_action)
     val supportUrl = stringResource(R.string.credits_info_coffee_action_url)
@@ -131,7 +139,9 @@ fun AboutScreen(
             .padding(start = basePadding, top = basePadding, end = basePadding, bottom = basePadding)
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top
         ) {
@@ -211,6 +221,81 @@ fun AboutScreen(
                     text = stringResource(R.string.credits_oss),
                     fontSize = bodyFontSize,
                     style = textStyle,
+                )
+            }
+            Spacer(Modifier.basePadding())
+
+            /// WALLPAPER AND WIDGET
+            Text(
+                text = stringResource(R.string.credits_extras_header),
+                fontSize = bodyFontSize,
+                style = textStyle.copy(
+                    textDecoration = TextDecoration.Underline,
+                    fontWeight = FontWeight.Bold,
+                ),
+            )
+            Spacer(Modifier.smallPadding())
+            Text(
+                text = stringResource(R.string.credits_extras_description),
+                fontSize = bodyFontSize,
+                style = textStyle,
+                modifier = Modifier.padding(end = basePadding),
+            )
+            Spacer(Modifier.smallPadding())
+
+            if (canSetWallpaper) {
+                TextButton(
+                    onClick = {
+                        logger?.logEvent(
+                            eventName = EventNames.Action.BUTTON,
+                            params = mapOf(
+                                EventNames.Action.Type.WALLPAPER to EventNames.Action.Params.BUTTON_CLICK
+                            ),
+                        )
+                        if (!WallpaperWidgetUtil.openWallpaperPreview(context)) {
+                            coroutineScope.launch {
+                                snackbarHostState.showSnackbar(message = wallpaperUnavailableMessage)
+                            }
+                        }
+                    },
+                    border = borderStroke,
+                ) {
+                    Text(
+                        text = stringResource(R.string.credits_extras_wallpaper),
+                        fontSize = bodyFontSize,
+                        style = textStyle,
+                    )
+                }
+            }
+            if (canPinWidget) {
+                TextButton(
+                    onClick = {
+                        logger?.logEvent(
+                            eventName = EventNames.Action.BUTTON,
+                            params = mapOf(
+                                EventNames.Action.Type.WIDGET to EventNames.Action.Params.BUTTON_CLICK
+                            ),
+                        )
+                        if (!WallpaperWidgetUtil.pinWidget(context)) {
+                            coroutineScope.launch {
+                                snackbarHostState.showSnackbar(message = widgetUnavailableMessage)
+                            }
+                        }
+                    },
+                    border = borderStroke,
+                ) {
+                    Text(
+                        text = stringResource(R.string.credits_extras_widget),
+                        fontSize = bodyFontSize,
+                        style = textStyle,
+                    )
+                }
+            } else if (!isPreview) {
+                Text(
+                    text = stringResource(R.string.credits_extras_widget_hint),
+                    fontSize = bodyFontSize,
+                    style = textStyle,
+                    modifier = Modifier.padding(end = basePadding),
                 )
             }
             Spacer(Modifier.basePadding())
