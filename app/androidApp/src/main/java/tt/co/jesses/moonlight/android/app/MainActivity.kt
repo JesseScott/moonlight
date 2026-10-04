@@ -22,7 +22,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -65,22 +67,31 @@ class MainActivity : ComponentActivity() {
                     val hasSwiped by viewModel.hasSwiped.collectAsState(initial = false)
 
                     // Coarse location is only used on-device to work out where the moon is in the sky
+                    var isPermissionPromptShowing by remember { mutableStateOf(false) }
                     val locationPermissionLauncher = rememberLauncherForActivityResult(
                         ActivityResultContracts.RequestPermission()
-                    ) { viewModel.getMoonIllumination() }
+                    ) {
+                        isPermissionPromptShowing = false
+                        viewModel.getMoonIllumination()
+                    }
                     val uiState by viewModel.uiState.collectAsState()
                     if (uiState.isLocationRationalePending) {
                         LocationRationaleDialog(
                             onDismissRequest = { viewModel.onLocationRationaleSeen() },
                             onConfirmation = {
                                 viewModel.onLocationRationaleSeen()
+                                isPermissionPromptShowing = true
                                 locationPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
                             }
                         )
                     }
 
-                    LaunchedEffect(key1 = hasSwiped) {
-                        if (!hasSwiped) {
+                    // Hold the swipe hint back until the first-launch dialogs are out of the way
+                    val isOnboarding = uiState.isAnalyticsPreferencePending ||
+                        uiState.isLocationRationalePending ||
+                        isPermissionPromptShowing
+                    LaunchedEffect(key1 = hasSwiped, key2 = isOnboarding) {
+                        if (!hasSwiped && !isOnboarding) {
                             delay(5000)
                             val result = snackbarHostState.showSnackbar(
                                 message = getString(R.string.swipe_to_see_more),
