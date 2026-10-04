@@ -117,7 +117,7 @@ fun DataScreen(
             TableLike(
                 data = Pair(
                     stringResource(illuminationData.azimuthRes),
-                    "${illuminationData.azimuth}"
+                    positionValue(illuminationData.azimuth, illuminationData.hasPosition)
                 )
             )
         }
@@ -125,7 +125,7 @@ fun DataScreen(
             TableLike(
                 data = Pair(
                     stringResource(illuminationData.altitudeRes),
-                    "${illuminationData.altitude}"
+                    positionValue(illuminationData.altitude, illuminationData.hasPosition)
                 )
             )
         }
@@ -133,8 +133,16 @@ fun DataScreen(
             TableLike(
                 data = Pair(
                     stringResource(illuminationData.distanceRes),
-                    "${illuminationData.distance}"
+                    positionValue(illuminationData.distance, illuminationData.hasPosition)
                 )
+            )
+        }
+        if (!illuminationData.hasPosition) {
+            Spacer(Modifier.padding(top = padding / 2))
+            Text(
+                text = stringResource(R.string.data_location_unavailable),
+                fontSize = bodyFontSize,
+                style = textStyle,
             )
         }
         Spacer(Modifier.padding(padding))
@@ -157,6 +165,9 @@ fun DataScreen(
         }
     }
 }
+
+private fun positionValue(value: Float, hasPosition: Boolean): String =
+    if (hasPosition) "$value" else "--"
 
 @Preview(showBackground = true)
 @Composable

@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tt.co.jesses.moonlight.common.data.model.AnalyticsAcceptance
+import tt.co.jesses.moonlight.common.data.repository.LocationDataSource
 import tt.co.jesses.moonlight.common.data.repository.MoonlightRepository
 import tt.co.jesses.moonlight.common.data.repository.UserPreferencesRepository
 import tt.co.jesses.moonlight.android.BuildConfig
@@ -19,6 +20,7 @@ import kotlin.time.Duration.Companion.seconds
 @HiltViewModel
 class MoonlightViewModel @Inject constructor(
     private val moonlightRepository: MoonlightRepository,
+    private val locationDataSource: LocationDataSource,
     private val userPreferencesRepository: UserPreferencesRepository,
 ) : ViewModel() {
 
@@ -43,10 +45,16 @@ class MoonlightViewModel @Inject constructor(
 
     fun getMoonIllumination() {
         viewModelScope.launch {
-            val illuminationData = moonlightRepository.getMoonIllumination()
+            val coordinates = locationDataSource.getCoordinates()
+            val illuminationData = moonlightRepository.getMoonIllumination(
+                latitude = coordinates?.latitude,
+                longitude = coordinates?.longitude,
+            )
             _uiState.update { it.copy(illuminationData = illuminationData) }
         }
     }
+
+    fun hasLocationPermission(): Boolean = locationDataSource.hasPermission()
 
     fun setHasSwiped(hasSwiped: Boolean) {
         viewModelScope.launch {

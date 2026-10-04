@@ -14,15 +14,20 @@ class MoonlightDataSource @Inject constructor() {
     /**
      * Gets [MoonIllumination] and [MoonPosition] from Suncalc and maps to [MoonData]
      */
-    fun getMoonIllumination(latitude: Double = 0.0, longitude: Double = 0.0): MoonData {
+    fun getMoonIllumination(latitude: Double? = null, longitude: Double? = null): MoonData {
         val illumination = MoonIllumination.compute().execute()
-        val position = runCatching {
-            MoonPosition.compute().at(latitude, longitude).execute()
-        }.getOrElse { e ->
-            if (tt.co.jesses.moonlight.common.BuildConfig.DEBUG) {
-                Log.w(TAG, "Failed to compute MoonPosition", e)
-            }
+        // Illumination is the same everywhere, but the moon's position in the sky needs a real location
+        val position = if (latitude == null || longitude == null) {
             null
+        } else {
+            runCatching {
+                MoonPosition.compute().at(latitude, longitude).execute()
+            }.getOrElse { e ->
+                if (tt.co.jesses.moonlight.common.BuildConfig.DEBUG) {
+                    Log.w(TAG, "Failed to compute MoonPosition", e)
+                }
+                null
+            }
         }
         if (tt.co.jesses.moonlight.common.BuildConfig.DEBUG) {
             Log.d(TAG, "MoonIllumination from SunCalc: $illumination")
@@ -36,6 +41,7 @@ class MoonlightDataSource @Inject constructor() {
             altitude = position?.altitude?.toFloat() ?: 0f,
             distance = position?.distance?.toFloat() ?: 0f,
             parallacticAngle = position?.parallacticAngle?.toFloat() ?: 0f,
+            hasPosition = position != null,
         )
     }
 

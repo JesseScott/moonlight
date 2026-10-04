@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import tt.co.jesses.moonlight.common.data.model.MoonData
+import tt.co.jesses.moonlight.common.data.repository.LocationDataSource
 import tt.co.jesses.moonlight.common.data.repository.MoonlightRepository
 import javax.inject.Inject
 import kotlin.time.Duration
@@ -20,6 +21,7 @@ data class MoonlightUiState(
 @HiltViewModel
 class MoonlightViewModel @Inject constructor(
     private val moonlightRepository: MoonlightRepository,
+    private val locationDataSource: LocationDataSource,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MoonlightUiState())
@@ -32,9 +34,15 @@ class MoonlightViewModel @Inject constructor(
         getMoonIllumination()
     }
 
+    fun hasLocationPermission(): Boolean = locationDataSource.hasPermission()
+
     fun getMoonIllumination() {
         viewModelScope.launch {
-            val illuminationData = moonlightRepository.getMoonIllumination()
+            val coordinates = locationDataSource.getCoordinates()
+            val illuminationData = moonlightRepository.getMoonIllumination(
+                latitude = coordinates?.latitude,
+                longitude = coordinates?.longitude,
+            )
             _uiState.value = _uiState.value.copy(illuminationData = illuminationData)
         }
     }

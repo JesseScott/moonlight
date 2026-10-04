@@ -18,6 +18,7 @@
     <string name="data_altitude">Altitud</string>
     <string name="data_distance">Distancia</string>
     <string name="data_parallactic_angle">Ángulo Paraláctico</string>
+    <string name="data_location_unavailable">Ubicación no disponible. Permite el acceso a la ubicación para ver la posición de la luna donde estás.</string>
     <string name="data_description">
         Los datos anteriores son una representación en tiempo real del estado actual de la luna. Los datos se utilizan como un algoritmo para generar un degradado personalizado.
         \n\nEl tono del degradado se obtiene mapeando la fase actual, que comienza en -180.0 (luna nueva, creciente), pasa por 0.0 (luna llena) y se mueve hacia 180.0 (menguante, luna nueva).

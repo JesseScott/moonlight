@@ -1,8 +1,11 @@
 package tt.co.jesses.moonlight.android.app
 
+import android.Manifest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -59,6 +62,16 @@ class MainActivity : ComponentActivity() {
                         initialPage = 0,
                     )
                     val hasSwiped by viewModel.hasSwiped.collectAsState(initial = false)
+
+                    // Coarse location is only used on-device to work out where the moon is in the sky
+                    val locationPermissionLauncher = rememberLauncherForActivityResult(
+                        ActivityResultContracts.RequestPermission()
+                    ) { viewModel.getMoonIllumination() }
+                    LaunchedEffect(Unit) {
+                        if (!viewModel.hasLocationPermission()) {
+                            locationPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+                        }
+                    }
 
                     LaunchedEffect(key1 = hasSwiped) {
                         if (!hasSwiped) {
