@@ -8,4 +8,11 @@
     <string name="data_altitude">Altitude</string>
     <string name="data_distance">Distance</string>
     <string name="data_parallactic_angle">Parallactic Angle</string>
+
+    <!-- Spoken by screen readers for the gradient screens -->
+    <string name="moon_description_loading">Loading the moon</string>
+    <string name="moon_description_new">New moon</string>
+    <string name="moon_description_full">Full moon</string>
+    <string name="moon_description_waxing">Waxing moon, %1$d%% lit</string>
+    <string name="moon_description_waning">Waning moon, %1$d%% lit</string>
 </resources>

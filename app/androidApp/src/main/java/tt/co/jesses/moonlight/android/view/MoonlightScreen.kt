@@ -8,6 +8,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -21,6 +23,7 @@ import tt.co.jesses.moonlight.common.util.angledGradientBackground
 import tt.co.jesses.moonlight.android.view.util.bounded
 import tt.co.jesses.moonlight.common.data.model.AnalyticsAcceptance
 import kotlin.time.Duration
+import tt.co.jesses.moonlight.common.util.moonDescription
 
 @Composable
 fun MoonlightScreen(
@@ -47,6 +50,7 @@ fun MoonlightScreen(
     remember { SnackbarHostState() }
 
     val colorList = GradientUtil.generateHSLColor(illuminationData)
+    val description = moonDescription(illuminationData)
 
     val gradientModifier = Modifier
         .angledGradientBackground(
@@ -54,6 +58,7 @@ fun MoonlightScreen(
             degrees = 270f,
         )
         .bounded()
+        .semantics { contentDescription = description }
 
     Canvas(modifier = gradientModifier) {}
 

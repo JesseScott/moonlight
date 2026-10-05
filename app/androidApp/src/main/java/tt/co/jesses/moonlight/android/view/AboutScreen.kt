@@ -29,6 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -143,6 +145,7 @@ fun AboutScreen(
             /// TITLE
             Text(
                 text = stringResource(creditData.creditTitle),
+                modifier = Modifier.semantics { heading() },
                 fontSize = headerFontSize,
                 style = textStyle.copy(
                     textDecoration = TextDecoration.Underline
@@ -153,6 +156,7 @@ fun AboutScreen(
             /// CREDITS
             Text(
                 text = stringResource(R.string.credits_credits_header),
+                modifier = Modifier.semantics { heading() },
                 fontSize = bodyFontSize,
                 style = textStyle.copy(
                     textDecoration = TextDecoration.Underline,
@@ -178,6 +182,7 @@ fun AboutScreen(
             /// ACKNOWLEDGEMENTS
             Text(
                 text = stringResource(R.string.credits_ack_header),
+                modifier = Modifier.semantics { heading() },
                 fontSize = bodyFontSize,
                 style = textStyle.copy(
                     textDecoration = TextDecoration.Underline,
@@ -223,6 +228,7 @@ fun AboutScreen(
             /// WALLPAPER AND WIDGET
             Text(
                 text = stringResource(R.string.credits_extras_header),
+                modifier = Modifier.semantics { heading() },
                 fontSize = bodyFontSize,
                 style = textStyle.copy(
                     textDecoration = TextDecoration.Underline,
@@ -298,6 +304,7 @@ fun AboutScreen(
             /// INFO
             Text(
                 text = stringResource(R.string.credits_info_header),
+                modifier = Modifier.semantics { heading() },
                 fontSize = bodyFontSize,
                 style = textStyle.copy(
                     textDecoration = TextDecoration.Underline,
