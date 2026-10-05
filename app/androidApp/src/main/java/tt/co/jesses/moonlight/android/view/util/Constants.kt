@@ -7,6 +7,8 @@ object Constants {
     val strokeWidth = 1.dp
     val smallPadding = 4.dp
     val basePadding = 16.dp
+    /** Text lines get uncomfortably long on tablets and unfolded foldables, so content stops at this width */
+    val maxContentWidth = 600.dp
     val headerFontSize = 24.sp
     val bodyFontSize = 16.sp
 }
