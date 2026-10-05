@@ -5,8 +5,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import tt.co.jesses.moonlight.common.util.moonDescription
 import tt.co.jesses.moonlight.wear.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.common.util.GradientUtil
 import tt.co.jesses.moonlight.common.util.RefreshWhileStarted
@@ -21,12 +24,15 @@ fun WearMoonlightScreen(
 
     val colorList = GradientUtil.generateHSLColor(illuminationData)
 
+    val description = moonDescription(illuminationData)
+
     val gradientModifier = Modifier
         .fillMaxSize()
         .angledGradientBackground(
             colors = colorList,
             degrees = 270f,
         )
+        .semantics { contentDescription = description }
 
     Box(modifier = gradientModifier) {
         // We can add text overlay or complications here if needed,
