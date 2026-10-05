@@ -1,6 +1,7 @@
 package tt.co.jesses.moonlight.android.view
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,7 +9,10 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,6 +33,7 @@ import tt.co.jesses.moonlight.android.app.MyApplicationTheme
 import tt.co.jesses.moonlight.android.view.state.MoonlightUiState
 import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.android.view.sub.TableLike
+import tt.co.jesses.moonlight.android.view.util.Constants
 import tt.co.jesses.moonlight.android.view.util.Constants.bodyFontSize
 import tt.co.jesses.moonlight.android.view.util.Constants.headerFontSize
 import tt.co.jesses.moonlight.common.util.GradientUtil
@@ -58,17 +63,22 @@ fun DataScreen(
         color = Color.DarkGray
     )
 
-    val gradientModifier = Modifier
-        .angledGradientBackground(
-            colors = colorList,
-            degrees = 270f,
-        )
-        .fillMaxSize()
-        .windowInsetsPadding(WindowInsets.systemBars)
-        .padding(start = padding, top = padding, end = padding)
-
+    Box(
+        modifier = Modifier
+            .angledGradientBackground(
+                colors = colorList,
+                degrees = 270f,
+            )
+            .fillMaxSize()
+    ) {
     Column(
-        modifier = gradientModifier,
+        modifier = Modifier
+            .align(Alignment.TopCenter)
+            .widthIn(max = Constants.maxContentWidth)
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.systemBars)
+            .verticalScroll(rememberScrollState())
+            .padding(start = padding, top = padding, end = padding, bottom = padding),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top
     ) {
@@ -149,7 +159,7 @@ fun DataScreen(
             )
         }
     }
-
+    }
 }
 
 private fun degrees(value: Float): String = "%.1f°".format(value)
