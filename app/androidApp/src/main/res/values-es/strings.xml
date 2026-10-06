@@ -66,6 +66,7 @@
     <string name="credits_extras_widget_hint">Para añadir el widget, mantén pulsada la pantalla de inicio y elige Widgets.</string>
     <string name="credits_privacy_header">privacidad</string>
     <string name="credits_privacy_switch">Datos de uso e informes de fallos</string>
+    <string name="credits_privacy_policy">Política de privacidad</string>
     <string name="credits_privacy_description">Anónimos. Desactívalo para dejar de enviarlos y borrar lo que aún no se haya enviado. Tu ubicación siempre se queda en tu dispositivo.</string>
     <string name="credits_info_header">información</string>
 

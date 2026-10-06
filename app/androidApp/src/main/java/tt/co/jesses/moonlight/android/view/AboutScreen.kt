@@ -123,6 +123,7 @@ fun AboutScreen(
     val supportMessage = stringResource(R.string.credits_info_coffee_message)
     val supportAction = stringResource(R.string.credits_info_coffee_action)
     val supportUrl = stringResource(R.string.credits_info_coffee_action_url)
+    val privacyPolicyUrl = stringResource(R.string.credits_privacy_policy_url)
 
     val textStyle = TextStyle(
         textAlign = TextAlign.Start,
@@ -366,6 +367,25 @@ fun AboutScreen(
                 style = textStyle,
                 modifier = Modifier.padding(end = basePadding),
             )
+            Spacer(Modifier.smallPadding())
+            TextButton(
+                onClick = {
+                    context.launchCustomTabs(url = privacyPolicyUrl)
+                    logger?.logEvent(
+                        eventName = EventNames.Action.BUTTON,
+                        params = mapOf(
+                            EventNames.Action.Type.PRIVACY_POLICY to EventNames.Action.Params.BUTTON_CLICK
+                        ),
+                    )
+                },
+                border = borderStroke,
+            ) {
+                Text(
+                    text = stringResource(R.string.credits_privacy_policy),
+                    fontSize = bodyFontSize,
+                    style = textStyle,
+                )
+            }
             Spacer(Modifier.basePadding())
 
             /// INFO

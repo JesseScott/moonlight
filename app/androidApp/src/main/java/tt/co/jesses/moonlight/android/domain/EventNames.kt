@@ -26,6 +26,7 @@ object EventNames {
             const val OSS = "oss"
             const val WALLPAPER = "wallpaper"
             const val WIDGET = "widget"
+            const val PRIVACY_POLICY = "privacy_policy"
             const val URL = "url"
         }
 
