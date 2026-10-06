@@ -29,7 +29,7 @@
 
     <!-- Analytics -->
     <string name="analytics_consent_title">Consentimiento de analíticas</string>
-    <string name="analytics_consent_body">Para ayudarnos a mejorar su experiencia con la aplicación, nos gustaría recopilar datos de uso anónimos. Su privacidad es importante para nosotros y no se recopilará ni compartirá ninguna información de identificación personal.</string>
+    <string name="analytics_consent_body">Para ayudarnos a mejorar moonlight, nos gustaría recopilar datos de uso anónimos e informes de fallos. Tu ubicación siempre se queda en tu dispositivo y no se recopila ninguna información de identificación personal. Puedes cambiar esto en cualquier momento en la página de información.</string>
     <string name="analytics_action_enable">Habilitar</string>
     <string name="analytics_action_disable">Deshabilitar</string>
     <string name="location_rationale_title">¿Dónde está la luna?</string>
@@ -64,6 +64,10 @@
     <string name="credits_extras_wallpaper_unavailable">No se pudo abrir el selector de fondos. Prueba en Ajustes, Fondo de pantalla y estilo.</string>
     <string name="credits_extras_widget_unavailable">No se pudo añadir el widget. Mantén pulsada la pantalla de inicio y elige Widgets.</string>
     <string name="credits_extras_widget_hint">Para añadir el widget, mantén pulsada la pantalla de inicio y elige Widgets.</string>
+    <string name="credits_privacy_header">privacidad</string>
+    <string name="credits_privacy_switch">Datos de uso e informes de fallos</string>
+    <string name="credits_privacy_policy">Política de privacidad</string>
+    <string name="credits_privacy_description">Anónimos. Desactívalo para dejar de enviarlos y borrar lo que aún no se haya enviado. Tu ubicación siempre se queda en tu dispositivo.</string>
     <string name="credits_info_header">información</string>
 
     <string name="credits_info_version">Versión %s</string>

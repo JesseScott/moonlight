@@ -7,5 +7,6 @@ data class MoonlightUiState(
     val illuminationData: MoonData = MoonData(),
     val creditData: CreditData = CreditData(),
     val isAnalyticsPreferencePending: Boolean = false,
+    val isAnalyticsAccepted: Boolean = false,
     val isLocationRationalePending: Boolean = false,
 )
