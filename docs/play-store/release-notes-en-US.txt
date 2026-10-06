@@ -1,0 +1,3 @@
+Moonlight 0.7
+
+New: a live wallpaper and a home screen widget (see About). The colours now follow the moon properly: hue from the phase, richer when the moon is high, darker when it is below the horizon. The moon's position now uses your real location (approximate, kept on your device). One privacy switch in About for usage data and crash reports, off until you turn it on. Better with large text and on tablets, and screen readers announce the moon.
