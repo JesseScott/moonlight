@@ -1,0 +1,18 @@
+# How GitHub groups the pull requests in a release's "What's Changed" list (the Release workflow asks for
+# generated notes). Pull requests are sorted by label; the release PR itself and anything labelled
+# skip-changelog are left out.
+changelog:
+  exclude:
+    labels:
+      - release
+      - skip-changelog
+  categories:
+    - title: New
+      labels:
+        - enhancement
+    - title: Fixes
+      labels:
+        - bug
+    - title: Everything else
+      labels:
+        - "*"

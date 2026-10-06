@@ -28,6 +28,12 @@ that changes it tags the commit and creates a GitHub release; the signed bundles
 
 The upload key never leaves your machine, which is why the bundles are not built in CI.
 
+## Release notes
+
+The GitHub release lists the merged pull requests since the last release, grouped by label (`.github/release.yml`):
+**New** (`enhancement`), **Fixes** (`bug`) and **Everything else** (no label). Label the release pull request `release`
+so it is left out, and anything that should not appear in the notes `skip-changelog`.
+
 ## The upload key
 
 `keystore.properties` sits in the repo root and is gitignored, like `*.jks`, `*.keystore` and `*.aab`. It points at the key
