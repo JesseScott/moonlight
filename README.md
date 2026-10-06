@@ -15,6 +15,13 @@ It is available for Android and Wear OS, as an app, a live wallpaper and a home 
 
 [Get it on Google Play](https://play.google.com/store/apps/details?id=tt.co.jesses.moonlight.android)
 
+<p>
+  <img src="docs/screenshots/phone/01-full-moon.png" width="170" alt="A full moon: warm gold">
+  <img src="docs/screenshots/phone/03-crescent.png" width="170" alt="A crescent moon: deep teal">
+  <img src="docs/screenshots/phone/02-data.png" width="170" alt="The data screen, with the numbers behind the colour">
+  <img src="docs/screenshots/wear/02-quarter.png" width="170" alt="The same glow on a Wear OS watch">
+</p>
+
 privacy
 ----
 
