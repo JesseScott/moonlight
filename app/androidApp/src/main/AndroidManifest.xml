@@ -49,6 +49,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="com.google.android.gms.oss.licenses.v2.OssLicensesMenuActivity" />
+        <activity
+            android:name="tt.co.jesses.moonlight.android.view.LicensesActivity"
+            android:exported="false" />
     </application>
 </manifest>

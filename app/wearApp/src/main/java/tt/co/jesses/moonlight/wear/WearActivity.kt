@@ -3,6 +3,7 @@ package tt.co.jesses.moonlight.wear
 import android.Manifest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,6 +17,8 @@ import tt.co.jesses.moonlight.wear.view.state.MoonlightViewModel
 class WearActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Targeting SDK 36 draws edge-to-edge anyway; this makes it explicit (the screen is a full-screen gradient)
+        enableEdgeToEdge()
         setContent {
             val viewModel: MoonlightViewModel = viewModel()
             val locationPermissionLauncher = rememberLauncherForActivityResult(

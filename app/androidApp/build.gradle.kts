@@ -95,7 +95,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
     implementation("androidx.navigation:navigation-compose:2.8.5")
-    implementation("com.google.android.gms:play-services-oss-licenses:17.5.1")
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.55")
