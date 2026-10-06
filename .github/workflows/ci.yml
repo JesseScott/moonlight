@@ -65,3 +65,35 @@ jobs:
       - name: Build release variants
         run: ./gradlew assembleRelease
         working-directory: ./app
+
+  version:
+    name: Version check
+    # Only matters when a pull request changes version.properties, i.e. it is a release.
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: versionCode goes up, versionName looks like a version
+        run: |
+          base="origin/${{ github.base_ref }}"
+          if git diff --quiet "$base"...HEAD -- version.properties; then
+            echo "version.properties is unchanged: not a release PR, nothing to check."
+            exit 0
+          fi
+          if ! git cat-file -e "$base:version.properties" 2>/dev/null; then
+            echo "version.properties does not exist on $base yet (this PR adds it): nothing to compare."
+            exit 0
+          fi
+          read_prop() { grep -E "^$2=" | head -n1 | cut -d= -f2- | tr -d '[:space:]'; }
+          old_code=$(git show "$base:version.properties" | read_prop - versionCode)
+          new_code=$(read_prop - versionCode < version.properties)
+          new_name=$(read_prop - versionName < version.properties)
+          echo "versionCode: $old_code -> $new_code, versionName: $new_name"
+          if ! [[ "$new_code" =~ ^[0-9]+$ ]]; then echo "::error file=version.properties::versionCode must be a whole number"; exit 1; fi
+          if ! [[ "$new_name" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then echo "::error file=version.properties::versionName must look like 1.2.3"; exit 1; fi
+          if [ "$new_code" -le "$old_code" ]; then
+            echo "::error file=version.properties::versionCode must be higher than on main ($old_code). Google Play rejects a repeat."
+            exit 1
+          fi

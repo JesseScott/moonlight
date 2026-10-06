@@ -6,6 +6,12 @@ plugins {
     id("kotlin-kapt")
 }
 
+// Version and upload key are set once, in the root build.gradle.kts, from version.properties and keystore.properties
+val appVersionName: String by rootProject.extra
+val appVersionCode: Int by rootProject.extra
+val keystoreProperties: java.util.Properties? by rootProject.extra
+base.archivesName.set("moonlight-wear-$appVersionName-$appVersionCode")
+
 android {
     namespace = "tt.co.jesses.moonlight.wear"
     compileSdk = 36
@@ -13,12 +19,24 @@ android {
         applicationId = "tt.co.jesses.moonlight.android"
         minSdk = 30
         targetSdk = 36
-        versionCode = 1013 // 1000 + :androidApp version
-        versionName = "0.6.0"
+        versionCode = 1000 + appVersionCode // always above the phone build, see version.properties
+        versionName = appVersionName
     }
 
     buildFeatures {
         compose = true
+    }
+
+    signingConfigs {
+        keystoreProperties?.let { keys ->
+            create("release") {
+                // A relative storeFile is relative to the repo root
+                storeFile = rootProject.file("..").resolve(keys.getProperty("storeFile"))
+                storePassword = keys.getProperty("storePassword")
+                keyAlias = keys.getProperty("keyAlias")
+                keyPassword = keys.getProperty("keyPassword")
+            }
+        }
     }
 
 
@@ -30,6 +48,7 @@ android {
 
     buildTypes {
         release {
+            signingConfigs.findByName("release")?.let { signingConfig = it }
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
