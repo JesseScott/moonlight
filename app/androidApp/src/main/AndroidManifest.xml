@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- moonlight has no ads. Firebase Analytics adds the advertising ID and the Privacy Sandbox ad permissions
+         by default, so take them out. -->
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove" />
+    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_AD_ID" tools:node="remove" />
+    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_ATTRIBUTION" tools:node="remove" />
 
     <application
         android:name="tt.co.jesses.moonlight.android.app.App"
@@ -10,6 +17,11 @@
         android:allowBackup="false"
         android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/AppTheme">
+
+        <!-- Nothing is collected until the user accepts (Logger switches collection on from their choice at start-up) -->
+        <meta-data android:name="firebase_analytics_collection_enabled" android:value="false" />
+        <meta-data android:name="firebase_crashlytics_collection_enabled" android:value="false" />
+        <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
 
         <!-- EU Consent Mode v2 configuration
              Ref: https://developers.google.com/tag-platform/security/guides/app-consent?platform=android&consentmode=advanced -->

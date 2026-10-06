@@ -68,7 +68,10 @@ class MoonlightViewModel @Inject constructor(
         viewModelScope.launch {
             userPreferencesRepository.analyticsAcceptance.collect { acceptance ->
                 _uiState.update {
-                    it.copy(isAnalyticsPreferencePending = acceptance == AnalyticsAcceptance.UNSET)
+                    it.copy(
+                        isAnalyticsPreferencePending = acceptance == AnalyticsAcceptance.UNSET,
+                        isAnalyticsAccepted = acceptance == AnalyticsAcceptance.ACCEPTED,
+                    )
                 }
             }
         }

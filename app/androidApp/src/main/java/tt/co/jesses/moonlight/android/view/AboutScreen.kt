@@ -6,18 +6,24 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -29,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.SpanStyle
@@ -39,6 +46,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.gms.oss.licenses.v2.OssLicensesMenuActivity
@@ -57,6 +65,7 @@ import tt.co.jesses.moonlight.android.view.util.Constants.bodyFontSize
 import tt.co.jesses.moonlight.android.view.util.Constants.headerFontSize
 import tt.co.jesses.moonlight.android.view.util.VersionUtil
 import tt.co.jesses.moonlight.android.view.util.WallpaperWidgetUtil
+import tt.co.jesses.moonlight.common.data.model.AnalyticsAcceptance
 import tt.co.jesses.moonlight.common.util.GradientUtil
 import tt.co.jesses.moonlight.common.util.angledGradientBackground
 import tt.co.jesses.moonlight.android.view.util.basePadding
@@ -71,12 +80,18 @@ fun AboutScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     AboutScreen(
         uiState = uiState,
+        onAnalyticsChange = { accepted ->
+            viewModel.updateAnalyticsAcceptance(
+                if (accepted) AnalyticsAcceptance.ACCEPTED else AnalyticsAcceptance.REJECTED
+            )
+        },
     )
 }
 
 @Composable
 fun AboutScreen(
     uiState: MoonlightUiState,
+    onAnalyticsChange: (Boolean) -> Unit = {},
 ) {
     val context = LocalContext.current
     val activity = LocalActivity.current as? MainActivity
@@ -299,6 +314,58 @@ fun AboutScreen(
                     modifier = Modifier.padding(end = basePadding),
                 )
             }
+            Spacer(Modifier.basePadding())
+
+            /// PRIVACY
+            Text(
+                text = stringResource(R.string.credits_privacy_header),
+                modifier = Modifier.semantics { heading() },
+                fontSize = bodyFontSize,
+                style = textStyle.copy(
+                    textDecoration = TextDecoration.Underline,
+                    fontWeight = FontWeight.Bold,
+                ),
+            )
+            Spacer(Modifier.smallPadding())
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .defaultMinSize(minHeight = 48.dp)
+                    .toggleable(
+                        value = uiState.isAnalyticsAccepted,
+                        role = Role.Switch,
+                        onValueChange = onAnalyticsChange,
+                    )
+                    .padding(end = basePadding),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Text(
+                    text = stringResource(R.string.credits_privacy_switch),
+                    fontSize = bodyFontSize,
+                    style = textStyle,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = basePadding),
+                )
+                Switch(
+                    checked = uiState.isAnalyticsAccepted,
+                    onCheckedChange = null,
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor = Color.White,
+                        checkedTrackColor = Color.DarkGray,
+                        uncheckedThumbColor = Color.DarkGray,
+                        uncheckedTrackColor = Color.Transparent,
+                        uncheckedBorderColor = Color.DarkGray,
+                    ),
+                )
+            }
+            Text(
+                text = stringResource(R.string.credits_privacy_description),
+                fontSize = bodyFontSize,
+                style = textStyle,
+                modifier = Modifier.padding(end = basePadding),
+            )
             Spacer(Modifier.basePadding())
 
             /// INFO
