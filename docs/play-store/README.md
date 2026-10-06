@@ -25,7 +25,6 @@ Go through this before pasting a new version:
 - Are the character limits respected? (Play counts every character, including line breaks.)
 - Does it still match the privacy policy and the Data safety answers?
 
-## Not here yet
+## Graphics
 
-Graphics (feature graphic, 512 px icon, phone, tablet and Wear screenshots) are in `design/store/android`. They were made
-before the gradient was reworked in 0.7, so they need refreshing.
+The screenshots, 512 px icon and feature graphic are in `../screenshots`.
