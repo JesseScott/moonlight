@@ -9,6 +9,7 @@ object Constants {
     val basePadding = 16.dp
     /** Text lines get uncomfortably long on tablets and unfolded foldables, so content stops at this width */
     val maxContentWidth = 600.dp
+    val scrollFadeHeight = 24.dp
     val headerFontSize = 24.sp
     val bodyFontSize = 16.sp
 }

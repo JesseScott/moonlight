@@ -27,6 +27,10 @@
         \n\nWithout location access the altitude is unknown, so the moon is assumed to be part way up the sky.
     </string>
 
+    <string name="data_description_header">How it works</string>
+    <string name="accordion_expanded">Expanded</string>
+    <string name="accordion_collapsed">Collapsed</string>
+
     <!-- Analytics -->
     <string name="analytics_consent_title">Analytics consent</string>
     <string name="analytics_consent_body">To help us improve moonlight, we\'d like to collect anonymous usage data and crash reports. Your location always stays on your device, and no personally identifiable information is collected. You can change this at any time on the about page.</string>

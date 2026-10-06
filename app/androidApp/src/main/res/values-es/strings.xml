@@ -28,6 +28,10 @@
     </string>
 
     <!-- Analytics -->
+    <string name="data_description_header">Cómo funciona</string>
+    <string name="accordion_expanded">Expandido</string>
+    <string name="accordion_collapsed">Contraído</string>
+
     <string name="analytics_consent_title">Consentimiento de analíticas</string>
     <string name="analytics_consent_body">Para ayudarnos a mejorar moonlight, nos gustaría recopilar datos de uso anónimos e informes de fallos. Tu ubicación siempre se queda en tu dispositivo y no se recopila ninguna información de identificación personal. Puedes cambiar esto en cualquier momento en la página de información.</string>
     <string name="analytics_action_enable">Habilitar</string>
