@@ -43,7 +43,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.android.gms.oss.licenses.v2.OssLicensesMenuActivity
 import kotlinx.coroutines.launch
 import tt.co.jesses.moonlight.android.R
 import tt.co.jesses.moonlight.android.app.MainActivity
@@ -190,7 +189,7 @@ fun AboutScreen(
 
             TextButton(
                 onClick = {
-                    context.startActivity(Intent(context, OssLicensesMenuActivity::class.java))
+                    context.startActivity(Intent(context, LicensesActivity::class.java))
                     logger?.logEvent(
                         eventName = EventNames.Action.BUTTON,
                         params = mapOf(
