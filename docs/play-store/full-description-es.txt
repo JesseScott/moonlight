@@ -1,0 +1,29 @@
+Moonlight llena tu pantalla con un resplandor que sigue a la luna.
+
+El color viene de la propia luna: cuánto está iluminada, si es creciente o menguante y a qué altura está ahora en tu cielo. Mira tu teléfono y sabrás en qué punto del mes está la luna, sin salir a la calle.
+
+CÓMO FUNCIONA
+- Permite la ubicación aproximada, o sáltala: Moonlight sigue mostrando la fase de la luna.
+- Calcula la fase de la luna y, con la ubicación, dónde está la luna en tu cielo.
+- El resplandor cambia con ella: azul frío en luna nueva, dorado cálido en luna llena, y la luna creciente se inclina hacia un lado y la menguante hacia el otro. Se vuelve más intenso cuanto más alta sube la luna y se convierte en un tono más oscuro y tranquilo cuando está bajo el horizonte.
+
+DÓNDE PUEDES TENERLA
+- La aplicación: un resplandor a pantalla completa. Desliza hasta la pantalla de datos para ver los números que hay detrás: la fracción iluminada, la fase y el ángulo y, con ubicación, el azimut, la altitud y la distancia de la luna.
+- Un fondo de pantalla animado: actívalo desde la pantalla de información, o desde los ajustes de fondo de pantalla, en Fondos de pantalla animados.
+- Un widget para la pantalla de inicio: añádelo desde la pantalla de información o desde los widgets de tu launcher.
+- Wear OS: el mismo resplandor en tu reloj.
+
+PRIVADA POR DEFECTO
+- Solo ubicación aproximada, usada en tu teléfono para calcular dónde está la luna en tu cielo. No se guarda y nunca se envía a ningún sitio.
+- Sin cuentas, sin anuncios y sin ID de publicidad.
+- Los datos de uso y los informes de fallos están desactivados hasta que los actives, y puedes desactivarlos de nuevo en cualquier momento en la pantalla de información. La aplicación no añade tu ubicación a esos informes.
+Los detalles están en la pantalla de información de la aplicación y en la política de privacidad.
+
+PARA TODOS
+El texto se puede agrandar y se desplaza cuando hace falta. Con un lector de pantalla, Moonlight anuncia la fase de la luna, por ejemplo «Luna menguante, 34% iluminada». La aplicación está disponible en inglés y español.
+
+UN PROYECTO PERSONAL
+Moonlight lo hace una sola persona. Es gratis, no tiene anuncios y es de código abierto (Apache 2.0) en GitHub. Si te gusta, puedes invitarme a un café desde la pantalla de información; nada queda bloqueado detrás.
+
+CRÉDITOS
+Moonlight nació de una idea de la artista Kelly Andres. La fase y la posición de la luna se calculan con la biblioteca de código abierto SunCalc (commons-suncalc). Las licencias de código abierto aparecen en la aplicación.

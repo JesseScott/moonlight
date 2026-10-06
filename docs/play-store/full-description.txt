@@ -1,0 +1,29 @@
+Moonlight fills your screen with a glow that follows the moon.
+
+The colour comes from the moon itself: how much of it is lit, whether it is waxing or waning, and how high it is in your sky right now. Glance at your phone and you know where the moon is in its month, without going outside.
+
+HOW IT WORKS
+- Allow approximate location, or skip it: Moonlight still shows the moon's phase.
+- It works out the moon's phase and, with location, where the moon is in your sky.
+- The glow changes with it: cool blue at new moon, warm gold at full moon, with a waxing moon leaning one way and a waning moon the other. It grows richer the higher the moon climbs, and settles into a darker, quieter wash when the moon is below the horizon.
+
+WHERE YOU CAN HAVE IT
+- The app: a full-screen glow. Swipe to the data screen for the numbers behind it: the fraction lit, the phase and angle and, with location, the moon's azimuth, altitude and distance.
+- A live wallpaper: set it from the About screen, or from your wallpaper settings under Live wallpapers.
+- A home screen widget: add it from the About screen, or from your launcher's widgets.
+- Wear OS: the same glow on your watch.
+
+PRIVATE BY DEFAULT
+- Approximate (coarse) location only, used on your phone to work out where the moon is in your sky. It is not stored and it is never sent anywhere.
+- No accounts, no ads, and no advertising ID.
+- Usage and crash reports are off until you turn them on, and you can turn them off again at any time in the About screen. The app does not add your location to them.
+Details are in the app's About screen and in the privacy policy.
+
+FOR EVERYONE
+Text can be made large and scrolls where it needs to. On a screen reader, Moonlight announces the moon's phase, for example "Waning moon, 34% lit". The app is available in English and Spanish.
+
+A HOBBY PROJECT
+Moonlight is made by one person. It is free, has no ads, and is open source (Apache 2.0) on GitHub. If you enjoy it you can buy me a coffee from the About screen; nothing is locked behind it.
+
+CREDITS
+Moonlight began as an idea by the artist Kelly Andres. The moon's phase and position are calculated with the open source SunCalc library (commons-suncalc). Open source licenses are listed in the app.
