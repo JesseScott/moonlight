@@ -34,7 +34,8 @@ if ! gh release view "$tag" >/dev/null 2>&1; then
 fi
 
 # The bundles must be built from the commit the tag points at, or the release lies about what is in the files.
-git fetch --tags --quiet
+# Fetch just this tag: "git fetch --tags" refuses to run when an old local tag differs from GitHub's.
+git fetch origin "refs/tags/$tag:refs/tags/$tag" --force --quiet
 if [ "$(git rev-parse "$tag^{commit}")" != "$(git rev-parse HEAD)" ]; then
   echo "HEAD is not the commit $tag points at. Check out the tag (git checkout $tag) and run this again." >&2
   exit 1
