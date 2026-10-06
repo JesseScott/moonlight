@@ -30,7 +30,7 @@ It uses your approximate location, on your device only, to work out where the mo
 credits
 ----
 
-It is developed by the artist [Jesse Scott](http://jesses.co.tt) and was originally inspired an idea by the artist [Kelly Andres](https://kellyandres.xyz).
+It is developed by the artist [Jesse Scott](http://jesses.co.tt) and was originally inspired by an idea by the artist [Kelly Andres](https://kellyandres.xyz).
 
 It is heavily indebted to the [SunCalc](https://github.com/shred/commons-suncalc) library, as well as several other open source frameworks. We all stand upon the shoulders of giants.
 
