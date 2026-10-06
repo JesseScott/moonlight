@@ -15,6 +15,7 @@ import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.hypot
+import kotlin.math.pow
 import kotlin.math.sin
 
 /**
@@ -47,6 +48,71 @@ object GradientUtil {
     private const val TWILIGHT_DEGREES = 12f // how far below the horizon the muted wash takes to fully fade in
     private const val NIGHT_SATURATION_DROP = 0.6f
     private const val NIGHT_LIGHTNESS_DROP = 0.5f
+
+    /**
+     * How far down from the top of the screen dark text is readable (4.5:1) in every moon state, which is the least
+     * a text page can use. The gradient runs moon colour (bottom), silver (middle), light blue (top), so down to the
+     * middle it is the same silver to light blue whatever the moon is doing, and it darkens with the moon after
+     * that. Kept a little short of the middle. Checked by GradientContrastTest.
+     */
+    const val TEXT_AREA_FRACTION = 0.45f
+
+    /** The text colour on the Data and About pages. Darker text lets the text area reach further down the screen. */
+    val TextColor = Color(0xFF222222)
+
+    // The window colour the translucent moon colour sits over
+    private val textRgb = doubleArrayOf(TextColor.red * 255.0, TextColor.green * 255.0, TextColor.blue * 255.0)
+    private val windowRgb = doubleArrayOf(0x30.toDouble(), 0x30.toDouble(), 0x30.toDouble())
+
+    /** A little above the 4.5:1 that WCAG AA asks of body text */
+    private const val TEXT_CONTRAST = 5f
+    private const val TEXT_AREA_STEP = 0.01f
+
+    /**
+     * How far down from the top of the screen dark text is readable for this particular moon: as far as the gradient
+     * stays light enough, but never less than [TEXT_AREA_FRACTION]. A bright moon leaves almost the whole screen to
+     * the text, a dark one only the light top. Without moon data it is [TEXT_AREA_FRACTION].
+     */
+    fun textAreaFraction(moonData: MoonData?): Float {
+        if (moonData == null) return TEXT_AREA_FRACTION
+        return textAreaFraction(moonHsl(moonData))
+    }
+
+    fun textAreaFraction(moon: MoonHsl): Float {
+        var y = TEXT_AREA_FRACTION
+        while (y + TEXT_AREA_STEP <= 1f && contrast(textRgb, screenColourAt(moon, y + TEXT_AREA_STEP)) >= TEXT_CONTRAST) {
+            y += TEXT_AREA_STEP
+        }
+        return y
+    }
+
+    /** The colour on screen at [y] (0 = top, 1 = bottom): the gradient, with the translucent moon colour over the window */
+    private fun screenColourAt(moon: MoonHsl, y: Float): DoubleArray {
+        val bottom = Color.hsl(moon.hue, moon.saturation, moon.lightness, colorSpace = ColorSpaces.Srgb)
+        val from = if (y <= 0.5f) silverColor else bottom
+        val to = if (y <= 0.5f) lsb else silverColor
+        // 0 at the bottom of the gradient, 1 at the top: bottom -> silver -> light blue
+        val t = 1.0 - y
+        val u = if (t <= 0.5) t / 0.5 else (t - 0.5) / 0.5
+        val fromAlpha = if (y <= 0.5f) 1.0 else moon.alpha.toDouble()
+        val start = doubleArrayOf(from.red * 255.0, from.green * 255.0, from.blue * 255.0, fromAlpha)
+        val end = doubleArrayOf(to.red * 255.0, to.green * 255.0, to.blue * 255.0, 1.0)
+        val c = DoubleArray(4) { start[it] + (end[it] - start[it]) * u }
+        return DoubleArray(3) { c[it] * c[3] + windowRgb[it] * (1 - c[3]) }
+    }
+
+    private fun contrast(a: DoubleArray, b: DoubleArray): Double {
+        fun luminance(rgb: DoubleArray): Double {
+            fun linear(c: Double): Double {
+                val v = c / 255
+                return if (v <= 0.04045) v / 12.92 else ((v + 0.055) / 1.055).pow(2.4)
+            }
+            return 0.2126 * linear(rgb[0]) + 0.7152 * linear(rgb[1]) + 0.0722 * linear(rgb[2])
+        }
+        val la = luminance(a)
+        val lb = luminance(b)
+        return (maxOf(la, lb) + 0.05) / (minOf(la, lb) + 0.05)
+    }
 
     /** Used when there is no location, and so no real altitude */
     const val NEUTRAL_ALTITUDE_DEGREES = 45f
@@ -81,13 +147,17 @@ object GradientUtil {
         return MoonHsl(hue = hue, saturation = saturation, lightness = lightness, alpha = alpha)
     }
 
+    /** The moon's colour for this data. Without a location the altitude is unknown, so the moon is assumed to be part way up the sky. */
+    fun moonHsl(moonData: MoonData): MoonHsl {
+        val altitude = if (moonData.hasPosition) moonData.altitude else NEUTRAL_ALTITUDE_DEGREES
+        return moonHsl(moonData.phase, moonData.fraction, altitude)
+    }
+
     fun generateHSLColor(
         moonData: MoonData? = null,
     ): List<Color> {
         val hsl = if (moonData != null) {
-            // Without a location the altitude is unknown, so assume the moon is part way up the sky
-            val altitude = if (moonData.hasPosition) moonData.altitude else NEUTRAL_ALTITUDE_DEGREES
-            val moon = moonHsl(moonData.phase, moonData.fraction, altitude)
+            val moon = moonHsl(moonData)
             Color.hsl(
                 hue = moon.hue,
                 saturation = moon.saturation,

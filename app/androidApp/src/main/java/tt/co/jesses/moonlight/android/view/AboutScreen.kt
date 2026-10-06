@@ -4,21 +4,15 @@ import android.content.Intent
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -28,22 +22,22 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.heading
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -57,21 +51,20 @@ import tt.co.jesses.moonlight.android.app.MyApplicationTheme
 import tt.co.jesses.moonlight.android.domain.EventNames
 import tt.co.jesses.moonlight.android.view.state.MoonlightUiState
 import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
+import tt.co.jesses.moonlight.android.view.sub.AccordionSection
 import tt.co.jesses.moonlight.android.view.sub.HyperLinkTextEngine
 import tt.co.jesses.moonlight.android.view.sub.HyperlinkText
+import tt.co.jesses.moonlight.android.view.sub.TextOnGradient
 import tt.co.jesses.moonlight.android.view.util.Constants
 import tt.co.jesses.moonlight.android.view.util.Constants.basePadding
 import tt.co.jesses.moonlight.android.view.util.Constants.bodyFontSize
-import tt.co.jesses.moonlight.android.view.util.Constants.headerFontSize
 import tt.co.jesses.moonlight.android.view.util.VersionUtil
 import tt.co.jesses.moonlight.android.view.util.WallpaperWidgetUtil
 import tt.co.jesses.moonlight.common.data.model.AnalyticsAcceptance
 import tt.co.jesses.moonlight.common.util.GradientUtil
-import tt.co.jesses.moonlight.common.util.angledGradientBackground
 import tt.co.jesses.moonlight.android.view.util.basePadding
 import tt.co.jesses.moonlight.android.view.util.launchCustomTabs
 import tt.co.jesses.moonlight.android.view.util.smallPadding
-import kotlin.time.Duration
 
 @Composable
 fun AboutScreen(
@@ -127,59 +120,39 @@ fun AboutScreen(
 
     val textStyle = TextStyle(
         textAlign = TextAlign.Start,
-        color = Color.DarkGray
+        color = GradientUtil.TextColor
     )
     val borderStroke = BorderStroke(
         width = Constants.strokeWidth,
-        color = Color.DarkGray,
+        color = GradientUtil.TextColor,
     )
     val hyperLinkTextEngine = HyperLinkTextEngine(
         textStyle = textStyle,
-        linkTextColor = Color.DarkGray,
+        linkTextColor = GradientUtil.TextColor,
         fontSize = bodyFontSize,
     )
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .angledGradientBackground(
-                colors = colorList,
-                degrees = 270f,
-            )
-            .windowInsetsPadding(WindowInsets.systemBars)
-            .padding(start = basePadding, top = basePadding, end = basePadding, bottom = basePadding)
-    ) {
-        Column(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .widthIn(max = Constants.maxContentWidth)
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.Top
-        ) {
-            /// TITLE
-            Text(
-                text = stringResource(creditData.creditTitle),
-                modifier = Modifier.semantics { heading() },
-                fontSize = headerFontSize,
-                style = textStyle.copy(
-                    textDecoration = TextDecoration.Underline
-                ),
-            )
-            Spacer(Modifier.basePadding())
+    var openSection by rememberSaveable { mutableStateOf<Int?>(null) }
 
-            /// CREDITS
-            Text(
-                text = stringResource(R.string.credits_credits_header),
-                modifier = Modifier.semantics { heading() },
-                fontSize = bodyFontSize,
-                style = textStyle.copy(
-                    textDecoration = TextDecoration.Underline,
-                    fontWeight = FontWeight.Bold,
-                ),
+    TextOnGradient(
+        title = stringResource(creditData.creditTitle),
+        colors = colorList,
+        textAreaFraction = GradientUtil.textAreaFraction(illuminationData),
+        overlay = {
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .windowInsetsPadding(WindowInsets.systemBars)
             )
-            Spacer(Modifier.smallPadding())
+        },
+    ) {
+        /// CREDITS
+        AccordionSection(
+            title = stringResource(R.string.credits_credits_header),
+            expanded = openSection == 0,
+            onToggle = { openSection = if (openSection == 0) null else 0 },
+        ) {
             if (logger != null) {
                 HyperlinkText(
                     modifier = Modifier.padding(end = basePadding),
@@ -193,19 +166,13 @@ fun AboutScreen(
                     logger = logger,
                 )
             }
-            Spacer(Modifier.basePadding())
-
-            /// ACKNOWLEDGEMENTS
-            Text(
-                text = stringResource(R.string.credits_ack_header),
-                modifier = Modifier.semantics { heading() },
-                fontSize = bodyFontSize,
-                style = textStyle.copy(
-                    textDecoration = TextDecoration.Underline,
-                    fontWeight = FontWeight.Bold,
-                ),
-            )
-            Spacer(Modifier.smallPadding())
+        }
+        /// ACKNOWLEDGEMENTS
+        AccordionSection(
+            title = stringResource(R.string.credits_ack_header),
+            expanded = openSection == 1,
+            onToggle = { openSection = if (openSection == 1) null else 1 },
+        ) {
             if (logger != null) {
                 HyperlinkText(
                     modifier = Modifier.padding(end = basePadding),
@@ -239,19 +206,13 @@ fun AboutScreen(
                     style = textStyle,
                 )
             }
-            Spacer(Modifier.basePadding())
-
-            /// WALLPAPER AND WIDGET
-            Text(
-                text = stringResource(R.string.credits_extras_header),
-                modifier = Modifier.semantics { heading() },
-                fontSize = bodyFontSize,
-                style = textStyle.copy(
-                    textDecoration = TextDecoration.Underline,
-                    fontWeight = FontWeight.Bold,
-                ),
-            )
-            Spacer(Modifier.smallPadding())
+        }
+        /// WALLPAPER AND WIDGET
+        AccordionSection(
+            title = stringResource(R.string.credits_extras_header),
+            expanded = openSection == 2,
+            onToggle = { openSection = if (openSection == 2) null else 2 },
+        ) {
             Text(
                 text = stringResource(R.string.credits_extras_description),
                 fontSize = bodyFontSize,
@@ -315,19 +276,13 @@ fun AboutScreen(
                     modifier = Modifier.padding(end = basePadding),
                 )
             }
-            Spacer(Modifier.basePadding())
-
-            /// PRIVACY
-            Text(
-                text = stringResource(R.string.credits_privacy_header),
-                modifier = Modifier.semantics { heading() },
-                fontSize = bodyFontSize,
-                style = textStyle.copy(
-                    textDecoration = TextDecoration.Underline,
-                    fontWeight = FontWeight.Bold,
-                ),
-            )
-            Spacer(Modifier.smallPadding())
+        }
+        /// PRIVACY
+        AccordionSection(
+            title = stringResource(R.string.credits_privacy_header),
+            expanded = openSection == 3,
+            onToggle = { openSection = if (openSection == 3) null else 3 },
+        ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -354,10 +309,10 @@ fun AboutScreen(
                     onCheckedChange = null,
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = Color.White,
-                        checkedTrackColor = Color.DarkGray,
-                        uncheckedThumbColor = Color.DarkGray,
+                        checkedTrackColor = GradientUtil.TextColor,
+                        uncheckedThumbColor = GradientUtil.TextColor,
                         uncheckedTrackColor = Color.Transparent,
-                        uncheckedBorderColor = Color.DarkGray,
+                        uncheckedBorderColor = GradientUtil.TextColor,
                     ),
                 )
             }
@@ -386,19 +341,13 @@ fun AboutScreen(
                     style = textStyle,
                 )
             }
-            Spacer(Modifier.basePadding())
-
-            /// INFO
-            Text(
-                text = stringResource(R.string.credits_info_header),
-                modifier = Modifier.semantics { heading() },
-                fontSize = bodyFontSize,
-                style = textStyle.copy(
-                    textDecoration = TextDecoration.Underline,
-                    fontWeight = FontWeight.Bold,
-                ),
-            )
-            Spacer(Modifier.smallPadding())
+        }
+        /// INFO
+        AccordionSection(
+            title = stringResource(R.string.credits_info_header),
+            expanded = openSection == 4,
+            onToggle = { openSection = if (openSection == 4) null else 4 },
+        ) {
 
             TextButton(
                 onClick = {
@@ -488,13 +437,7 @@ fun AboutScreen(
             )
             Spacer(Modifier.smallPadding())
         }
-
-        SnackbarHost(
-            hostState = snackbarHostState,
-            modifier = Modifier.align(Alignment.BottomCenter)
-        )
     }
-
 }
 
 @Preview(showBackground = true)
