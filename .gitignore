@@ -9,3 +9,9 @@ local.properties
 publishing/*
 /app/.kotlin/metadata
 /app/.kotlin/sessions
+
+# Signing: the upload key stays off the repo (it lives in the encrypted vault); keystore.properties points at it
+keystore.properties
+*.jks
+*.keystore
+*.aab

@@ -9,6 +9,12 @@ plugins {
     id("kotlin-kapt")
 }
 
+// Version and upload key are set once, in the root build.gradle.kts, from version.properties and keystore.properties
+val appVersionName: String by rootProject.extra
+val appVersionCode: Int by rootProject.extra
+val keystoreProperties: java.util.Properties? by rootProject.extra
+base.archivesName.set("moonlight-$appVersionName-$appVersionCode")
+
 android {
     namespace = "tt.co.jesses.moonlight.android"
     compileSdk = 36
@@ -16,8 +22,8 @@ android {
         applicationId = "tt.co.jesses.moonlight.android"
         minSdk = 24
         targetSdk = 36
-        versionCode = 13
-        versionName = "0.6.0"
+        versionCode = appVersionCode
+        versionName = appVersionName
     }
     buildFeatures {
         compose = true
@@ -28,12 +34,30 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    signingConfigs {
+        keystoreProperties?.let { keys ->
+            create("release") {
+                // A relative storeFile is relative to the repo root
+                storeFile = rootProject.file("..").resolve(keys.getProperty("storeFile"))
+                storePassword = keys.getProperty("storePassword")
+                keyAlias = keys.getProperty("keyAlias")
+                keyPassword = keys.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         getByName("debug") {
             // Install alongside the Play Store release instead of clashing with its signature
             applicationIdSuffix = ".debug"
         }
         getByName("release") {
+            signingConfigs.findByName("release")?.let { signingConfig = it }
+            // The R8 mapping goes to the production Crashlytics project, which only the signed Play build should do:
+            // a check-only build (CI, or a local build without keystore.properties) must not overwrite it.
+            configure<com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension> {
+                mappingFileUploadEnabled = signingConfigs.findByName("release") != null
+            }
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")

@@ -1,0 +1,55 @@
+name: Release
+
+# When a merge to main changes version.properties, tag that commit and create a GitHub release for it.
+# The tag is v<versionName>-<versionCode>, the same as the bundles' file names (v0.7.0-14).
+# The signed bundles are built on the maintainer's machine, where the upload key lives, and attached afterwards
+# with scripts/release.sh.
+on:
+  push:
+    branches: [main]
+    paths: [version.properties]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Create the tag and the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          read_prop() { grep -E "^$1=" version.properties | head -n1 | cut -d= -f2- | tr -d '[:space:]'; }
+          # The commit that first adds version.properties is not a release: that version was published earlier.
+          if ! git cat-file -e HEAD^:version.properties 2>/dev/null; then
+            echo "version.properties was just added; no release to create."
+            exit 0
+          fi
+
+          name=$(read_prop versionName)
+          code=$(read_prop versionCode)
+          tag="v${name}-${code}"
+          echo "version $name ($code) -> $tag"
+
+          if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
+            echo "$tag already exists; nothing to do."
+            exit 0
+          fi
+
+          # Released versions below 1.0 are pre-releases.
+          flags=()
+          case "$name" in 0.*) flags+=(--prerelease) ;; esac
+
+          # The Play release notes (if there are any) go first, then GitHub's list of what was merged since the last tag.
+          notes=docs/play-store/release-notes-en-US.txt
+          [ -f "$notes" ] && flags+=(--notes-file "$notes")
+
+          gh release create "$tag" \
+            --target "$GITHUB_SHA" \
+            --title "Moonlight $name ($code)" \
+            --generate-notes \
+            "${flags[@]}"
