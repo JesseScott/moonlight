@@ -76,13 +76,14 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.wear:wear:1.3.0")
 
-    // Compose
-    implementation(platform("androidx.compose:compose-bom:2024.02.00"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.wear.compose:compose-material:1.3.0")
-    implementation("androidx.wear.compose:compose-foundation:1.3.0")
-    implementation("androidx.activity:activity-compose:1.8.2")
+    // Compose: the same versions as the phone app. The shared :common module uses the lifecycle-runtime-compose 2.8
+    // LocalLifecycleOwner (RefreshWhileStarted), which only Compose UI 1.7+ and a recent activity-compose provide; on
+    // the old Compose 1.6 stack the release build crashed at start-up ("LocalLifecycleOwner not present").
+    // The screen is a plain gradient, so no Wear Compose components are needed.
+    implementation("androidx.compose.foundation:foundation:1.11.0")
+    implementation("androidx.compose.ui:ui:1.11.0")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.11.0")
+    implementation("androidx.activity:activity-compose:1.13.0")
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.55")
@@ -90,6 +91,6 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     // Lifecycle
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
 }
