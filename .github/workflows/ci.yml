@@ -40,6 +40,11 @@ jobs:
         run: ./gradlew assembleDebug testDebugUnitTest
         working-directory: ./app
 
+      # Every module (phone, Wear, widget, common). Lint errors fail the build; warnings do not.
+      - name: Lint
+        run: ./gradlew lintDebug
+        working-directory: ./app
+
   # R8/ProGuard problems only show up in a release build, which the job above never makes.
   # Runs in parallel on main only, so pull requests are not slowed down.
   android-release-build:
