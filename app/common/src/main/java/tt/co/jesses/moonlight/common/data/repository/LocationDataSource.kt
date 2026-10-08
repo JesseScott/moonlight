@@ -1,6 +1,7 @@
 package tt.co.jesses.moonlight.common.data.repository
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
@@ -52,6 +53,9 @@ class LocationDataSource @Inject constructor(
         add(LocationManager.NETWORK_PROVIDER)
     }
 
+    // Only reached from getCoordinates after hasPermission(), which lint can't see through; a SecurityException
+    // (permission revoked in between) is caught by runCatching.
+    @SuppressLint("MissingPermission")
     private fun lastKnownLocation(manager: LocationManager, maxFixAgeMs: Long): Location? {
         val candidates = (providers() + LocationManager.PASSIVE_PROVIDER).mapNotNull { provider ->
             runCatching { manager.getLastKnownLocation(provider) }.getOrNull()
@@ -62,6 +66,8 @@ class LocationDataSource @Inject constructor(
             .maxByOrNull { it.time }
     }
 
+    // See lastKnownLocation.
+    @SuppressLint("MissingPermission")
     private suspend fun currentLocation(manager: LocationManager): Location? {
         val provider = providers().firstOrNull { runCatching { manager.isProviderEnabled(it) }.getOrDefault(false) }
             ?: return null

@@ -23,7 +23,7 @@ No accounts, no ads.
 ```bash
 cd app
 ./gradlew assembleDebug testDebugUnitTest      # what CI runs on pull requests
-./gradlew :androidApp:lintDebug                # lint
+./gradlew lintDebug                            # lint, all modules (CI runs this too)
 ```
 JDK 17. Debug builds install as `tt.co.jesses.moonlight.android.debug` (label "moonlight (debug)", About shows
 "DEBUG") so they sit beside the Play version, and they never collect telemetry. The APK is named
