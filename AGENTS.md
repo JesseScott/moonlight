@@ -71,4 +71,6 @@ User-facing strings are in English and Spanish (`values` and `values-es`); add b
 - Emulators and phones need the `.debug` build for installs beside the Play version. `adb shell cmd alarm set-time <ms>`
   changes an emulator's date (useful for seeing other moon phases), and a shell mock location
   (`cmd location providers set-test-provider-location`) gives it a position. Restore both afterwards.
-- Risky changes (R8, signing, manifest) are worth trying in a signed release build, with the Crashlytics caveat above.
+- Before every release, run `scripts/smoke-test.sh --phone <serial> --wear <serial>`: it builds the release variants, signs
+  them with the debug key (never the upload key), installs and launches them. Release-only crashes (R8) do not show in debug
+  builds or CI. Risky changes (R8, signing, manifest, dependency versions) deserve the same check before merging.
