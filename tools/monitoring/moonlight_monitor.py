@@ -18,6 +18,7 @@ can decide whether to post. Nothing secret is ever printed.
 import argparse
 import base64
 import csv
+import html
 import datetime as dt
 import io
 import json
@@ -108,7 +109,7 @@ class Api:
             with urllib.request.urlopen(req, timeout=60) as r:
                 payload = r.read()
         except urllib.error.HTTPError as e:
-            detail = e.read().decode(errors="replace")[:300]
+            detail = html.unescape(html.unescape(e.read().decode(errors="replace")))[:300]
             raise ApiError(f"{e.code} from {url.split('?')[0]}: {detail}") from None
         return payload if raw else json.loads(payload or b"{}")
 
@@ -275,17 +276,19 @@ def error_issue_check(api, state):
 
 
 def other_vitals(api):
-    """Slow start, slow rendering and excessive wakeups: summary lines only (thresholds differ by metric)."""
+    """Slow start and excessive wakeups: summary lines only (thresholds differ by metric). Slow rendering is only
+    available to games, so it is not queried."""
     lines = []
     for metric_set, metric, label in [
         ("slowStartRateMetricSet", "slowStartRate7dUserWeighted", "Slow cold start"),
-        ("slowRenderingRateMetricSet", "slowRenderingRate20Fps7dUserWeighted", "Slow rendering"),
         ("excessiveWakeupRateMetricSet", "excessiveWakeupRate7dUserWeighted", "Excessive wakeups"),
     ]:
         try:
             dims = ["startType"] if metric_set == "slowStartRateMetricSet" else []
             rows, _ = query_daily(api, metric_set, [metric], dims, 7)
             newest = latest_by(rows, "startType", metric)
+            if not newest:
+                lines.append(f"- {label}: no data for the 7 days (Play withholds vitals when too few users)")
             for k, r in sorted(newest.items()):
                 suffix = f" ({k.lower()})" if dims else ""
                 lines.append(f"- {label}{suffix}: 7-day {pct(r[metric])}")
