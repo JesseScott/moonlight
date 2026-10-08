@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import androidx.compose.runtime.Composable
-import androidx.glance.BitmapImageProvider
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.Image
@@ -33,7 +32,7 @@ class MoonlightWidget : GlanceAppWidget() {
         drawAngledGradient(degrees = 270f, canvas = Canvas(bitmap), colors = colors)
 
         Image(
-            provider = BitmapImageProvider(bitmap),
+            provider = ImageProvider(bitmap),
             contentDescription = context.getString(R.string.widget_content_description),
             contentScale = ContentScale.FillBounds,
             modifier = GlanceModifier.fillMaxSize(),

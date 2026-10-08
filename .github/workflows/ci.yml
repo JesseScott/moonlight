@@ -40,9 +40,10 @@ jobs:
         run: ./gradlew assembleDebug testDebugUnitTest
         working-directory: ./app
 
-      # Every module (phone, Wear, widget, common). Lint errors fail the build; warnings do not.
+      # Every module (phone, Wear, widget, common); --continue reports them all, not just the first to fail.
+      # Lint errors fail the build; warnings do not.
       - name: Lint
-        run: ./gradlew lintDebug
+        run: ./gradlew lintDebug --continue
         working-directory: ./app
 
   # R8/ProGuard problems only show up in a release build, which the job above never makes.
