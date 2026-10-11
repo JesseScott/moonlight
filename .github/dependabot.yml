@@ -1,0 +1,42 @@
+# Dependabot version updates: one weekly run per ecosystem, with the minor and patch bumps grouped into one pull request
+# so there are a few to review rather than a dozen. Major bumps still come one per pull request. Every pull request is
+# assigned to Jesse and labelled skip-changelog, so dependency bumps stay out of the release notes (.github/release.yml).
+version: 2
+updates:
+  # The Gradle build lives in app/ (settings.gradle.kts); versions are set in each module's build.gradle.kts.
+  - package-ecosystem: gradle
+    directory: /app
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    assignees:
+      - JesseScott
+    labels:
+      - skip-changelog
+    commit-message:
+      prefix: Gradle
+    groups:
+      gradle-minor-and-patch:
+        update-types:
+          - minor
+          - patch
+
+  # Actions used by the workflows in .github/workflows.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    assignees:
+      - JesseScott
+    labels:
+      - skip-changelog
+    commit-message:
+      prefix: Actions
+    groups:
+      actions-minor-and-patch:
+        update-types:
+          - minor
+          - patch
