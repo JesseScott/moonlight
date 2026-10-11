@@ -5,7 +5,7 @@ Standard library only (plus the `openssl` command for signing the service accoun
 routine without installing anything.
 
     python3 tools/monitoring/moonlight_monitor.py health --state STATE.json
-    python3 tools/monitoring/moonlight_monitor.py growth --state STATE.json --history HISTORY.csv
+    python3 tools/monitoring/moonlight_monitor.py growth --state STATE.json --history HISTORY.csv --experiments LOG.md
 
 Credentials come from the environment, never from arguments:
     MOONLIGHT_PLAY_SA_KEY_B64       the service account JSON key, base64 encoded
@@ -358,6 +358,30 @@ def monthly_overview(api, bucket, kind, months):
     return rows
 
 
+def monthly_rows(api, bucket, kind, dimension, months):
+    """All rows of a monthly report CSV split by `dimension` (for example `country` or `traffic_source`)."""
+    rows = []
+    for month in months:
+        obj = f"stats/{kind}/{kind}_{PACKAGE}_{month}_{dimension}.csv"
+        url = f"{STORAGE}/b/{bucket}/o/{urllib.parse.quote(obj, safe='')}?alt=media"
+        try:
+            data = api.call(url, raw=True)
+        except ApiError as e:
+            if str(e).startswith("404"):
+                continue
+            raise
+        rows += [r for r in read_play_csv(data) if r.get("Date")]
+    return rows
+
+
+def column_name(row, *words, exclude=()):
+    """The name of the first column whose name contains all the given words and none of `exclude`."""
+    for k in row:
+        if k and all(w in k.lower() for w in words) and not any(x in k.lower() for x in exclude):
+            return k
+    return None
+
+
 def column(row, *words):
     """The value of the first column whose name contains all the given words (case-insensitive)."""
     for k, v in row.items():
@@ -435,7 +459,7 @@ def run_health(api, state):
     return "\n".join(out)
 
 
-def run_growth(api, state, history_path):
+def run_growth(api, state, history_path, experiments_path=None):
     today = dt.date.today()
     lines, notes, record = [], [], {"week_ending": None}
 
@@ -479,6 +503,12 @@ def run_growth(api, state, history_path):
     except ApiError as e:
         notes.append(f"Bulk reports unavailable: {e}")
 
+    # Store listing traffic: visitors, installs from the listing and conversion, with the main traffic sources.
+    try:
+        lines += store_performance(api, bucket_name(), today, record)
+    except ApiError as e:
+        notes.append(f"Store listing traffic unavailable: {e}")
+
     # Rough daily active users from vitals, split by phone and watch.
     try:
         rows, end = query_daily(api, "crashRateMetricSet", ["distinctUsers"], ["deviceType"], 14)
@@ -515,9 +545,80 @@ def run_growth(api, state, history_path):
         append_history(history_path, record)
 
     out = [f"STATUS: {'WARN' if notes else 'OK'}", "", f"## Moonlight growth, week to {today}", ""] + lines
+    experiments = recent_experiments(experiments_path, today)
+    if experiments:
+        out += ["", "**Changes in the last two weeks** (from the experiments log)", ""] + experiments
     if notes:
         out += ["", "**Not available this week**", ""] + [f"- {n}" for n in notes]
     return "\n".join(out)
+
+
+def week_split(rows):
+    """Rows in the newest 7 days of data and in the 7 days before, plus the newest date."""
+    dates = sorted({r["Date"] for r in rows})
+    if not dates:
+        return [], [], None
+    last = dt.date.fromisoformat(dates[-1])
+    week = [r for r in rows if dt.date.fromisoformat(r["Date"]) > last - dt.timedelta(days=7)]
+    prev = [r for r in rows
+            if last - dt.timedelta(days=14) < dt.date.fromisoformat(r["Date"]) <= last - dt.timedelta(days=7)]
+    return week, prev, last
+
+
+def conversion(visitors, acquisitions):
+    return f"{acquisitions / visitors:.0%}" if visitors else "n/a"
+
+
+def store_performance(api, bucket, today, record):
+    """Lines for store listing visitors, acquisitions and conversion, and the top traffic and UTM sources."""
+    months = months_back(today, 2)
+    lines = []
+    week, prev, last = week_split(monthly_rows(api, bucket, "store_performance", "country", months))
+    if not week:
+        return ["- Store listing traffic: no store performance reports found for the last two months."]
+    visitors, acquisitions = sum_col(week, "visitors") or 0, sum_col(week, "acquisitions") or 0
+    prev_v, prev_a = sum_col(prev, "visitors"), sum_col(prev, "acquisitions")
+    record["Store listing visitors"], record["Store listing acquisitions"] = int(visitors), int(acquisitions)
+    lines.append(f"- Store listing visitors: {int(visitors)}, installs from the listing: {int(acquisitions)}, "
+                 f"conversion {conversion(visitors, acquisitions)} (7 days to {last}; week before: "
+                 + ("n/a" if prev_v is None else f"{int(prev_v)} visitors, {int(prev_a or 0)} installs, "
+                    f"{conversion(prev_v, prev_a or 0)}") + ")")
+
+    week, _, _ = week_split(monthly_rows(api, bucket, "store_performance", "traffic_source", months))
+    for label, words, exclude in [("By traffic source", ("source",), ("utm",)),
+                                  ("By UTM source", ("utm", "source"), ())]:
+        key = column_name(week[0], *words, exclude=exclude) if week else None
+        if not key:
+            continue
+        totals = {}
+        for r in week:
+            name = (r.get(key) or "").strip()
+            if name.lower() in ("", "all", "total", "other", "unknown"):
+                continue
+            v, a = totals.get(name, (0, 0))
+            totals[name] = (v + (column(r, "visitors") or 0), a + (column(r, "acquisitions") or 0))
+        top = sorted(totals.items(), key=lambda kv: -kv[1][0])[:5]
+        if top:
+            lines.append(f"- {label}: " + ", ".join(f"{n} {int(v)} visitors / {int(a)} installs"
+                                                     for n, (v, a) in top))
+    return lines
+
+
+def recent_experiments(path, today, days=14):
+    """Lines of the experiments log (`- YYYY-MM-DD what changed`) dated within the last `days` days."""
+    if not path or not os.path.exists(path):
+        return []
+    out = []
+    with open(path) as f:
+        for line in f:
+            line = line.strip()
+            try:
+                when = dt.date.fromisoformat(line[2:12]) if line.startswith("- ") else None
+            except ValueError:
+                when = None
+            if when and today - dt.timedelta(days=days) <= when <= today:
+                out.append(line)
+    return out
 
 
 def append_history(path, record):
@@ -541,6 +642,8 @@ def main(argv=None):
     p.add_argument("report", choices=["health", "growth"])
     p.add_argument("--state", help="JSON file remembering what was already reported")
     p.add_argument("--history", help="CSV file the growth report appends a row to")
+    p.add_argument("--experiments",
+                   help="Markdown log of listing and promotion changes, one `- YYYY-MM-DD ...` line each")
     args = p.parse_args(argv)
 
     state = {}
@@ -552,7 +655,10 @@ def main(argv=None):
     except (urllib.error.URLError, subprocess.CalledProcessError, KeyError) as e:
         print(f"STATUS: ERROR\n\nCould not get a Google access token: {type(e).__name__}: {str(e)[:200]}")
         return 1
-    report = run_health(api, state) if args.report == "health" else run_growth(api, state, args.history)
+    if args.report == "health":
+        report = run_health(api, state)
+    else:
+        report = run_growth(api, state, args.history, args.experiments)
     print(report)
     if args.state:
         os.makedirs(os.path.dirname(os.path.abspath(args.state)), exist_ok=True)

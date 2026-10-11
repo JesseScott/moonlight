@@ -133,6 +133,38 @@ class GrowthTest(unittest.TestCase):
                 self.assertIn("New user installs", f.read())
 
 
+class StorePerformanceTest(unittest.TestCase):
+    def test_visitors_conversion_sources_and_experiments(self):
+        today = dt.date.today()
+        month = f"{today.year}{today.month:02d}"
+        days = [(today - dt.timedelta(days=i)).isoformat() for i in range(14, 0, -1)]
+        country = ("Date,Package Name,Country/Region,Store Listing Acquisitions,Store Listing Visitors,"
+                   "Store Listing Conversion Rate\n"
+                   + "".join(f"{d},{mm.PACKAGE},US,1,10,0.1\n{d},{mm.PACKAGE},CA,0,5,0\n" for d in days))
+        source = ("Date,Package Name,Traffic Source,Search Term,UTM Source,UTM Campaign,Store Listing Acquisitions,"
+                  "Store Listing Visitors,Store Listing Conversion Rate\n"
+                  + "".join(f"{d},{mm.PACKAGE},Google Play search,,,,1,12,0.08\n"
+                            f"{d},{mm.PACKAGE},Third-party referrals,,reddit,supermoon,0,3,0\n" for d in days))
+        api = FakeApi(csvs={f"store_performance_{mm.PACKAGE}_{month}_country": country.encode("utf-16"),
+                            f"store_performance_{mm.PACKAGE}_{month}_traffic_source": source.encode("utf-16")})
+        record = {}
+        lines = mm.store_performance(api, "b", today, record)
+        text = "\n".join(lines)
+        self.assertIn("Store listing visitors: 105, installs from the listing: 7, conversion 7%", text)
+        self.assertIn("Google Play search 84 visitors / 7 installs", text)
+        self.assertIn("By UTM source: reddit 21 visitors / 0 installs", text)
+        self.assertEqual(record["Store listing visitors"], 105)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            log = os.path.join(tmp, "experiments.md")
+            Path(log).write_text(f"# Log\n\n- {today.isoformat()} New title\n- 2020-01-01 Old change\n")
+            self.assertEqual(mm.recent_experiments(log, today), [f"- {today.isoformat()} New title"])
+
+    def test_missing_reports_say_so(self):
+        lines = mm.store_performance(FakeApi(), "b", dt.date.today(), {})
+        self.assertIn("no store performance reports", lines[0])
+
+
 class AuthTest(unittest.TestCase):
     def test_jwt_is_signed_with_the_key(self):
         with tempfile.TemporaryDirectory() as tmp:
