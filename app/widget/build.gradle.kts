@@ -41,8 +41,8 @@ android {
 
 dependencies {
     implementation(project(":common"))
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("androidx.core:core-ktx:1.19.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
     implementation("androidx.glance:glance-appwidget:1.0.0")
     implementation("androidx.compose.ui:ui:1.6.2")
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.2")
