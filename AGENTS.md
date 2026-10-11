@@ -13,6 +13,8 @@ No accounts, no ads.
   or open a PR unless asked. Never merge a PR; the owner merges.
 - Label pull requests: `enhancement` or `bug` decides the section in the release notes (`.github/release.yml`); the
   version bump PR gets `release`; anything that should not appear in the notes gets `skip-changelog`.
+- Dependabot (`.github/dependabot.yml`) opens weekly Gradle and GitHub Actions update PRs, assigned to Jesse and labelled
+  `skip-changelog`; minor and patch bumps come grouped in one PR per ecosystem.
 - Never commit or print secrets: `keystore.properties` (release signing) is git-ignored and stays local, and so are
   `*.jks`, `*.keystore` and `*.aab`. The upload key itself lives in an encrypted vault, outside the repo. The Firebase
   client config (`google-services.json`) is committed; it is not a secret, but do not add other credentials.
