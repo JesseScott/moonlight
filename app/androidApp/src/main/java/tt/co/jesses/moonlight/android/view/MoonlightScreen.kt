@@ -17,11 +17,9 @@ import tt.co.jesses.moonlight.android.app.MainActivity
 import tt.co.jesses.moonlight.android.app.MyApplicationTheme
 import tt.co.jesses.moonlight.android.view.state.MoonlightUiState
 import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
-import tt.co.jesses.moonlight.android.view.sub.AnalyticsOptInDialog
 import tt.co.jesses.moonlight.common.util.GradientUtil
 import tt.co.jesses.moonlight.common.util.angledGradientBackground
 import tt.co.jesses.moonlight.android.view.util.bounded
-import tt.co.jesses.moonlight.common.data.model.AnalyticsAcceptance
 import kotlin.time.Duration
 import tt.co.jesses.moonlight.common.util.moonDescription
 
@@ -30,16 +28,12 @@ fun MoonlightScreen(
     viewModel: MoonlightViewModel = viewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    MoonlightScreen(
-        uiState = uiState,
-        onUpdateAnalyticsAcceptance = { viewModel.updateAnalyticsAcceptance(it) },
-    )
+    MoonlightScreen(uiState = uiState)
 }
 
 @Composable
 fun MoonlightScreen(
     uiState: MoonlightUiState,
-    onUpdateAnalyticsAcceptance: (AnalyticsAcceptance) -> Unit = {},
 ) {
     val illuminationData = uiState.illuminationData
 
@@ -61,21 +55,6 @@ fun MoonlightScreen(
         .semantics { contentDescription = description }
 
     Canvas(modifier = gradientModifier) {}
-
-    if (uiState.isAnalyticsPreferencePending) {
-        AnalyticsOptInDialog(
-            onDismissRequest = {
-                // Do nothing, the dialog should be mandatory for compliance if we follow v2 strictly
-                // or just rely on the user to pick one.
-            },
-            onConfirmation = { optedIn ->
-                onUpdateAnalyticsAcceptance(
-                    if (optedIn) AnalyticsAcceptance.ACCEPTED else AnalyticsAcceptance.REJECTED
-                )
-            }
-        )
-    }
-
 }
 
 @Preview(showBackground = true)

@@ -39,10 +39,10 @@ import tt.co.jesses.moonlight.android.domain.EventNames
 import tt.co.jesses.moonlight.android.domain.Logger
 import tt.co.jesses.moonlight.android.view.AboutScreen
 import tt.co.jesses.moonlight.android.view.DataScreen
+import tt.co.jesses.moonlight.android.view.IntroScreen
 import tt.co.jesses.moonlight.android.view.MoonlightScreen
 import tt.co.jesses.moonlight.android.view.state.MoonlightViewModel
 import tt.co.jesses.moonlight.android.view.state.Screens
-import tt.co.jesses.moonlight.android.view.sub.LocationRationaleDialog
 import tt.co.jesses.moonlight.common.util.RefreshWhileStarted
 import javax.inject.Inject
 
@@ -90,21 +90,9 @@ class MainActivity : ComponentActivity() {
                         viewModel.getMoonIllumination()
                     }
                     val uiState by viewModel.uiState.collectAsState()
-                    if (uiState.isLocationRationalePending) {
-                        LocationRationaleDialog(
-                            onDismissRequest = { viewModel.onLocationRationaleSeen() },
-                            onConfirmation = {
-                                viewModel.onLocationRationaleSeen()
-                                isPermissionPromptShowing = true
-                                locationPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
-                            }
-                        )
-                    }
 
-                    // Hold the swipe hint back until the first-launch dialogs are out of the way
-                    val isOnboarding = uiState.isAnalyticsPreferencePending ||
-                        uiState.isLocationRationalePending ||
-                        isPermissionPromptShowing
+                    // Hold the swipe hint back until the intro and the system prompt are out of the way
+                    val isOnboarding = uiState.isIntroPending != false || isPermissionPromptShowing
                     LaunchedEffect(key1 = hasSwiped, key2 = isOnboarding) {
                         if (!hasSwiped && !isOnboarding) {
                             delay(5000)
@@ -141,16 +129,38 @@ class MainActivity : ComponentActivity() {
                         containerColor = Color.Transparent,
                         contentWindowInsets = WindowInsets(0, 0, 0, 0)
                     ) { paddingValues ->
-                        HorizontalPager(
-                            state = pagerState,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(paddingValues)
-                        ) { page ->
-                            when (page) {
-                                0 -> MoonlightScreen(viewModel = viewModel)
-                                1 -> DataScreen(viewModel = viewModel)
-                                2 -> AboutScreen(viewModel = viewModel)
+                        when (uiState.isIntroPending) {
+                            // The saved preferences have not been read yet (a few milliseconds): show the bare
+                            // gradient, which both the intro and the moon page start from
+                            null -> MoonlightScreen(viewModel = viewModel)
+                            true -> {
+                                val askForLocation = !viewModel.hasLocationPermission()
+                                IntroScreen(
+                                    uiState = uiState,
+                                    askForLocation = askForLocation,
+                                    onContinue = { shareUsage ->
+                                        viewModel.onIntroFinished(shareUsage)
+                                        if (askForLocation) {
+                                            isPermissionPromptShowing = true
+                                            locationPermissionLauncher.launch(
+                                                Manifest.permission.ACCESS_COARSE_LOCATION
+                                            )
+                                        }
+                                    },
+                                    onNotNow = { shareUsage -> viewModel.onIntroFinished(shareUsage) },
+                                )
+                            }
+                            false -> HorizontalPager(
+                                state = pagerState,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(paddingValues)
+                            ) { page ->
+                                when (page) {
+                                    0 -> MoonlightScreen(viewModel = viewModel)
+                                    1 -> DataScreen(viewModel = viewModel)
+                                    2 -> AboutScreen(viewModel = viewModel)
+                                }
                             }
                         }
                     }

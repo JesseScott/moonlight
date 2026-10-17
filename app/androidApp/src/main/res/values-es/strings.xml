@@ -32,14 +32,14 @@
     <string name="accordion_expanded">Expandido</string>
     <string name="accordion_collapsed">Contraído</string>
 
-    <string name="analytics_consent_title">Consentimiento de analíticas</string>
-    <string name="analytics_consent_body">Para ayudarnos a mejorar moonlight, nos gustaría recopilar datos de uso anónimos e informes de fallos. Tu ubicación siempre se queda en tu dispositivo y no se recopila ninguna información de identificación personal. Puedes cambiar esto en cualquier momento en la página de información.</string>
-    <string name="analytics_action_enable">Habilitar</string>
-    <string name="analytics_action_disable">Deshabilitar</string>
-    <string name="location_rationale_title">¿Dónde está la luna?</string>
-    <string name="location_rationale_body">La luna aparece en una parte distinta del cielo según dónde te encuentres. moonlight usa tu ubicación aproximada para calcular la posición de la luna (azimut, altitud y distancia) desde donde estás.\n\nTu ubicación se usa solo en tu dispositivo para este cálculo. Nunca se almacena ni se envía a ningún sitio.\n\nSin ella, moonlight sigue mostrando la fase de la luna, pero no su posición.</string>
-    <string name="location_rationale_continue">Continuar</string>
-    <string name="location_rationale_not_now">Ahora no</string>
+    <!-- First launch intro -->
+    <string name="intro_title">Te damos la bienvenida a moonlight</string>
+    <string name="intro_what_it_does">moonlight baña tu pantalla con un brillo que sigue a la luna: su color cambia con la fase y con el lugar que ocupa la luna en tu cielo.</string>
+    <string name="intro_location_title">Tu ubicación aproximada</string>
+    <string name="intro_location_body">A continuación, Android te pedirá compartir tu ubicación aproximada. moonlight la usa solo en tu dispositivo, para calcular dónde está la luna en tu cielo. Nunca se almacena ni se envía a ningún sitio. Sin ella, moonlight sigue mostrando la fase de la luna, pero no su posición.</string>
+    <string name="intro_usage_body">Anónimos y desactivados a menos que los actives. Nos ayudan a mejorar moonlight. Puedes cambiar esto en cualquier momento en la página de información.</string>
+    <string name="intro_continue">Continuar</string>
+    <string name="intro_not_now">Ahora no</string>
 
     <!-- Credits -->
     <string name="credits_made_by_full">moonlight fue desarrollado por el artista Jesse Scott y se inspiró originalmente en una idea de la artista Kelly Andres.</string>

@@ -123,7 +123,7 @@ cat <<'TXT'
 Check by hand (the script only catches crashes at launch):
   Phone: swipe through Moon, Data and About; open each About section; About > acknowledgements > Open Source licenses
          should list the libraries; About > wallpaper and widget: Add widget (it must leave its spinner and draw a
-         gradient) and Set as wallpaper; the first launch shows the Analytics consent dialog (Enable or Disable).
+         gradient) and Set as wallpaper; the first launch shows the intro page (usage data switch, Continue or Not now).
   Wear:  the gradient draws.
   Then look at `adb logcat` for errors that did not crash the app (WorkManager, Hilt, Firebase).
 TXT
