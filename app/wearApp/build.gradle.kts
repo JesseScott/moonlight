@@ -1,9 +1,8 @@
 plugins {
-    kotlin("android")
-    kotlin("plugin.compose")
     id("com.android.application")
+    kotlin("plugin.compose")
     id("com.google.dagger.hilt.android")
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
 }
 
 // Version and upload key are set once, in the root build.gradle.kts, from version.properties and keystore.properties
@@ -63,9 +62,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
 }
 
 dependencies {
@@ -88,8 +84,8 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.13.0")
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.55")
-    kapt("com.google.dagger:hilt-compiler:2.55")
+    implementation("com.google.dagger:hilt-android:2.60.1")
+    ksp("com.google.dagger:hilt-compiler:2.60.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     // Lifecycle

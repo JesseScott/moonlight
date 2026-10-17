@@ -2,13 +2,15 @@ import java.util.Properties
 
 plugins {
     //trick: for the same plugin versions in all submodules
-    id("com.android.application").version("8.9.3").apply(false)
-    id("com.android.library").version("8.9.3").apply(false)
-    kotlin("android").version("2.1.0").apply(false)
-    kotlin("plugin.compose").version("2.1.0").apply(false)
-    id("com.google.dagger.hilt.android").version("2.55").apply(false)
-    id("com.google.gms.google-services").version("4.4.2").apply(false)
-    id("com.google.firebase.crashlytics").version("3.0.2").apply(false)
+    id("com.android.application").version("9.4.1").apply(false)
+    id("com.android.library").version("9.4.1").apply(false)
+    // AGP 9 compiles Kotlin itself (built-in Kotlin), so there is no kotlin("android") plugin. The Compose compiler
+    // plugin's version sets the Kotlin version AGP uses; KSP replaces kapt for Hilt.
+    kotlin("plugin.compose").version("2.4.21").apply(false)
+    id("com.google.devtools.ksp").version("2.3.12").apply(false)
+    id("com.google.dagger.hilt.android").version("2.60.1").apply(false)
+    id("com.google.gms.google-services").version("4.5.0").apply(false)
+    id("com.google.firebase.crashlytics").version("3.0.7").apply(false)
 }
 
 buildscript {
@@ -37,5 +39,5 @@ val keystoreFile = file("../keystore.properties")
 extra["keystoreProperties"] = if (keystoreFile.exists()) Properties().apply { keystoreFile.inputStream().use { load(it) } } else null
 
 tasks.register("clean", Delete::class) {
-    delete(rootProject.buildDir)
+    delete(rootProject.layout.buildDirectory)
 }
