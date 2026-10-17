@@ -77,8 +77,8 @@ android {
 
 dependencies {
     constraints {
-        implementation("androidx.vectordrawable:vectordrawable:1.1.0")
-        implementation("androidx.vectordrawable:vectordrawable-animated:1.1.0")
+        implementation("androidx.vectordrawable:vectordrawable:1.2.0")
+        implementation("androidx.vectordrawable:vectordrawable-animated:1.2.0")
     }
 
     implementation(project(":common"))
@@ -94,12 +94,12 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.1.1")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
-    implementation("androidx.navigation:navigation-compose:2.8.5")
+    implementation("androidx.navigation:navigation-compose:2.10.2")
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.55")
-    kapt("com.google.dagger:hilt-compiler:2.55")
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation("com.google.dagger:hilt-android:2.60.1")
+    kapt("com.google.dagger:hilt-compiler:2.60.1")
+    implementation("androidx.hilt:hilt-navigation-compose:1.4.0")
 
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:34.19.0"))
