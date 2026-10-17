@@ -25,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
@@ -32,6 +33,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import tt.co.jesses.moonlight.android.R
 import tt.co.jesses.moonlight.android.domain.EventNames
 import tt.co.jesses.moonlight.android.domain.Logger
@@ -77,6 +79,7 @@ class MainActivity : ComponentActivity() {
                         initialPage = 0,
                     )
                     val hasSwiped by viewModel.hasSwiped.collectAsState(initial = false)
+                    val scope = rememberCoroutineScope()
 
                     // Coarse location is only used on-device to work out where the moon is in the sky
                     var isPermissionPromptShowing by remember { mutableStateOf(false) }
@@ -111,7 +114,9 @@ class MainActivity : ComponentActivity() {
                                 duration = SnackbarDuration.Long
                             )
                             if (result == SnackbarResult.ActionPerformed) {
-                                pagerState.animateScrollToPage(1)
+                                // Not in this effect's coroutine: reaching page 1 sets hasSwiped, which restarts
+                                // the effect and would cancel the scroll part of the way to the next page (#188)
+                                scope.launch { pagerState.animateScrollToPage(1) }
                             }
                         }
                     }
