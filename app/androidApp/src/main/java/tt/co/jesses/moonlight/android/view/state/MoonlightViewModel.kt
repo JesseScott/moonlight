@@ -42,7 +42,7 @@ class MoonlightViewModel @Inject constructor(
     init {
         getMoonIllumination()
         observeAnalyticsAcceptance()
-        observeLocationRationale()
+        observeIntro()
     }
 
     fun getMoonIllumination() {
@@ -69,7 +69,6 @@ class MoonlightViewModel @Inject constructor(
             userPreferencesRepository.analyticsAcceptance.collect { acceptance ->
                 _uiState.update {
                     it.copy(
-                        isAnalyticsPreferencePending = acceptance == AnalyticsAcceptance.UNSET,
                         isAnalyticsAccepted = acceptance == AnalyticsAcceptance.ACCEPTED,
                     )
                 }
@@ -78,25 +77,29 @@ class MoonlightViewModel @Inject constructor(
     }
 
     /**
-     * The location explainer is only shown once the analytics choice has been made, so the two dialogs never
-     * stack, and never again after the user has seen it (or already granted location).
+     * The intro shows on first launch, before anything is asked, and again only for someone who has not made the
+     * usage data choice yet, or has neither seen the location explanation nor granted location (#191).
      */
-    private fun observeLocationRationale() {
+    private fun observeIntro() {
         viewModelScope.launch {
             combine(
                 userPreferencesRepository.analyticsAcceptance,
                 userPreferencesRepository.hasSeenLocationRationale,
             ) { acceptance, hasSeenRationale ->
-                acceptance != AnalyticsAcceptance.UNSET && !hasSeenRationale && !hasLocationPermission()
+                acceptance == AnalyticsAcceptance.UNSET || (!hasSeenRationale && !hasLocationPermission())
             }.collect { pending ->
-                _uiState.update { it.copy(isLocationRationalePending = pending) }
+                _uiState.update { it.copy(isIntroPending = pending) }
             }
         }
     }
 
-    fun onLocationRationaleSeen() {
+    /** Saves the usage data choice made on the intro and marks the location explanation as seen */
+    fun onIntroFinished(shareUsage: Boolean) {
         viewModelScope.launch {
             userPreferencesRepository.setHasSeenLocationRationale(true)
+            userPreferencesRepository.updateAnalyticsAcceptance(
+                (if (shareUsage) AnalyticsAcceptance.ACCEPTED else AnalyticsAcceptance.REJECTED).ordinal
+            )
         }
     }
 
