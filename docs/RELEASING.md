@@ -7,7 +7,8 @@ that changes it tags the commit and creates a GitHub release; the signed bundles
 
 1. Branch from `main` and change `version.properties`:
    - `versionCode` goes up by at least one for every upload to Google Play (Play rejects a repeat). The Wear OS app uses
-     `1000 + versionCode`, so it follows automatically and is always the higher of the two.
+     `2000 + versionCode`, so it follows automatically and is always the higher of the two. (It was `1000 +` until
+     0.7.1: Play had already used 1015, so the 0.7.1 Wear bundle went up as 2015. Codes 1000-1999 are retired.)
    - `versionName` is what people see, in the form `1.2.3`.
 2. Update `docs/play-store/release-notes-en-US.txt` (and `-es.txt`), the Play "What's new" (500 characters at most), if it
    should change.

@@ -44,7 +44,7 @@ with `scripts/release.sh` (see `docs/RELEASING.md`). To look at the merged relea
 - `:androidApp` is the phone app (Compose, Hilt, Firebase). `view/` has the Moon, Data and About screens in a pager,
   `TextOnGradient` (the text pages) and our own `LicensesActivity`.
 - `:wearApp` is the Wear OS app: no Firebase and no internet permission. It shares the application id with the phone
-  app and its versionCode is `1000 + versionCode`.
+  app and its versionCode is `2000 + versionCode` (it was 1000 + until 0.7.1; Play had already used 1015).
 - `:widget` is the Glance home screen widget and the live wallpaper service.
 
 ## The gradient and text

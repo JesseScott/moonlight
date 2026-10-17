@@ -19,7 +19,9 @@ android {
         applicationId = "tt.co.jesses.moonlight.android"
         minSdk = 30
         targetSdk = 36
-        versionCode = 1000 + appVersionCode // always above the phone build, see version.properties
+        // Always above the phone build. It was 1000 + until 0.7.1, but Play had already used 1015, so 1000-1999 are
+        // retired. (version.properties still says 1000 +; fix that comment with the next version bump.)
+        versionCode = 2000 + appVersionCode
         versionName = appVersionName
     }
 
