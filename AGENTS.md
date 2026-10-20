@@ -61,6 +61,8 @@ with `scripts/release.sh` (see `docs/RELEASING.md`). To look at the merged relea
 Location is coarse only, used on the device to work out where the moon is, and never stored or sent. There is no
 advertising ID (`AD_ID` and the ad permissions are removed in the manifest). Usage data and crash reports are one opt-in
 switch in About, off by default (`TelemetryPolicy`, `Logger`, `EventNames`).
+Feedback goes to a Tally form (`FEEDBACK_FORM_URL` in `:common`), opened from About with the app version and device
+filled in; a weekly routine turns its submissions into issues labelled `user-feedback`.
 Changing any of this means updating together: the About screen text, the hosted privacy page
 (https://www.jesses.co.tt/privacy-moonlight.html), the Play Data safety form, and the store text in `docs/play-store`.
 
