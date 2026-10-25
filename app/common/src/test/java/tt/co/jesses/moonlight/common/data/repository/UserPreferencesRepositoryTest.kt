@@ -1,10 +1,8 @@
 package tt.co.jesses.moonlight.common.data.repository
 
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.mutablePreferencesOf
@@ -15,8 +13,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.ArgumentMatchers
 import org.mockito.kotlin.any
-import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -70,9 +68,9 @@ class UserPreferencesRepositoryTest {
         repository.updateAnalyticsAcceptance(acceptance)
 
         // Then
-        argumentCaptor<suspend (MutablePreferences) -> Unit>().apply {
-            verify(dataStore).edit(capture())
-        }
+        // edit() goes through updateData(). mockito-kotlin 6 cannot build a captor for a suspend function type
+        // ("Suspend functional types are not supported in typeOf"), so match the call with plain Mockito.
+        verify(dataStore).updateData(ArgumentMatchers.any())
     }
 
     @Test
@@ -96,9 +94,7 @@ class UserPreferencesRepositoryTest {
         repository.setHasSwiped(true)
 
         // Then
-        argumentCaptor<suspend (MutablePreferences) -> Unit>().apply {
-            verify(dataStore).edit(capture())
-        }
+        verify(dataStore).updateData(ArgumentMatchers.any())
     }
 
     @Test
@@ -134,8 +130,6 @@ class UserPreferencesRepositoryTest {
     fun `setHasSeenLocationRationale should update datastore`() = runTest {
         repository.setHasSeenLocationRationale(true)
 
-        argumentCaptor<suspend (MutablePreferences) -> Unit>().apply {
-            verify(dataStore).edit(capture())
-        }
+        verify(dataStore).updateData(ArgumentMatchers.any())
     }
 }
