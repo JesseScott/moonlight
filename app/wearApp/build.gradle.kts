@@ -68,7 +68,7 @@ dependencies {
     implementation(project(":common"))
 
     implementation("androidx.core:core-ktx:1.12.0")
-    implementation("com.google.android.gms:play-services-wearable:18.1.0")
+    implementation("com.google.android.gms:play-services-wearable:20.0.1")
     implementation("androidx.percentlayout:percentlayout:1.0.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
