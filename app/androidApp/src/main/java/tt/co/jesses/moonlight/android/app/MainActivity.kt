@@ -9,8 +9,12 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.ui.graphics.Color
@@ -125,7 +129,18 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                     Scaffold(
-                        snackbarHost = { SnackbarHost(snackbarHostState) },
+                        // The content is drawn edge to edge with no insets, so the Scaffold would put the snackbar
+                        // under the navigation bar and the screen's rounded corners (#216): keep it inside them
+                        snackbarHost = {
+                            SnackbarHost(
+                                hostState = snackbarHostState,
+                                modifier = Modifier.windowInsetsPadding(
+                                    WindowInsets.safeDrawing.only(
+                                        WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom
+                                    )
+                                ),
+                            )
+                        },
                         containerColor = Color.Transparent,
                         contentWindowInsets = WindowInsets(0, 0, 0, 0)
                     ) { paddingValues ->
