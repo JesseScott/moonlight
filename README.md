@@ -25,7 +25,7 @@ It is available for Android and Wear OS, as an app, a live wallpaper and a home 
 privacy
 ----
 
-It uses your approximate location, on your device only, to work out where the moon is in your sky. The location is never stored or sent anywhere. There are no accounts and no ads. Anonymous usage data and crash reports are off until you turn them on in the app's about screen. The full [privacy policy](https://www.jesses.co.tt/privacy-moonlight.html) has the details.
+It uses your approximate location, on your device only, to work out where the moon is in your sky. The location is never stored or sent anywhere. There are no accounts and no ads. Anonymous usage data and crash reports are off until you turn them on in the app's about screen. If you send feedback from the about screen, the form (run by Tally) gets only what you type, plus the app version and your phone model and Android version. The full [privacy policy](https://www.jesses.co.tt/privacy-moonlight.html) has the details.
 
 credits
 ----

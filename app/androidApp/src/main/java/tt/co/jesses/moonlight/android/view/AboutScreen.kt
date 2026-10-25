@@ -1,6 +1,7 @@
 package tt.co.jesses.moonlight.android.view
 
 import android.content.Intent
+import android.os.Build
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -61,6 +62,7 @@ import tt.co.jesses.moonlight.android.view.util.VersionUtil
 import tt.co.jesses.moonlight.android.view.util.WallpaperWidgetUtil
 import tt.co.jesses.moonlight.common.data.model.AnalyticsAcceptance
 import tt.co.jesses.moonlight.common.util.GradientUtil
+import tt.co.jesses.moonlight.common.util.feedbackFormUrl
 import tt.co.jesses.moonlight.android.view.util.basePadding
 import tt.co.jesses.moonlight.android.view.util.launchCustomTabs
 import tt.co.jesses.moonlight.android.view.util.smallPadding
@@ -102,10 +104,6 @@ fun AboutScreen(
     } catch (_: Exception) {
         "1.0 (1)"
     }
-
-    val feedbackMessage = stringResource(R.string.credits_info_feedback_message)
-    val feedbackAction = stringResource(R.string.credits_info_feedback_action)
-    val feedbackUrl = stringResource(R.string.credits_info_feedback_action_url)
 
     val wallpaperUnavailableMessage = stringResource(R.string.credits_extras_wallpaper_unavailable)
     val widgetUnavailableMessage = stringResource(R.string.credits_extras_widget_unavailable)
@@ -387,31 +385,19 @@ fun AboutScreen(
 
             TextButton(
                 onClick = {
-                    coroutineScope.launch {
-                        val snackbarResult = snackbarHostState.showSnackbar(
-                            message = feedbackMessage,
-                            actionLabel = feedbackAction,
-                        ).also {
-                            logger?.logEvent(
-                                eventName = EventNames.Action.SNACKBAR,
-                                params = mapOf(
-                                    EventNames.Action.Type.FEEDBACK to EventNames.Action.Params.SNACKBAR_SHOWN
-                                ),
-                            )
-                        }
-                        when (snackbarResult) {
-                            SnackbarResult.ActionPerformed -> {
-                                context.launchCustomTabs(url = feedbackUrl)
-                                logger?.logEvent(
-                                    eventName = EventNames.Action.SNACKBAR,
-                                    params = mapOf(
-                                        EventNames.Action.Type.FEEDBACK to EventNames.Action.Params.BUTTON_CLICK
-                                    ),
-                                )
-                            }
-                            else -> { /** do nothing */ }
-                        }
-                    }
+                    context.launchCustomTabs(
+                        url = feedbackFormUrl(
+                            appVersion = versionInfo,
+                            model = Build.MODEL,
+                            androidVersion = Build.VERSION.RELEASE,
+                        )
+                    )
+                    logger?.logEvent(
+                        eventName = EventNames.Action.BUTTON,
+                        params = mapOf(
+                            EventNames.Action.Type.FEEDBACK to EventNames.Action.Params.BUTTON_CLICK
+                        ),
+                    )
                 },
                 border = borderStroke,
             ) {
@@ -421,6 +407,12 @@ fun AboutScreen(
                     style = textStyle,
                 )
             }
+            Text(
+                text = stringResource(R.string.credits_info_feedback_note),
+                fontSize = bodyFontSize,
+                style = textStyle,
+                modifier = Modifier.padding(end = basePadding),
+            )
             Spacer(Modifier.smallPadding())
 
             Text(
