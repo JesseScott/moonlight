@@ -407,12 +407,6 @@ fun AboutScreen(
                     style = textStyle,
                 )
             }
-            Text(
-                text = stringResource(R.string.credits_info_feedback_note),
-                fontSize = bodyFontSize,
-                style = textStyle,
-                modifier = Modifier.padding(end = basePadding),
-            )
             Spacer(Modifier.smallPadding())
 
             Text(
