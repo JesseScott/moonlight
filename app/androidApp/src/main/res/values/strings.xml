@@ -79,7 +79,6 @@
     <string name="credits_info_version_label">Version: </string>
 
     <string name="credits_info_feedback">Send feedback</string>
-    <!-- "Only" is a promise: the form gets what the user types plus the two pre-filled answers. -->
     <string name="credits_info_feedback_note">The form is run by Tally. It gets only what you type, plus the app version and your phone model and Android version.</string>
 
     <string name="credits_info_coffee">Buy me a coffee</string>
