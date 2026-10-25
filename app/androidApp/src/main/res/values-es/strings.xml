@@ -78,7 +78,6 @@
     <string name="credits_info_version_label">Versión: </string>
 
     <string name="credits_info_feedback">Enviar comentarios</string>
-    <string name="credits_info_feedback_note">El formulario lo gestiona Tally. Solo recibe lo que escribas, más la versión de la app y el modelo y la versión de Android de tu teléfono.</string>
 
     <string name="credits_info_coffee">Cómprame un café</string>
     <string name="credits_info_coffee_message">Este proyecto es un trabajo de amor. Si puede y está dispuesto a apoyar mi trabajo, cómpreme un café.</string>
