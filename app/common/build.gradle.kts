@@ -57,7 +57,7 @@ dependencies {
     // Gradle 9 no longer puts the JUnit Platform launcher on the test runtime classpath by itself
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:6.1.3")
     testImplementation("org.mockito:mockito-core:5.8.0")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:6.4.0")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     testImplementation("androidx.lifecycle:lifecycle-runtime-testing:2.8.7")
 }
