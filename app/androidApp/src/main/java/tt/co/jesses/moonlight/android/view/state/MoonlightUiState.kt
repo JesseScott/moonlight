@@ -6,7 +6,7 @@ import tt.co.jesses.moonlight.common.data.model.MoonData
 data class MoonlightUiState(
     val illuminationData: MoonData = MoonData(),
     val creditData: CreditData = CreditData(),
-    val isAnalyticsPreferencePending: Boolean = false,
     val isAnalyticsAccepted: Boolean = false,
-    val isLocationRationalePending: Boolean = false,
+    /** Whether the first-launch intro should show; null until the saved preferences have been read */
+    val isIntroPending: Boolean? = null,
 )
