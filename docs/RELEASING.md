@@ -56,7 +56,7 @@ device out to only build and sign.
 - **Then look at the apps by hand** (the script only catches crashes at launch): swipe through Moon, Data and About,
   open each About section, About > acknowledgements > Open Source licenses (the real list should show), Add widget (it
   must leave its loading spinner), Set as wallpaper, and the Wear gradient. Watch `adb logcat` for errors that did not
-  crash the app (WorkManager, Hilt, Firebase). The first launch shows the Analytics consent dialog.
+  crash the app (WorkManager, Hilt, Firebase). The first launch shows the intro page (usage data switch, then Continue to the location prompt).
 
 This found the Wear start-up crash in 0.7.0 (the shared `LocalLifecycleOwner` mismatch, #180) and the widget/WorkManager
 problem on the AGP 9 branch (#163), neither of which any debug build showed.
