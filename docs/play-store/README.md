@@ -5,12 +5,28 @@ Update the matching file whenever the listing changes.
 
 | File | Play Console field | Limit |
 |---|---|---|
+| `title.txt` | Main store listing, App name | 30 characters |
 | `short-description.txt` | Main store listing, Short description | 80 characters |
 | `full-description.txt` | Main store listing, Full description | 4,000 characters |
 | `release-notes-en-US.txt` | Production release, What's new (English) | 500 characters |
 | `*-es.txt` | The same fields in Spanish (add Spanish under Main store listing, Translations; for the release notes use the Spanish language tag in the "What's new" box) | same limits |
 
-The App name is `moonlight`.
+The app name in the store carries the words people search for (moon phase, wallpaper); the brand stays lowercase
+`moonlight` in the app and on the icon. Play counts the title for search more than any other field, then the short
+description.
+
+## While 0.6 is in production
+
+The title and short description name the live wallpaper, which only exists from 0.7. Until 0.7 reaches production,
+use these instead:
+
+| Field | English | Spanish |
+|---|---|---|
+| App name | Moonlight: Moon Phase Glow | Moonlight: fases de la luna |
+| Short description | A calm glow that follows tonight's moon phase, on your phone and Wear OS watch. | Un brillo sereno que sigue la fase lunar, en tu teléfono y tu reloj Wear OS. |
+
+Change one field at a time and add a line to the experiments log (`/mnt/project-files/monitoring/experiments.md`), so
+the Monday growth report can show whether the store listing conversion moved.
 
 ## Keep it true to the app
 
