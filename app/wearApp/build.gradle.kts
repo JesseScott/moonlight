@@ -67,11 +67,11 @@ android {
 dependencies {
     implementation(project(":common"))
 
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core-ktx:1.19.1")
     implementation("androidx.percentlayout:percentlayout:1.0.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    implementation("androidx.recyclerview:recyclerview:1.3.2")
-    implementation("androidx.wear:wear:1.3.0")
+    implementation("androidx.recyclerview:recyclerview:1.4.0")
+    implementation("androidx.wear:wear:1.4.0")
 
     // Compose: the same versions as the phone app. The shared :common module uses the lifecycle-runtime-compose 2.8
     // LocalLifecycleOwner (RefreshWhileStarted), which only Compose UI 1.7+ and a recent activity-compose provide; on
@@ -85,7 +85,7 @@ dependencies {
     // Hilt
     implementation("com.google.dagger:hilt-android:2.60.1")
     ksp("com.google.dagger:hilt-compiler:2.60.1")
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.4.0")
 
     // Lifecycle
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
